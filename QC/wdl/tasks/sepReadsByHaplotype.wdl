@@ -39,8 +39,8 @@ task Separate{
 
     >>>
     output {
-        File hap1Bam = glob("output/*hap1.bam")[0]
-        File hap2Bam = glob("output/*hap2.bam")[0]
+        File hap1Bam = glob("*hap1.bam")[0]
+        File hap2Bam = glob("*hap2.bam")[0]
     }
     runtime {
         memory: memSizeGB + " GB"
