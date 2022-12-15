@@ -29,8 +29,19 @@ task applyPolish{
         set -eux -o pipefail
         set -o xtrace
 
-        bcftools consensus -f ~{hap1AsmRaw} -H 1 ~{polishingVcf} > ~{outPrefix}.hap1.polished.fasta
-        bcftools consensus -f ~{hap2AsmRaw} -H 1 ~{polishingVcf} > ~{outPrefix}.hap2.polished.fasta
+        VCF_FILENAME="~{polishingVcf}"
+
+        FILENAME=$(basename -- "~{polishingVcf}")
+        SUFFIX="${FILENAME##*.}"
+
+        if [[ "$SUFFIX" != "gz" ]] ; then
+            bcftools view -Oz ~{polishingVcf} > ~{polishingVcf}.gz
+            VCF_FILENAME=~{polishingVcf}.gz
+
+        bcftools index $VCF_FILENAME
+
+        bcftools consensus -f ~{hap1AsmRaw} -H 1 $VCF_FILENAME > ~{outPrefix}.hap1.polished.fasta
+        bcftools consensus -f ~{hap2AsmRaw} -H 1 $VCF_FILENAME > ~{outPrefix}.hap2.polished.fasta
     >>>
     output {
         File hap1Polished = "~{outPrefix}.hap1.polished.fasta"
