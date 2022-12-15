@@ -90,7 +90,7 @@ task Merfin{
                 -output ${PREFIX}.merfin
     >>>
     output {
-        File filteredVCF="${PREFIX}.merfin.polish.vcf"
+        File filteredVCF=glob("*.merfin.polish.vcf")[0]
     }
     runtime {
         memory: memSizeGB + " GB"
