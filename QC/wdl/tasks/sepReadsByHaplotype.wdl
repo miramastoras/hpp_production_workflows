@@ -14,19 +14,14 @@ workflow runSepReadsByHap {
 task Separate{
     input {
         File dipBam
-        File hap1Fasta
-        File hap2Fasta
+        File hap1Fai
+        File hap2Fai
         String SampleName
 
         String dockerImage = "kishwars/pepper_deepvariant:r0.8"
         Int memSizeGB = 128
         Int threadCount = 64
         Int diskSizeGB = 128
-    }
-    parameter_meta{
-     inputVcf: "Reads aligned to assembly. Must be in BAM format."
-     SampleName: "Sample name. Will be used in output VCF file."
-     outputFileTag: "Output file tag to tag files by type of read data (HiFi/Ont)."
     }
 
     command <<<
@@ -37,19 +32,16 @@ task Separate{
         FILENAME=$(basename ~{dipBam})
         PREFIX=${FILENAME%.bam}
 
-        samtools index ~{hap1Fasta}
-        samtools index ~{hap2Fasta}
-
-        cut -f1-2 ~{hap1Fasta}.fai | awk '{print $1"\t""0""\t"$2-1}' > ~{hap1Fasta}.bed
-        cut -f1-2 ~{hap2Fasta}.fai | awk '{print $1"\t""0""\t"$2-1}' > ~{hap2Fasta}.bed
+        cut -f1-2 ~{hap1Fai} | awk '{print $1"\t""0""\t"$2-1}' > ~{hap1Fai}.bed
+        cut -f1-2 ~{hap2Fai} | awk '{print $1"\t""0""\t"$2-1}' > ~{hap2Fai}.bed
 
         samtools view -@ ~{threadCount} -bh -L ~{hap1Fasta}.bed ~{dipBam} > ${PREFIX}.hap1.bam
         samtools view -@ ~{threadCount} -bh -L ~{hap2Fasta}.bed ~{dipBam} > ${PREFIX}.hap2.bam
 
     >>>
     output {
-        File hap1Bam = "${PREFIX}.hap1.bam"
-        File hap2Bam = "${PREFIX}.hap2.bam"
+        File hap1Bam = glob("output/*hap1.bam")[0]
+        File hap2Bam = glob("output/*hap2.bam")[0]
     }
     runtime {
         memory: memSizeGB + " GB"
