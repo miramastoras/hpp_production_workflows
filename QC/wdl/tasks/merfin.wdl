@@ -6,7 +6,7 @@ workflow runMerfin {
     call GenomeScope
     call Merfin {
         input:
-            genomeScopeStdOut = GenomeScope.genomeScopeStdOut,
+            genomeScopeStdout = GenomeScope.genomeScopeStdOut,
             lookupTable       = GenomeScope.lookupTable
     }
     output {
