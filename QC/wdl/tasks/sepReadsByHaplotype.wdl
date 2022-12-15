@@ -35,8 +35,8 @@ task Separate{
         cut -f1-2 ~{hap1Fai} | awk '{print $1"\t""0""\t"$2-1}' > ~{hap1Fai}.bed
         cut -f1-2 ~{hap2Fai} | awk '{print $1"\t""0""\t"$2-1}' > ~{hap2Fai}.bed
 
-        samtools view -@ ~{threadCount} -bh -L ~{hap1Fasta}.bed ~{dipBam} > ${PREFIX}.hap1.bam
-        samtools view -@ ~{threadCount} -bh -L ~{hap2Fasta}.bed ~{dipBam} > ${PREFIX}.hap2.bam
+        samtools view -@ ~{threadCount} -bh -L ~{hap1Fai}.bed ~{dipBam} > ${PREFIX}.hap1.bam
+        samtools view -@ ~{threadCount} -bh -L ~{hap2Fai}.bed ~{dipBam} > ${PREFIX}.hap2.bam
 
     >>>
     output {
