@@ -6,8 +6,8 @@ workflow runSepReadsByHap {
 
     call Separate
     output {
-        File outputFile = Separate.hap1Bam
-        File outputFile = Separate.hap2Bam
+        File hap1Bam = Separate.hap1Bam
+        File hap2Bam = Separate.hap2Bam
     }
 }
 
