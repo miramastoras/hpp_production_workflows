@@ -35,8 +35,8 @@ task applyPolish{
         SUFFIX="${FILENAME##*.}"
 
         if [[ "$SUFFIX" != "gz" ]] ; then
-            bcftools view -Oz ~{polishingVcf} > ~{polishingVcf}.gz
-            VCF_FILENAME=~{polishingVcf}.gz
+            bcftools view -Oz ~{polishingVcf} > "~{polishingVcf}".gz
+            VCF_FILENAME="~{polishingVcf}".gz
 
         bcftools index $VCF_FILENAME
 
