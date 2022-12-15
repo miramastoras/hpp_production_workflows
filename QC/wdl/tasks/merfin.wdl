@@ -1,17 +1,22 @@
 version 1.0
 
-# This is a task level wdl workflow to separate reads from a diploid bamfile by haplotype
+# This is a task level wdl workflow to run Merfin for filtering variants for polishing
 
-workflow runSepReadsByHap {
-
-    call Separate
+workflow runMerfin {
+    call genomeScope
+    call Merfin
     output {
         File hap1Bam = Separate.hap1Bam
         File hap2Bam = Separate.hap2Bam
     }
 }
 
-task Separate{
+task genomeScope{
+    input {
+        File 
+}
+
+task Merfin{
     input {
         File dipBam
         File hap1Fai
