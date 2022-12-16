@@ -29,13 +29,7 @@ task GenomeScope{
         set -o xtrace
 
         # run genomescope
-        xvfb-run \
-        genomescope2.0/genomescope.R \
-        -i ~{merylHist} \
-        -k 21 \
-        -o genomescope_outfiles \
-        -p 1 \
-        --fitted_hist &> genomescope.stdout
+        xvfb-run genomescope2.0/genomescope.R -i ~{merylHist} -k 21 -o genomescope_outfiles -p 1 --fitted_hist &> genomescope.stdout
     >>>
     output {
         File genomeScopeStdOut = "genomescope.stdout"
@@ -80,14 +74,7 @@ task Merfin{
         # Pull out peak value from genomescope output
         KCOV=$(grep "kcov" ~{genomeScopeStdout} | cut -d" " -f 4 | cut -d":" -f 2)
 
-        merfin -polish \
-                -vcf ~{vcfFile} \
-                -threads ~{threadCount} \
-                -sequence ~{refFasta} \
-                -readmers $READMER_DIR \
-                -prob ~{lookupTable} \
-                -peak $KCOV \
-                -output ${PREFIX}.merfin
+        merfin -polish -vcf ~{vcfFile} -threads ~{threadCount} -sequence ~{refFasta} -readmers $READMER_DIR -prob ~{lookupTable} -peak $KCOV -output ${PREFIX}.merfin
     >>>
     output {
         File filteredVCF=glob("*.merfin.polish.vcf")[0]
