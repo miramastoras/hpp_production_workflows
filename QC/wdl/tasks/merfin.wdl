@@ -68,13 +68,13 @@ task Merfin{
         PREFIX=${FILENAME%.vcf.gz}
 
         # untar readmer dbs
-        tar xvf ~{readmerDBTarball} -C output/
+        tar xvf ~{readmerDBTarball} -C .
         READMER_DIR=$(basename ~{readmerDBTarball} | sed 's/.gz$//' | sed 's/.tar$//')
 
         # Pull out peak value from genomescope output
         KCOV=$(grep "kcov" ~{genomeScopeStdout} | cut -d" " -f 4 | cut -d":" -f 2)
 
-        merfin -polish -vcf ~{vcfFile} -threads ~{threadCount} -sequence ~{refFasta} -readmers output/$READMER_DIR -prob ~{lookupTable} -peak $KCOV -output ${PREFIX}.merfin
+        merfin -polish -vcf ~{vcfFile} -threads ~{threadCount} -sequence ~{refFasta} -readmers $READMER_DIR -prob ~{lookupTable} -peak $KCOV -output ${PREFIX}.merfin
     >>>
     output {
         File filteredVCF=glob("*.merfin.polish.vcf")[0]
