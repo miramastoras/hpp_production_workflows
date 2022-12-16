@@ -18,7 +18,7 @@ task GenomeScope{
     input {
         File merylHist
 
-        String dockerImage = "dmolik/genomescope2"
+        String dockerImage = "dmolik/genomescope2:latest"
         Int memSizeGB = 128
         Int threadCount = 64
         Int diskSizeGB = 128
