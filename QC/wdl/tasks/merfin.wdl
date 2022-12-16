@@ -68,7 +68,7 @@ task Merfin{
         PREFIX=${FILENAME%.vcf.gz}
 
         # untar readmer dbs
-        tar xvf ~{readmerDBTarball} -C .
+        tar xvf ~{readmerDBTarball}
         READMER_DIR=$(basename ~{readmerDBTarball} | sed 's/.gz$//' | sed 's/.tar$//')
 
         # Pull out peak value from genomescope output
