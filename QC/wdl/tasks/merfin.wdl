@@ -29,7 +29,7 @@ task GenomeScope{
         set -o xtrace
 
         # run genomescope
-        genomescope2.0/genomescope.R -i ~{merylHist} -k 21 -o genomescope_outfiles -p 1 --fitted_hist &> genomescope.stdout
+        xvfb-run ./genomescope2.0/genomescope.R -i ~{merylHist} -k 21 -o genomescope_outfiles -p 1 --fitted_hist &> genomescope.stdout
     >>>
     output {
         File genomeScopeStdOut = "genomescope.stdout"
