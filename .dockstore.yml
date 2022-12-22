@@ -63,7 +63,7 @@ workflows:
       primaryDescriptorPath: /QC/wdl/workflows/standard_qc_no_qv.wdl
    -  name: StandardQCnonTrio
       subclass: WDL
-      primaryDescriptorPath: /QC/wdl/workflows/standard_qc_nontrio.wdl    
+      primaryDescriptorPath: /QC/wdl/workflows/standard_qc_nontrio.wdl
    -  name: FilterHiFiAdapter
       subclass: WDL
       primaryDescriptorPath: /assembly/wdl/tasks/filter_hifi_adapter.wdl
@@ -138,4 +138,24 @@ workflows:
    -  name: LengthFilterFasta
       subclass: WDL
       primaryDescriptorPath: /assembly/wdl/tasks/len_filter_fasta.wdl
-
+   -  name: SepReadsByHaplotype
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/sepReadsByHaplotype.wdl
+   -  name: deepVariant
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/deepvariant.wdl
+   -  name: pepperMarginDeepVariant
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/pepperMarginDeepVariant.wdl
+   -  name: hapDotPy
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/hapDotPy.wdl
+   -  name: Merfin
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/merfin.wdl
+   -  name: MerylNonTrio
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/meryl_non_trio.wdl
+   -  name: applyPolish
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/applyPolish.wdl
