@@ -48,7 +48,7 @@ task Meryl{
           # tarball
           tar -zcvf hybrid.k21.gt1.meryl.tar.gz hybrid.k21.gt1.meryl
 
-        else: # if not hybrid, return just illumina meryl db
+        else # if not hybrid, return just illumina meryl db
           mv output/ilm.k21.gt1.meryl ilm.k21.gt1.meryl
           tar -zcvf ilm.k21.gt1.meryl.tar.gz ilm.k21.gt1.meryl
 
