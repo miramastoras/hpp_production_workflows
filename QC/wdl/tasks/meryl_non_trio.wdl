@@ -26,17 +26,19 @@ task Meryl{
         set -o xtrace
 
         mkdir output
+        ILM_ID=`basename ~{ilmBam} | sed 's/.bam$//'`
+        HIFI_ID=`basename ~{hifiBam} | sed 's/.bam$//'`
 
         # make illumina meryls
-        samtools fastq -@~{threadCount} ~{ilmBam} > output/~{ilmBam}.fq
-        meryl count threads=~{threadCount} k=21 output/~{ilmBam}.fq output output/ilm.k21.meryl
+        samtools fastq -@~{threadCount} ~{ilmBam} > output/${ILM_ID}.fq
+        meryl count threads=~{threadCount} k=21 output/${ILM_ID}.fq output output/ilm.k21.meryl
         meryl greater-than 1 output/ilm.k21.meryl output output/ilm.k21.gt1.meryl
         rm -rf output/ilm.k21.meryl
 
         # make hybrid db if hifi supplied
         if [[ ! -z "~{hifiBam}" ]]; then
-          samtools fastq -@~{threadCount} ~{hifiBam} > output/~{hifiBam}.fq
-          meryl count threads=~{threadCount} k=21 output/~{hifiBam}.fq output output/hifi.k21.meryl
+          samtools fastq -@~{threadCount} ~{hifiBam} > output/${HIFI_ID}.fq
+          meryl count threads=~{threadCount} k=21 output/${HIFI_ID}.fq output output/hifi.k21.meryl
           meryl greater-than 1 output/hifi.k21.meryl output output/hifi.k21.gt1.meryl
           rm -rf output/hifi.k21.meryl
 
