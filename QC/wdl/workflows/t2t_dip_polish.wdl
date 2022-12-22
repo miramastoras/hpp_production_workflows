@@ -4,6 +4,8 @@ import "../tasks/deepvariant.wdl" as runDeepVariant
 import "../tasks/pepperMarginDeepVariant.wdl" as runPepperMarginDeepVariant
 import "../tasks/hapDotPy.wdl" as runHappy
 
+# WDL implementation of full t2t polishing pipeline including evaluation
+
 workflow snv_indel_assembly {
 
     meta {
