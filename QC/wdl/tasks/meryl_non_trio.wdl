@@ -34,7 +34,7 @@ task Meryl{
         rm -rf output/ilm.k21.meryl
 
         # make hybrid db if hifi supplied
-        if [[ ! -z "~{hifiReads}" ]]; then
+        if [[ ! -z "~{hifiBam}" ]]; then
           samtools fastq -@~{threadCount} ~{hifiBam} > output/${hifiBam}.fq
           meryl count threads=~{threadCount} k=21 output/${hifiBam}.fq output output/hifi.k21.meryl
           meryl greater-than 1 output/hifi.k21.meryl output output/hifi.k21.gt1.meryl
