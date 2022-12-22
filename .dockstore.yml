@@ -159,3 +159,6 @@ workflows:
    -  name: applyPolish
       subclass: WDL
       primaryDescriptorPath: /QC/wdl/tasks/applyPolish.wdl
+   -  name: mergeBam
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/mergeBam.wdl

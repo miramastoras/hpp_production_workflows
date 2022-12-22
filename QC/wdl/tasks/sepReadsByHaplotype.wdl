@@ -13,7 +13,6 @@ workflow runSepReadsByHap {
         File hap1Bam = Separate.hap1Bam
         File hap2Bam = Separate.hap2Bam
     }
-}
 
 task Separate{
     input {
