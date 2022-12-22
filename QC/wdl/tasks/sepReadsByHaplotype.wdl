@@ -1,9 +1,13 @@
 version 1.0
 
-# This is a task level wdl workflow to separate reads from a diploid bamfile by haplotype
+# This is a task level wdl workflow to separate reads aligned to diploid assembly by haplotype
 
 workflow runSepReadsByHap {
-
+    meta {
+        author: "Mira Mastoras"
+        email: "mmastora@ucsc.edu"
+        description: "Separate reads aligned to diploid assembly by haplotype"
+    }
     call Separate
     output {
         File hap1Bam = Separate.hap1Bam

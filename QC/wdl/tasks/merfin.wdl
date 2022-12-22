@@ -3,6 +3,11 @@ version 1.0
 # This is a task level wdl workflow to run Merfin for filtering variants for polishing
 
 workflow runMerfin {
+    meta {
+        author: "Mira Mastoras"
+        email: "mmastora@ucsc.edu"
+        description: "Run merfin to filter variants for polishing"
+    }
     call GenomeScope
     call Merfin {
         input:

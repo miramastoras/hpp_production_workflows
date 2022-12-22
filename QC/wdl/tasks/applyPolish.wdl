@@ -3,7 +3,11 @@ version 1.0
 # This is a task level wdl workflow to apply a set of variants to an assembly for polishing using bcftools consensus
 
 workflow runApplyPolish {
-
+    meta {
+        author: "Mira Mastoras"
+        email: "mmastora@ucsc.edu"
+        description: "Polish assembly with input vcf"
+    }
     call applyPolish
     output {
         File hap1AsmPolished = applyPolish.hap1Polished
