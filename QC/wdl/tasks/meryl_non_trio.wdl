@@ -27,7 +27,6 @@ task Meryl{
 
         mkdir output
         ILM_ID=`basename ~{ilmBam} | sed 's/.bam$//'`
-        HIFI_ID=`basename ~{hifiBam} | sed 's/.bam$//'`
 
         # make illumina meryls
         samtools fastq -@~{threadCount} ~{ilmBam} > output/${ILM_ID}.fq
@@ -37,6 +36,7 @@ task Meryl{
 
         # make hybrid db if hifi supplied
         if [[ ! -z "~{hifiBam}" ]]; then
+          HIFI_ID=`basename ~{hifiBam} | sed 's/.bam$//'`
           samtools fastq -@~{threadCount} ~{hifiBam} > output/${HIFI_ID}.fq
           meryl count threads=~{threadCount} k=21 output/${HIFI_ID}.fq output output/hifi.k21.meryl
           meryl greater-than 1 output/hifi.k21.meryl output output/hifi.k21.gt1.meryl
