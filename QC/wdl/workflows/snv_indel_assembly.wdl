@@ -16,6 +16,8 @@ workflow snv_indel_assembly {
     input {
         File assembly
         File assemblyIndex
+        String excludeExpr = "'FORMAT/VAF<=0.5 | FORMAT/GQ<=30'"
+        String excludeTypes = "indels"
         String sample
     }
 
@@ -33,13 +35,13 @@ workflow snv_indel_assembly {
             assembly      = assembly,
             assemblyIndex = assemblyIndex,
             sample        = sample
-    }    
+    }
 
     ## Filter DeepVariant calls
     call runPepperMarginDeepVariant.bcftoolsFilter as filt_1 {
         input:
             inputVCF      = deepVariant_t.vcfOut,
-            excludeExpr   = "'FORMAT/VAF<=0.5 | FORMAT/GQ<=30'",
+            excludeExpr   = excludeExpr,
             applyFilters  = "PASS"
     }
 
@@ -47,19 +49,19 @@ workflow snv_indel_assembly {
     call runPepperMarginDeepVariant.bcftoolsFilter as filt_2 {
         input:
             inputVCF      = pmdv_t.vcfOut,
-            excludeExpr   = "'FORMAT/VAF<=0.5 | FORMAT/GQ<=30'",
+            excludeExpr   = excludeExpr,
             applyFilters  = "PASS",
-            exludeTypes   = "indels"
+            exludeTypes   = excludeTypes
     }
 
     ## Compare filtered callsets (DeepVariant & PMDV) to see where they agree
     call runHappy.hapDotPy as happy_t {
-        input:    
+        input:
             truthVCF      = filt_1.vcfOut,
             queryVCF      = filt_2.vcfOut,
             assembly      = assembly,
             assemblyIndex = assemblyIndex,
-            sample        = sample        
+            sample        = sample
     }
 
     ## Output the union of the two filtered callsets (DeepVariant & PMDV)
@@ -164,11 +166,11 @@ task createVCFStats {
         set -eux -o pipefail
         set -o xtrace
 
-        
+
         ## copy file so index is in local directory (easier for delocalization)
         INPUT_VCF="~{filePrefix}.vcf.gz"
         cp ~{inputVCF} $INPUT_VCF
-        
+
         ## Index VCF (not related to stats, just nice to have)
         tabix -p vcf $INPUT_VCF
 
