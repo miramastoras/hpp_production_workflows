@@ -33,7 +33,7 @@ task pepperMarginDeepVariant {
         Int threadCount = 64
         Int diskSizeGB = 128
         String dockerImage = "kishwars/pepper_deepvariant@sha256:70908591ad67e8567a6e4551119b2cfc33d957ad39701c8af51b36b516214645" # r0.8
-    
+
     }
 
     parameter_meta {
@@ -55,15 +55,15 @@ task pepperMarginDeepVariant {
 
         ## Soft link fasta and index so they are in the same directory
         REF=$(basename ~{assembly})
-        REF_IDX=$(basename ~{assemblyIndex}) 
+        REF_IDX=$(basename ~{assemblyIndex})
 
         ln -s ~{assembly} ./$REF
         ln -s ~{assemblyIndex} ./$REF_IDX
 
-        
+
         ## Soft link fasta and index so they are in the same directory
         READS=$(basename ~{inputReads})
-        READS_IDX=$(basename ~{inputReadsIdx}) 
+        READS_IDX=$(basename ~{inputReadsIdx})
 
         ln -s ~{inputReads} ./$READS
         ln -s ~{inputReadsIdx} ./$READS_IDX
@@ -118,7 +118,7 @@ task bcftoolsFilter {
         Int threadCount = 4
         Int diskSizeGB = 50
         String dockerImage = "kishwars/pepper_deepvariant@sha256:70908591ad67e8567a6e4551119b2cfc33d957ad39701c8af51b36b516214645" # r0.8
-    
+
     }
 
     parameter_meta {
@@ -149,13 +149,20 @@ task bcftoolsFilter {
         else
             EXCLUDE_TYPES_TOKEN="--exclude-types ~{exludeTypes}"
         fi
-        
+
+        ## Make -e filters optional too
+        if [ -z "~{excludeExpr}" ]
+        then
+            EXCLUDE_EXPR=""
+        else
+            EXCLUDE_EXPR="-e ~{excludeExpr}"
+        fi
 
         ## Call bcftools
         bcftools view \
             $APPLY_FILTERS_TOKEN \
             $EXCLUDE_TYPES_TOKEN \
-            -e ~{excludeExpr} \
+            $EXCLUDE_EXPR \
             -Oz \
             ~{inputVCF} \
             > ~{outputFile}
