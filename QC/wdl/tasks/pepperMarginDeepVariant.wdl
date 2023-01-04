@@ -158,7 +158,7 @@ task bcftoolsFilter {
             EXCLUDE_EXPR="-e ~{excludeExpr}"
         fi
 
-        if ~{excludeExpr} == ""
+        if [ ~{excludeExpr} == "" ]
         then
             EXCLUDE_EXPR=""
         fi
