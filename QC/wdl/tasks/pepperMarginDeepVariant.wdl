@@ -150,12 +150,17 @@ task bcftoolsFilter {
             EXCLUDE_TYPES_TOKEN="--exclude-types ~{exludeTypes}"
         fi
 
-        ## Make -e filters optional too
+        ## Make -e filters optional too, if unset or passed in as empty string
         if [ -z "~{excludeExpr}" ]
         then
             EXCLUDE_EXPR=""
         else
             EXCLUDE_EXPR="-e ~{excludeExpr}"
+        fi
+
+        if ~{excludeExpr} == ""
+        then
+            EXCLUDE_EXPR=""
         fi
 
         ## Call bcftools
