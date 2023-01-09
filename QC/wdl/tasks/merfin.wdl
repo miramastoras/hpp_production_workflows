@@ -10,8 +10,12 @@ workflow runMerfin {
     }
     input {
         File readmerDBTarball
+        String runID
     }
-
+    call CombineVCF {
+        input:
+            runID = runID
+    }
     call MerylHist {
         input:
             readmerDBTarball  = readmerDBTarball
@@ -24,10 +28,44 @@ workflow runMerfin {
         input:
             genomeScopeStdout = GenomeScope.genomeScopeStdOut,
             lookupTable       = GenomeScope.lookupTable,
-            readmerDBTarball  = readmerDBTarball
+            readmerDBTarball  = readmerDBTarball,
+            dipVCF = CombineVCF.dipVCF,
+            runID = runID
     }
     output {
         File merfinFilteredVcf = Merfin.filteredVCF
+    }
+}
+
+task CombineVCF {
+    input {
+        File hap1VcfFile
+        File hap2VcfFile
+        String runID
+
+        String dockerImage = "biocontainers/bcftools:latest"
+        Int memSizeGB = 128
+        Int threadCount = 64
+        Int diskSizeGB = 128
+    }
+    command <<<
+        # exit when a command fails, fail with unset variables, print commands before execution
+        set -eux -o pipefail
+        set -o xtrace
+
+        # combine haplotype variant calls into one vcf 
+        bcftools concat -a ~{hap1VcfFile} ~{hap2VcfFile} -o ~{runID}.merged_variants.diploid.vcf
+        bcftools view -Oz -f "PASS" ~{runID}.merged_variants.diploid.vcf > ~{runID}.merged_variants.diploid.PASS.vcf.gz
+    >>>
+    output {
+        File dipVCF=glob("*merged_variants.diploid.PASS.vcf.gz")[0]
+    }
+    runtime {
+        memory: memSizeGB + " GB"
+        cpu: threadCount
+        disks: "local-disk " + diskSizeGB + " SSD"
+        docker: dockerImage
+        preemptible: 1
     }
 }
 
@@ -102,6 +140,7 @@ task Merfin{
         File lookupTable
         File vcfFile
         File refFasta
+        String? extraArgs
 
         String dockerImage = "miramastoras/merfin:latest"
         Int memSizeGB = 128
@@ -124,7 +163,15 @@ task Merfin{
         # Pull out peak value from genomescope output
         KCOV=$(grep "kcov" ~{genomeScopeStdout} | cut -d" " -f 4 | cut -d":" -f 2)
 
-        merfin -polish -vcf ~{vcfFile} -threads ~{threadCount} -sequence ~{refFasta} -readmers $READMER_DIR -prob ~{lookupTable} -peak $KCOV -output ${PREFIX}.merfin
+        ## Pass optional arguments if extraArgs is set, if not just pass empty string
+        if [ -z "~{extraArgs}" ]
+        then
+            EXTRA_ARGS=""
+        else
+            EXTRA_ARGS="~{extraArgs}"
+        fi
+
+        merfin -polish ${EXTRA_ARGS} -vcf ~{vcfFile} -threads ~{threadCount} -sequence ~{refFasta} -readmers $READMER_DIR -prob ~{lookupTable} -peak $KCOV -output ${PREFIX}.merfin
     >>>
     output {
         File filteredVCF=glob("*.merfin.polish.vcf")[0]

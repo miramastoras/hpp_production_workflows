@@ -1,7 +1,8 @@
 FROM alpine:3.16
+
 # if you would like to include genomescope2, use "FROM dmolik/genomescope2" Although @molikd commited a pull request to genomescope2, so this may change
 # https://github.com/arangrhie/merfin/blob/master/Dockerfile
-# https://github.com/dmlc/xgboost/issues/8595 
+# https://github.com/dmlc/xgboost/issues/8595
 
 LABEL container="merfin" \
   about.summary="Improved variant filtering and polishing via k-mer validation" \
