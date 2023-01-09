@@ -8,14 +8,59 @@ workflow runMerfin {
         email: "mmastora@ucsc.edu"
         description: "Run merfin to filter variants for polishing"
     }
-    call GenomeScope
+    input {
+        File readmerDBTarball
+    }
+
+    call MerylHist {
+        input:
+            readmerDBTarball  = readmerDBTarball
+    }
+    call GenomeScope {
+        input:
+            merylHist = MerylHist.hist
+    }
     call Merfin {
         input:
             genomeScopeStdout = GenomeScope.genomeScopeStdOut,
-            lookupTable       = GenomeScope.lookupTable
+            lookupTable       = GenomeScope.lookupTable,
+            readmerDBTarball  = readmerDBTarball
     }
     output {
         File merfinFilteredVcf = Merfin.filteredVCF
+    }
+}
+
+task MerylHist {
+    input {
+        File readmerDBTarball
+
+        String dockerImage = "juklucas/hpp_merqury:latest"
+        Int memSizeGB = 128
+        Int threadCount = 64
+        Int diskSizeGB = 128
+    }
+    command <<<
+        # exit when a command fails, fail with unset variables, print commands before execution
+        set -eux -o pipefail
+        set -o xtrace
+
+        # untar readmer dbs
+        tar xvf ~{readmerDBTarball}
+        READMER_DIR=$(basename ~{readmerDBTarball} | sed 's/.gz$//' | sed 's/.tar$//')
+
+        # run genomescope
+        meryl histogram ${READMER_DIR} > meryl.hist
+    >>>
+    output {
+        File hist = "meryl.hist"
+    }
+    runtime {
+        memory: memSizeGB + " GB"
+        cpu: threadCount
+        disks: "local-disk " + diskSizeGB + " SSD"
+        docker: dockerImage
+        preemptible: 1
     }
 }
 
