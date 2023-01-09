@@ -10,11 +10,8 @@ workflow runMerfin {
     }
     input {
         File readmerDBTarball
-        String runID
     }
     call CombineVCF {
-        input:
-            runID = runID
     }
     call MerylHist {
         input:
@@ -29,8 +26,7 @@ workflow runMerfin {
             genomeScopeStdout = GenomeScope.genomeScopeStdOut,
             lookupTable       = GenomeScope.lookupTable,
             readmerDBTarball  = readmerDBTarball,
-            dipVCF = CombineVCF.dipVCF,
-            runID = runID
+            vcfFile = CombineVCF.dipVCF
     }
     output {
         File merfinFilteredVcf = Merfin.filteredVCF
@@ -53,7 +49,7 @@ task CombineVCF {
         set -eux -o pipefail
         set -o xtrace
 
-        # combine haplotype variant calls into one vcf 
+        # combine haplotype variant calls into one vcf
         bcftools concat -a ~{hap1VcfFile} ~{hap2VcfFile} -o ~{runID}.merged_variants.diploid.vcf
         bcftools view -Oz -f "PASS" ~{runID}.merged_variants.diploid.vcf > ~{runID}.merged_variants.diploid.PASS.vcf.gz
     >>>
