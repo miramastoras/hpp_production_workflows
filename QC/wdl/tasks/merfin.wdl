@@ -57,13 +57,13 @@ task CombineVCF {
         HAP2VCF=$(basename ~{hap2VcfFile})
         HAP2VCFIDX=$(basename ~{hap2VcfFileIdx})
 
-        ln -s ~{hap1VcfFile} ./$HAP1VCF
-        ln -s ~{hap2VcfFile} ./$HAP2VCF
-        ln -s ~{hap1VcfFileIdx} ./$HAP1VCFIDX
-        ln -s ~{hap2VcfFileIdx} ./$HAP2VCFIDX
+        ln -s ~{hap1VcfFile} ./hap1_$HAP1VCF
+        ln -s ~{hap2VcfFile} ./hap2_$HAP2VCF
+        ln -s ~{hap1VcfFileIdx} ./hap1_$HAP1VCFIDX
+        ln -s ~{hap2VcfFileIdx} ./hap2_$HAP2VCFIDX
 
         # combine haplotype variant calls into one vcf
-        bcftools concat -a ./${HAP1VCF} ./${HAP2VCF} -o ~{runID}.merged_variants.diploid.vcf
+        bcftools concat -a ./hap1_${HAP1VCF} ./hap2_${HAP2VCF} -o ~{runID}.merged_variants.diploid.vcf
         bcftools view -Oz -f "PASS" ~{runID}.merged_variants.diploid.vcf > ~{runID}.merged_variants.diploid.PASS.vcf.gz
     >>>
     output {
