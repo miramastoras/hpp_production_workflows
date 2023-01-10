@@ -36,7 +36,9 @@ workflow runMerfin {
 task CombineVCF {
     input {
         File hap1VcfFile
+        File hap1VcfFileIdx
         File hap2VcfFile
+        File hap2VcfFileIdx
         String runID
 
         String dockerImage = "biocontainers/bcftools:latest"

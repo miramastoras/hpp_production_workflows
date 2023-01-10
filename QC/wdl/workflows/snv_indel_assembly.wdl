@@ -51,7 +51,7 @@ workflow snv_indel_assembly {
             inputVCF      = pmdv_t.vcfOut,
             excludeExpr   = excludeExpr,
             applyFilters  = "PASS",
-            exludeTypes   = excludeTypes
+            excludeTypes   = excludeTypes
     }
 
     ## Compare filtered callsets (DeepVariant & PMDV) to see where they agree

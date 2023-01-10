@@ -112,7 +112,7 @@ task bcftoolsFilter {
 
         String excludeExpr   = "'FORMAT/VAF<=0.5 | FORMAT/GQ<=30'"
         String applyFilters  = "PASS"
-        String exludeTypes   = ""
+        String excludeTypes  = ""
 
         Int memSizeGB = 8
         Int threadCount = 4
@@ -142,12 +142,12 @@ task bcftoolsFilter {
             APPLY_FILTERS_TOKEN="--apply-filters ~{applyFilters}"
         fi
 
-        ## Pass optional argument if exludeTypes is set, if not just pass empty string
-        if [ -z "~{exludeTypes}" ]
+        ## Pass optional argument if excludeTypes is set, if not just pass empty string
+        if [ -z "~{excludeTypes}" ]
         then
             EXCLUDE_TYPES_TOKEN=""
         else
-            EXCLUDE_TYPES_TOKEN="--exclude-types ~{exludeTypes}"
+            EXCLUDE_TYPES_TOKEN="--exclude-types ~{excludeTypes}"
         fi
 
         ## Make -e filters optional too, if unset or passed in as empty string
