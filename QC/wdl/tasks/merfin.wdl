@@ -51,8 +51,19 @@ task CombineVCF {
         set -eux -o pipefail
         set -o xtrace
 
+        ## Soft link vcf and index so they are in the same directory
+        HAP1VCF=$(basename ~{hap1VcfFile})
+        HAP1VCFIDX=$(basename ~{hap1VcfFileIdx})
+        HAP2VCF=$(basename ~{hap2VcfFile})
+        HAP2VCFIDX=$(basename ~{hap2VcfFileIdx})
+
+        ln -s ~{hap1VcfFile} ./$HAP1VCF
+        ln -s ~{hap2VcfFile} ./$HAP2VCF
+        ln -s ~{hap1VcfFileIdx} ./$HAP1VCFIDX
+        ln -s ~{hap2VcfFileIdx} ./$HAP2VCFIDX
+
         # combine haplotype variant calls into one vcf
-        bcftools concat -a ~{hap1VcfFile} ~{hap2VcfFile} -o ~{runID}.merged_variants.diploid.vcf
+        bcftools concat -a ./${HAP1VCF} ./${HAP2VCF} -o ~{runID}.merged_variants.diploid.vcf
         bcftools view -Oz -f "PASS" ~{runID}.merged_variants.diploid.vcf > ~{runID}.merged_variants.diploid.PASS.vcf.gz
     >>>
     output {
