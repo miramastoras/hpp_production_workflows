@@ -155,7 +155,7 @@ task bcftoolsFilter {
         then
             EXCLUDE_EXPR=""
         else
-            EXCLUDE_EXPR="-e ~{excludeExpr}"
+            EXCLUDE_EXPR="-e 'FORMAT/VAF<=0.5 | FORMAT/GQ<=30'"
         fi
 
         if [ ~{excludeExpr} == "" ]
@@ -163,8 +163,6 @@ task bcftoolsFilter {
             EXCLUDE_EXPR=""
         fi
 
-        echo "echoing now..."
-        echo $EXCLUDE_EXPR
 
         ## Call bcftools
         bcftools view \
