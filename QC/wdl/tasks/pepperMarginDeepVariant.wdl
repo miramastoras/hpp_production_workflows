@@ -150,28 +150,25 @@ task bcftoolsFilter {
             EXCLUDE_TYPES_TOKEN="--exclude-types ~{excludeTypes}"
         fi
 
-        ## Make -e filters optional too, if unset or passed in as empty string
+        ## Make -e filters optional too
+        ## was having so much trouble getting it to process string correctly, there's def a better way to do this
+
         if [ -z "~{excludeExpr}" ]
         then
-            EXCLUDE_EXPR=""
+            bcftools view \
+                $APPLY_FILTERS_TOKEN \
+                $EXCLUDE_TYPES_TOKEN \
+                -Oz \
+                ~{inputVCF} \
+                > ~{outputFile}
         else
-            EXCLUDE_EXPR="-e FORMAT/VAF<=0.5 | FORMAT/GQ<=30"
-        fi
-
-        if [ ~{excludeExpr} == "" ]
-        then
-            EXCLUDE_EXPR=""
-        fi
-
-
-        ## Call bcftools
-        bcftools view \
-            $APPLY_FILTERS_TOKEN \
-            $EXCLUDE_TYPES_TOKEN \
-            $EXCLUDE_EXPR \
-            -Oz \
-            ~{inputVCF} \
-            > ~{outputFile}
+            bcftools view \
+                $APPLY_FILTERS_TOKEN \
+                $EXCLUDE_TYPES_TOKEN \
+                -e ~{excludeExpr} \
+                -Oz \
+                ~{inputVCF} \
+                > ~{outputFile}
     >>>
 
     output {
