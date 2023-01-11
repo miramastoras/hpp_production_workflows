@@ -163,6 +163,9 @@ task bcftoolsFilter {
             EXCLUDE_EXPR=""
         fi
 
+        echo "echoing now..."
+        echo $EXCLUDE_EXPR
+
         ## Call bcftools
         bcftools view \
             $APPLY_FILTERS_TOKEN \
