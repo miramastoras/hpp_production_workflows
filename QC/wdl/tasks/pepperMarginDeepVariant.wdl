@@ -169,6 +169,7 @@ task bcftoolsFilter {
                 -Oz \
                 ~{inputVCF} \
                 > ~{outputFile}
+        fi 
     >>>
 
     output {
