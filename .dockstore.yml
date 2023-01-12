@@ -162,3 +162,6 @@ workflows:
    -  name: mergeBam
       subclass: WDL
       primaryDescriptorPath: /QC/wdl/tasks/mergeBam.wdl
+   -  name: DipcallHappyEval
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/workflows/dipcall_happy_eval.wdl
