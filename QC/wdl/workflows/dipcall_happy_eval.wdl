@@ -56,8 +56,6 @@ task bedtoolsIntersect {
         String dockerImage = "mobinasri/flagger"
     }
 
-    String outputVCF = "~{sample}_MERGED_SMALL_VARIANTS.vcf.gz"
-
     command <<<
         # exit when a command fails, fail with unset variables, print commands before execution
         set -eux -o pipefail
