@@ -18,6 +18,7 @@ task hapDotPy{
         File assembly
         File assemblyIndex
         String sample
+        File? bedRegions
 
         Boolean passOnly = true
 
@@ -39,18 +40,26 @@ task hapDotPy{
 
         ## Soft link fasta and index so they are in the same directory
         REF=$(basename ~{assembly})
-        REF_IDX=$(basename ~{assemblyIndex}) 
+        REF_IDX=$(basename ~{assemblyIndex})
 
         ln -s ~{assembly} ./$REF
         ln -s ~{assemblyIndex} ./$REF_IDX
 
-        
+
         ## Pass argument if callRegions is set, if not just pass empty string
         if [[ ~{passOnly} ]]
         then
             PASS_ONLY_TOKEN="--pass-only"
         else
             PASS_ONLY_TOKEN=""
+        fi
+
+        ## Pass argument if bedRegions is set, if not just pass empty string
+        if [[ ~{bedRegions} ]]
+        then
+            BEDFILE="-f ~{bedRegions}"
+        else
+            BEDFILE=""
         fi
 
 
@@ -64,6 +73,7 @@ task hapDotPy{
             -r $REF \
             -o happy_out/~{outputPrefix} \
             $PASS_ONLY_TOKEN \
+            $BEDFILE \
             --engine=vcfeval \
             --threads=~{threadCount}
 
