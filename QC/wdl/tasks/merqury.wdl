@@ -2,6 +2,10 @@ version 1.0
 
 workflow runMerqury {
     call merqury
+    output {
+        File QV = merqury.QV
+        File outputTarball = merqury.outputTarball
+    }
 }
 
 task merqury {
@@ -95,4 +99,3 @@ task merqury {
         preemptible: 1
     }
 }
-
