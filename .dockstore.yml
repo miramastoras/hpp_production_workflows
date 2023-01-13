@@ -165,3 +165,6 @@ workflows:
    -  name: DipcallHappyEval
       subclass: WDL
       primaryDescriptorPath: /QC/wdl/workflows/dipcall_happy_eval.wdl
+   -  name: subBamByBed
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/subBamByBed.wdl
