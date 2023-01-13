@@ -39,7 +39,7 @@ task SubBamByBed {
       ln -s ~{Bam} ./$BAMFILE
       ln -s ~{Bai} ./$BAIFILE
 
-      samtools view -@ ~{threadCount} -b -h -L ~{Bed} ~{Bai} > ${BAMID}_sub_${BEDID}.bam
+      samtools view -@ ~{threadCount} -b -h -L ~{Bed} ./$BAMFILE > ${BAMID}_sub_${BEDID}.bam
       samtools index ${BAMID}_sub_${BEDID}.bam
 
 	>>>
