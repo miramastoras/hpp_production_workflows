@@ -33,8 +33,8 @@ task SubBamByBed {
       BEDID=`basename ~{Bed} | sed 's/.bed$//'`
 
       # softlink bam and index so they are in same directory
-      BAMFILE=$(basename ~{BAM})
-      BAIFILE=$(basename ~{BAI})
+      BAMFILE=$(basename ~{Bam})
+      BAIFILE=$(basename ~{Bai})
 
       ln -s ~{Bam} ./$BAMFILE
       ln -s ~{Bai} ./$BAIFILE
