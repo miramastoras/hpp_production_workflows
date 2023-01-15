@@ -48,7 +48,7 @@ task hapDotPy{
 
         ## Pass argument if callRegions is set, if not just pass empty string
 
-        if [[ -f "~{passOnly}" ]]
+        if [[ ~{passOnly} ]]
         then
             PASS_ONLY_TOKEN="--pass-only"
         else
@@ -56,7 +56,7 @@ task hapDotPy{
         fi
 
         ## Pass argument if bedRegions is set, if not just pass empty string
-        if [[ ~{bedRegions} ]]
+        if [[ -f "~{bedRegions}" ]]
         then
             BEDFILE="-f ~{bedRegions}"
         else
