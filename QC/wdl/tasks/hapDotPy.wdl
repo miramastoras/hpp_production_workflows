@@ -47,7 +47,8 @@ task hapDotPy{
 
 
         ## Pass argument if callRegions is set, if not just pass empty string
-        if [[ ~{passOnly} ]]
+
+        if [[ -f "~{passOnly}" ]]
         then
             PASS_ONLY_TOKEN="--pass-only"
         else
