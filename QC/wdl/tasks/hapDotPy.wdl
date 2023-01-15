@@ -56,7 +56,7 @@ task hapDotPy{
         fi
 
         ## Pass argument if bedRegions is set, if not just pass empty string
-        if [[ -f "~{bedRegions}" ]]
+        if [[ -z "~{bedRegions}" ]]
         then
             BEDFILE="-f ~{bedRegions}"
         else
