@@ -66,7 +66,7 @@ task hapDotPy{
 
         if [[ "~{extraArgs}" ]]
         then
-            EXTRA_ARGS=~{extraArgs}
+            EXTRA_ARGS="~{extraArgs}"
         else
             EXTRA_ARGS=""
         fi
