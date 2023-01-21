@@ -19,6 +19,7 @@ task hapDotPy{
         File assemblyIndex
         String sample
         File? bedRegions
+        String? extraArgs
 
         Boolean passOnly = true
 
@@ -63,6 +64,12 @@ task hapDotPy{
             BEDFILE=""
         fi
 
+        if [[ ~{extraArgs} ]]
+        then
+            EXTRA_ARGS=~{extraArgs}
+        else
+            EXTRA_ARGS=""
+        fi
 
         ## make directory to put output into
         mkdir happy_out
@@ -75,6 +82,7 @@ task hapDotPy{
             -o happy_out/~{outputPrefix} \
             $PASS_ONLY_TOKEN \
             $BEDFILE \
+            $EXTRA_ARGS \
             --engine=vcfeval \
             --threads=~{threadCount}
 
