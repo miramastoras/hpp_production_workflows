@@ -64,7 +64,7 @@ task hapDotPy{
             BEDFILE=""
         fi
 
-        if [[ "~{extraArgs}" ]]
+        if [[ ! -z "~{extraArgs}" ]]
         then
             EXTRA_ARGS="~{extraArgs}"
         else
