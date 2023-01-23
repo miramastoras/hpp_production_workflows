@@ -168,3 +168,6 @@ workflows:
    -  name: subBamByBed
       subclass: WDL
       primaryDescriptorPath: /QC/wdl/tasks/subBamByBed.wdl
+   -  name: yakNonTrio
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/yak_non_trio.wdl
