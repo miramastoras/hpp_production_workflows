@@ -25,12 +25,12 @@ workflow runMerquryEval {
     }
     call merqurySpectraCN {
         input:
-            assemblyFasta = assemblyFasta,
-            kmerTarball=kmerTarball
+            hap1Fasta = hap1Fasta,
+            hap2Fasta = hap2Fasta
     }
     output {
         File merqurySwitchTarball=merqurySwitch.outputTarball
-        File merqurySpectraCNTarBall=merqurySpectraCN.outputTarball
+        File merqurySpectraCNTarball=merqurySpectraCN.outputTarball
     }
 }
 
@@ -142,7 +142,8 @@ task merqurySwitch {
 
 task merqurySpectraCN {
     input {
-        File assemblyFasta
+        File hap1Fasta
+        File hap2Fasta
         File kmerTarball
         Int memSizeGB = 12
         Int threadCount = 16
@@ -169,16 +170,27 @@ task merqurySpectraCN {
 
         cmd+=( $(basename ~{kmerTarball} | sed 's/.gz$//' | sed 's/.tar$//') )
 
-        # link primary asm file
-        FILENAME=$(basename -- "~{assemblyFasta}")
+        # link primary asm hap1 file
+        FILENAME=$(basename -- "~{hap1Fasta}")
         if [[ $FILENAME =~ \.gz$ ]]; then
-            cp ~{assemblyFasta} .
+            cp ~{hap1Fasta} .
             gunzip $FILENAME
-            mv ${FILENAME%\.gz} asm.fasta
+            mv ${FILENAME%\.gz} asmhap1.fasta
         else
-            ln -s ~{assemblyFasta} asm.fasta
+            ln -s ~{hap1Fasta} asmhap1.fasta
         fi
-        cmd+=( asm.fasta )
+        cmd+=( asmhap1.fasta )
+
+        # link primary asm hap2 file
+        FILENAME=$(basename -- "~{hap2Fasta}")
+        if [[ $FILENAME =~ \.gz$ ]]; then
+            cp ~{hap2Fasta} .
+            gunzip $FILENAME
+            mv ${FILENAME%\.gz} asmhap2.fasta
+        else
+            ln -s ~{hap1Fasta} asmhap2.fasta
+        fi
+        cmd+=( asmhap2.fasta )
 
         # prep output
         cmd+=( $ASM_ID.merqury_spectracn )
