@@ -171,6 +171,6 @@ workflows:
    -  name: yakNonTrio
       subclass: WDL
       primaryDescriptorPath: /QC/wdl/tasks/yak_non_trio.wdl
-   -  name: merquryEval
+   -  name: MerquryEval
       subclass: WDL
       primaryDescriptorPath: /QC/wdl/tasks/merqury_eval.wdl
