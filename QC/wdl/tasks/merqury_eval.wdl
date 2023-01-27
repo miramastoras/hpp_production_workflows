@@ -20,7 +20,7 @@ workflow runMerquryEval {
     }
     call merqurySwitch {
         input:
-            assemblyFasta = assemblyFasta,
+            assemblyFasta = combineFA.outputFasta,
             kmerTarball=kmerTarball
     }
     call merqurySpectraCN {
