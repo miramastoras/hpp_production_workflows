@@ -129,12 +129,7 @@ task merqurySpectraCN {
         cmd=( /opt/merqury/eval/spectra-cn.sh )
 
         # extract kmers
-        tar xvf ~{kmerTarball} &
-        if [[ -f "~{matKmerTarball}" && -f "~{patKmerTarball}" ]]; then
-            tar xvf ~{matKmerTarball} &
-            tar xvf ~{patKmerTarball} &
-        fi
-        wait
+        tar xvf ~{kmerTarball}
 
         cmd+=( $(basename ~{kmerTarball} | sed 's/.gz$//' | sed 's/.tar$//') )
 
