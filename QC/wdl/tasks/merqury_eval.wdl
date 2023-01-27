@@ -9,8 +9,14 @@ workflow runMerquryEval {
         description: "Eval switch errors and FP kmers with Merqury"
     }
     input {
-        File assemblyFasta
+        File hap1Fasta
+        File hap2Fasta
         File kmerTarball
+    }
+    call combineFA {
+        input:
+            hap1Fasta=hap1Fasta,
+            hap2Fasta=hap2Fasta
     }
     call merqurySwitch {
         input:
@@ -26,6 +32,38 @@ workflow runMerquryEval {
         File merqurySwitchTarball=merqurySwitch.outputTarball
         File merqurySpectraCNTarBall=merqurySpectraCN.outputTarball
     }
+}
+
+task combineFA {
+    input {
+        File hap1Fasta
+        File hap2Fasta
+
+        Int memSizeGB = 12
+        Int threadCount = 16
+        Int diskSizeGB = 256
+        String dockerImage = "juklucas/hpp_merqury:latest"
+    }
+    command <<<
+          set -o pipefail
+          set -e
+          set -u
+          set -o xtrace
+
+          cat {hap1Fasta} {hap2Fasta} > diploidFasta.fa
+    >>>
+    output {
+      File outputFasta = "diploidFasta.fa"
+    }
+      runtime {
+          memory: memSizeGB + " GB"
+          cpu: threadCount
+          disks: "local-disk " + diskSizeGB + " SSD"
+          docker: dockerImage
+          preemptible: 1
+      }
+    }
+
 }
 
 task merqurySwitch {
