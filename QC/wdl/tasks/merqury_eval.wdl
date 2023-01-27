@@ -62,8 +62,6 @@ task combineFA {
           docker: dockerImage
           preemptible: 1
       }
-    }
-
 }
 
 task merqurySwitch {
