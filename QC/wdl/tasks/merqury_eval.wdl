@@ -1,7 +1,6 @@
 version 1.0
 
-# This is a task level wdl workflow to use Merqury to get switch error statistics and
-# BED file of FP kmers in the assembly
+# This is a task level wdl workflow to use Merqury to get switch error statistics and BED file of FP kmers in the assembly
 
 workflow runMerquryEval {
     meta {
