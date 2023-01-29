@@ -8,66 +8,18 @@ workflow runMerquryEval {
         email: "mmastora@ucsc.edu"
         description: "Eval switch errors and FP kmers with Merqury"
     }
-    input {
-        File hap1Fasta
-        File hap2Fasta
-        File kmerTarball
-    }
-    call combineFA {
-        input:
-            hap1Fasta=hap1Fasta,
-            hap2Fasta=hap2Fasta
-    }
-    call merqurySwitch {
-        input:
-            assemblyFasta = combineFA.outputFasta,
-            kmerTarball=kmerTarball
-    }
-    call merqurySpectraCN {
-        input:
-            hap1Fasta = hap1Fasta,
-            hap2Fasta = hap2Fasta,
-            kmerTarball=kmerTarball
-    }
+
+    call merquryEval
     output {
-        File merqurySwitchTarball=merqurySwitch.outputTarball
-        File merqurySpectraCNTarball=merqurySpectraCN.outputTarball
+        File merqurySwitchTarball=merquryEval.outputSwitchTarball
+        File merqurySpectraCNTarball=merquryEval.outputSpectraCNTarball
     }
 }
 
-task combineFA {
+task merquryEval {
     input {
         File hap1Fasta
         File hap2Fasta
-
-        Int memSizeGB = 12
-        Int threadCount = 16
-        Int diskSizeGB = 256
-        String dockerImage = "juklucas/hpp_merqury:latest"
-    }
-    command <<<
-          set -o pipefail
-          set -e
-          set -u
-          set -o xtrace
-
-          cat {hap1Fasta} {hap2Fasta} > diploidFasta.fa
-    >>>
-    output {
-      File outputFasta = "diploidFasta.fa"
-    }
-      runtime {
-          memory: memSizeGB + " GB"
-          cpu: threadCount
-          disks: "local-disk " + diskSizeGB + " SSD"
-          docker: dockerImage
-          preemptible: 1
-      }
-}
-
-task merqurySwitch {
-    input {
-        File assemblyFasta
         File kmerTarball
         File matKmerTarball
         File patKmerTarball
@@ -85,91 +37,17 @@ task merqurySwitch {
 
         OMP_NUM_THREADS=~{threadCount}
 
-        # get filename
-        ASM_ID=$(basename ~{assemblyFasta} | sed 's/.gz$//' | sed 's/.fa\(sta\)*$//' | sed 's/[._][pm]at\(ernal\)*//')
-
-        # initilize command
-        cmd=( /opt/merqury/trio/phase_block.sh )
-
-        # link primary asm file
-        FILENAME=$(basename -- "~{assemblyFasta}")
-        if [[ $FILENAME =~ \.gz$ ]]; then
-            cp ~{assemblyFasta} .
-            gunzip $FILENAME
-            mv ${FILENAME%\.gz} asm.fasta
-        else
-            ln -s ~{assemblyFasta} asm.fasta
-        fi
-        cmd+=( asm.fasta )
-
-        # extract kmers
-        tar xvf ~{kmerTarball} &
-        if [[ -f "~{matKmerTarball}" && -f "~{patKmerTarball}" ]]; then
-            tar xvf ~{matKmerTarball} &
-            tar xvf ~{patKmerTarball} &
-        fi
-        wait
-
-        cmd+=( $(basename ~{kmerTarball} | sed 's/.gz$//' | sed 's/.tar$//') )
-        if [[ -f "~{matKmerTarball}" && -f "~{patKmerTarball}" ]]; then
-            cmd+=( $(basename ~{matKmerTarball} | sed 's/.gz$//' | sed 's/.tar$//') )
-            cmd+=( $(basename ~{patKmerTarball} | sed 's/.gz$//' | sed 's/.tar$//') )
-        fi
-
-        # prep output
-        cmd+=( $ASM_ID.merqury_switch )
-
-        # run command
-        ${cmd[@]}
-
-        # get output
-        tar czvf $ASM_ID.merqury.tar.gz $ASM_ID.merqury*
-
-        # /opt/merqury/trio/phase_block.sh <asm.fasta> <hap1.meryl> <hap2.meryl> <out>
-
-
-	>>>
-	output {
-		File outputTarball = glob("*.merqury_switch.tar.gz")[0]
-	}
-    runtime {
-        memory: memSizeGB + " GB"
-        cpu: threadCount
-        disks: "local-disk " + diskSizeGB + " SSD"
-        docker: dockerImage
-        preemptible: 1
-    }
-}
-
-task merqurySpectraCN {
-    input {
-        File hap1Fasta
-        File hap2Fasta
-        File kmerTarball
-        Int memSizeGB = 12
-        Int threadCount = 16
-        Int diskSizeGB = 256
-        String dockerImage = "juklucas/hpp_merqury:latest"
-    }
-
-	command <<<
-        set -o pipefail
-        set -e
-        set -u
-        set -o xtrace
-
-        OMP_NUM_THREADS=~{threadCount}
-
-        # get filename
+        # initialize commands
+        cmdPhase=( /opt/merqury/trio/phase_block.sh )
+        cmdSpectra=( /opt/merqury/eval/spectra-cn.sh  )
         ASM_ID=$(basename ~{hap1Fasta} | sed 's/.gz$//' | sed 's/.fa\(sta\)*$//' | sed 's/[._][pm]at\(ernal\)*//')
 
-        # initilize command
-        cmd=( /opt/merqury/eval/spectra-cn.sh )
+        ##### spectra-cn.sh <read.meryl> <asm1.fasta> [asm2.fasta] out-prefix
 
         # extract kmers
         tar xvf ~{kmerTarball}
 
-        cmd+=( $(basename ~{kmerTarball} | sed 's/.gz$//' | sed 's/.tar$//') )
+        cmdSpectra+=( $(basename ~{kmerTarball} | sed 's/.gz$//' | sed 's/.tar$//') )
 
         # link primary asm hap1 file
         FILENAME=$(basename -- "~{hap1Fasta}")
@@ -180,7 +58,7 @@ task merqurySpectraCN {
         else
             ln -s ~{hap1Fasta} asmhap1.fasta
         fi
-        cmd+=( asmhap1.fasta )
+        cmdSpectra+=( asmhap1.fasta )
 
         # link primary asm hap2 file
         FILENAME=$(basename -- "~{hap2Fasta}")
@@ -191,23 +69,38 @@ task merqurySpectraCN {
         else
             ln -s ~{hap1Fasta} asmhap2.fasta
         fi
-        cmd+=( asmhap2.fasta )
+        cmdSpectra+=( asmhap2.fasta )
 
         # prep output
-        cmd+=( $ASM_ID.merqury_spectracn )
+        cmdSpectra+=( $ASM_ID.merqury_switch )
 
-        # run command
-        ${cmd[@]}
+        #### phase_block.sh <asm.fasta> <hap1.meryl> <hap2.meryl> <out>
+
+        cat asmhap1.fasta asmhap2.fasta > asmdip.fasta
+        cmdPhase+=( asmdip.fasta )
+
+        # extract kmers
+        tar xvf ~{patKmerTarball}
+        tar xvf ~{matKmerTarball}
+
+        cmdPhase+=( $(basename ~{patKmerTarball} | sed 's/.gz$//' | sed 's/.tar$//') )
+        cmdPhase+=( $(basename ~{matKmerTarball} | sed 's/.gz$//' | sed 's/.tar$//') )
+
+        # prep output
+        cmdPhase+=( $ASM_ID.merqury_spectracn )
+
+        # run commands
+        ${cmdPhase[@]}
+        ${cmdSpectra[@]}
 
         # get output
+        tar czvf $ASM_ID.merqury_switch.tar.gz $ASM_ID.merqury_switch*
         tar czvf $ASM_ID.merqury_spectracn.tar.gz $ASM_ID.merqury_spectracn*
-
-        # spectra-cn.sh <read.meryl> <asm1.fasta> [asm2.fasta] out-prefix
-
 
 	>>>
 	output {
-		File outputTarball = glob("*.merqury_spectracn.tar.gz")[0]
+		File outputSwitchTarball = glob("*.merqury_switch.tar.gz")[0]
+    File outputSpectraCNTarball = glob("*.merqury_spectracn.tar.gz")[0]
 	}
     runtime {
         memory: memSizeGB + " GB"

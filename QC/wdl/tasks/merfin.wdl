@@ -149,6 +149,7 @@ task Merfin{
         File lookupTable
         File vcfFile
         File refFasta
+        String mode
         String? extraArgs
 
         String dockerImage = "miramastoras/merfin:latest"
@@ -180,7 +181,7 @@ task Merfin{
             EXTRA_ARGS="~{extraArgs}"
         fi
 
-        merfin -polish ${EXTRA_ARGS} -vcf ~{vcfFile} -threads ~{threadCount} -sequence ~{refFasta} -readmers $READMER_DIR -prob ~{lookupTable} -peak $KCOV -output ${PREFIX}.merfin
+        merfin ~{mode} ${EXTRA_ARGS} -vcf ~{vcfFile} -threads ~{threadCount} -sequence ~{refFasta} -readmers $READMER_DIR -prob ~{lookupTable} -peak $KCOV -output ${PREFIX}.merfin
     >>>
     output {
         File filteredVCF=glob("*.merfin.polish.vcf")[0]
