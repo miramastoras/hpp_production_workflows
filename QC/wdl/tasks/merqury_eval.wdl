@@ -26,7 +26,8 @@ workflow runMerquryEval {
     call merqurySpectraCN {
         input:
             hap1Fasta = hap1Fasta,
-            hap2Fasta = hap2Fasta
+            hap2Fasta = hap2Fasta,
+            kmerTarball=kmerTarball
     }
     output {
         File merqurySwitchTarball=merqurySwitch.outputTarball
