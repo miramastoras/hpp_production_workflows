@@ -30,6 +30,7 @@ workflow runMerfin {
     }
     output {
         File merfinFilteredVcf = Merfin.filteredVCF
+        File merfinDumpStats=Merfin.dumpStats
     }
 }
 
@@ -182,9 +183,11 @@ task Merfin{
         fi
 
         merfin ~{mode} ${EXTRA_ARGS} -vcf ~{vcfFile} -threads ~{threadCount} -sequence ~{refFasta} -readmers $READMER_DIR -prob ~{lookupTable} -peak $KCOV -output ${PREFIX}.merfin
+        merfin -dump -threads ~{threadCount} -sequence ~{refFasta} -readmers $READMER_DIR -prob ~{lookupTable} -peak $KCOV -output ${PREFIX}.merfin.dump.tsv
     >>>
     output {
         File filteredVCF=glob("*.merfin.polish.vcf")[0]
+        File dumpStats=glob("*merfin.dump.tsv*")[0]
     }
     runtime {
         memory: memSizeGB + " GB"
