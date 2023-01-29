@@ -160,7 +160,7 @@ task merqurySpectraCN {
         OMP_NUM_THREADS=~{threadCount}
 
         # get filename
-        ASM_ID=$(basename ~{assemblyFasta} | sed 's/.gz$//' | sed 's/.fa\(sta\)*$//' | sed 's/[._][pm]at\(ernal\)*//')
+        ASM_ID=$(basename ~{hap1Fasta} | sed 's/.gz$//' | sed 's/.fa\(sta\)*$//' | sed 's/[._][pm]at\(ernal\)*//')
 
         # initilize command
         cmd=( /opt/merqury/eval/spectra-cn.sh )
