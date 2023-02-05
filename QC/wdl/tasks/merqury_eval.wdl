@@ -26,7 +26,7 @@ task merquryEval {
         Int memSizeGB = 12
         Int threadCount = 16
         Int diskSizeGB = 256
-        String dockerImage = "juklucas/hpp_merqury:latest"
+        String dockerImage = "miramastoras/merqury:latest"
     }
 
 	command <<<
@@ -72,7 +72,7 @@ task merquryEval {
         cmdSpectra+=( asmhap2.fasta )
 
         # prep output
-        cmdSpectra+=( $ASM_ID.merqury_switch )
+        cmdSpectra+=( $ASM_ID.merqury_spectracn )
 
         #### phase_block.sh <asm.fasta> <hap1.meryl> <hap2.meryl> <out>
 
@@ -87,7 +87,7 @@ task merquryEval {
         cmdPhase+=( $(basename ~{matKmerTarball} | sed 's/.gz$//' | sed 's/.tar$//') )
 
         # prep output
-        cmdPhase+=( $ASM_ID.merqury_spectracn )
+        cmdPhase+=( $ASM_ID.merqury_switch )
 
         # run commands
         ${cmdPhase[@]}
