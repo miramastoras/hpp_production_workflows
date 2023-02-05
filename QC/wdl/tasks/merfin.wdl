@@ -152,6 +152,7 @@ task Merfin{
         File refFasta
         String mode
         String? extraArgs
+        File? dumpFastaStats
 
         String dockerImage = "miramastoras/merfin:latest"
         Int memSizeGB = 128
@@ -183,7 +184,13 @@ task Merfin{
         fi
 
         merfin ~{mode} ${EXTRA_ARGS} -vcf ~{vcfFile} -threads ~{threadCount} -sequence ~{refFasta} -readmers $READMER_DIR -prob ~{lookupTable} -peak $KCOV -output ${PREFIX}.merfin
-        merfin -dump -threads ~{threadCount} -sequence ~{refFasta} -readmers $READMER_DIR -prob ~{lookupTable} -peak $KCOV -output ${PREFIX}.merfin.dump.tsv
+
+        ## pass optional fasta to dump stats for that sequence, create empty file if not passed
+        if [[ -f "~{dumpFastaStats}" ]]; then
+            merfin -dump -threads ~{threadCount} -sequence ~{dumpFastaStats} -readmers $READMER_DIR -prob ~{lookupTable} -peak $KCOV -output ${PREFIX}.merfin.dump.tsv
+        else
+            touch ${PREFIX}.merfin.dump.tsv
+        fi
     >>>
     output {
         File filteredVCF=glob("*.merfin.polish.vcf")[0]
