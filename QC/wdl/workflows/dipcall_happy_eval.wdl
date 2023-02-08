@@ -49,6 +49,7 @@ task bedtoolsIntersect {
     input{
         File BED1
         File BED2
+        File? BED3
 
         Int memSizeGB = 8
         Int threadCount = 2
@@ -66,6 +67,13 @@ task bedtoolsIntersect {
 
         bedtools intersect  -a ~{BED1} -b ~{BED2} > ${BED1_ID}_intersect_${BED2_ID}.bed
 
+        ## if EXTRA BED is set, do another subset
+        if [[ ! -z "~{BED3}" ]]
+        then
+            BED3_ID=`basename ~{BED3} | sed 's/.bed$//'`
+            bedtools intersect -a ${BED1_ID}_intersect_${BED2_ID}.bed -b ~{BED3} > ${BED1_ID}_intersect_${BED2_ID}_intersect_${BED3_ID}.bed
+            rm ${BED1_ID}_intersect_${BED2_ID}.bed
+        fi
     >>>
     output{
         File outputBED = glob("*intersect*.bed")[0]
