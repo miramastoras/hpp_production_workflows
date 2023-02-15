@@ -46,7 +46,7 @@ task marginPhase {
         margin phase ~{bamFile} ~{refFile} ~{vcfFile} $PARAMS -t ~{threads} -o output/~{sampleName} -M
     >>>
     output {
-    File phasedVcf = "output/~{sampleName}.margin_phased.vcf"
+    File phasedVcf = glob("output/*.vcf")[0]
     }
 
     runtime {
