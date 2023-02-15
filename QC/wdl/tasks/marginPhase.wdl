@@ -22,7 +22,7 @@ task marginPhase {
         String sampleName
         String HifiOrONT
 
-        String dockerImage
+        String dockerImage = "miramastoras/marginphase_sv:latest"
         Int threads = 32
         Int memSizeGb = 128
         Int diskSizeGb = 256
