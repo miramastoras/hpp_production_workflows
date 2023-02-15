@@ -174,3 +174,6 @@ workflows:
    -  name: MerquryEval
       subclass: WDL
       primaryDescriptorPath: /QC/wdl/tasks/merqury_eval.wdl
+   -  name: marginPhase
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/marginPhase.wdl
