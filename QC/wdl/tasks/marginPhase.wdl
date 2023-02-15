@@ -43,7 +43,7 @@ task marginPhase {
         samtools index -@ ~{threads} ~{bamFile}
         samtools faidx ~{refFile}
         mkdir output/
-        margin phase ~{bamFile} ~{refFile} ~{combinedVcfFile} $PARAMS -t ~{threads} -o output/~{sampleName} -M
+        margin phase ~{bamFile} ~{refFile} ~{vcfFile} $PARAMS -t ~{threads} -o output/~{sampleName} -M
     >>>
     output {
     File phasedVcf = "output/~{sampleName}.margin_phased.vcf"
