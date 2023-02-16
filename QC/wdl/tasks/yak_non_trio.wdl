@@ -9,7 +9,7 @@ workflow runNonTrioYakAssemblyStats {
     input {
         Array[File] sampleReadsILM
         File assemblyFastaHap1
-        File assemblyFastaHap2        
+        File assemblyFastaHap2
         File? referenceFasta
         Int shardLinesPerFile = 256000000
         Int fileExtractionDiskSizeGB = 256
@@ -21,8 +21,8 @@ workflow runNonTrioYakAssemblyStats {
             input:
                 readFile=readFile,
                 referenceFasta=referenceFasta,
-                memSizeGB=4,
-                threadCount=4,
+                memSizeGB=32,
+                threadCount=16,
                 diskSizeGB=fileExtractionDiskSizeGB,
                 dockerImage=dockerImage
         }
@@ -45,7 +45,7 @@ workflow runNonTrioYakAssemblyStats {
     call yakNonTrioAssemblyStats {
         input:
             assemblyFastaHap1=assemblyFastaHap1,
-            assemblyFastaHap2=assemblyFastaHap2,            
+            assemblyFastaHap2=assemblyFastaHap2,
             sampleYak=yakCountSample.outputYak,
             dockerImage=dockerImage
     }
