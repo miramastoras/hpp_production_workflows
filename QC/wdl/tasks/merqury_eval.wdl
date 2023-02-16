@@ -2,21 +2,21 @@ version 1.0
 
 # This is a task level wdl workflow to use Merqury to get switch error statistics and BED file of FP kmers in the assembly
 
-workflow runMerquryEval {
+workflow runMerqurySwitch {
     meta {
         author: "Mira Mastoras"
         email: "mmastora@ucsc.edu"
-        description: "Eval switch errors and FP kmers with Merqury"
+        description: "Switch switch errors  Merqury"
     }
 
-    call merquryEval
+    call merqurySwitch
     output {
-        File merqurySwitchTarball=merquryEval.outputSwitchTarball
-        File merqurySpectraCNTarball=merquryEval.outputSpectraCNTarball
+        File merqurySwitchTarball=merqurySwitch.outputSwitchTarball
+        File merqurySpectraCNTarball=merqurySwitch.outputSpectraCNTarball
     }
 }
 
-task merquryEval {
+task merqurySwitch {
     input {
         File hap1Fasta
         File hap2Fasta
@@ -39,7 +39,7 @@ task merquryEval {
 
         # initialize commands
         cmdPhase=( /opt/merqury/trio/phase_block.sh )
-        cmdSpectra=( /opt/merqury/eval/spectra-cn.sh  )
+        cmdSpectra=( /opt/merqury/Switch/spectra-cn.sh  )
         ASM_ID=$(basename ~{hap1Fasta} | sed 's/.gz$//' | sed 's/.fa\(sta\)*$//' | sed 's/[._][pm]at\(ernal\)*//')
 
         ##### spectra-cn.sh <read.meryl> <asm1.fasta> [asm2.fasta] out-prefix

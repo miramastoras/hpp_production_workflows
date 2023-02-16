@@ -21,7 +21,7 @@ workflow runNonTrioYakAssemblyStats {
             input:
                 readFile=readFile,
                 referenceFasta=referenceFasta,
-                memSizeGB=32,
+                memSizeGB=256,
                 threadCount=16,
                 diskSizeGB=fileExtractionDiskSizeGB,
                 dockerImage=dockerImage
