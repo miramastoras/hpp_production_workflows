@@ -39,42 +39,10 @@ task merqurySwitch {
 
         # initialize commands
         cmdPhase=( /opt/merqury/trio/phase_block.sh )
-        cmdSpectra=( /opt/merqury/Switch/spectra-cn.sh  )
         ASM_ID=$(basename ~{hap1Fasta} | sed 's/.gz$//' | sed 's/.fa\(sta\)*$//' | sed 's/[._][pm]at\(ernal\)*//')
 
-        ##### spectra-cn.sh <read.meryl> <asm1.fasta> [asm2.fasta] out-prefix
-
-        # extract kmers
-        tar xvf ~{kmerTarball}
-
-        cmdSpectra+=( $(basename ~{kmerTarball} | sed 's/.gz$//' | sed 's/.tar$//') )
-
-        # link primary asm hap1 file
-        FILENAME=$(basename -- "~{hap1Fasta}")
-        if [[ $FILENAME =~ \.gz$ ]]; then
-            cp ~{hap1Fasta} .
-            gunzip $FILENAME
-            mv ${FILENAME%\.gz} asmhap1.fasta
-        else
-            ln -s ~{hap1Fasta} asmhap1.fasta
-        fi
-        cmdSpectra+=( asmhap1.fasta )
-
-        # link primary asm hap2 file
-        FILENAME=$(basename -- "~{hap2Fasta}")
-        if [[ $FILENAME =~ \.gz$ ]]; then
-            cp ~{hap2Fasta} .
-            gunzip $FILENAME
-            mv ${FILENAME%\.gz} asmhap2.fasta
-        else
-            ln -s ~{hap1Fasta} asmhap2.fasta
-        fi
-        cmdSpectra+=( asmhap2.fasta )
-
-        # prep output
-        cmdSpectra+=( $ASM_ID.merqury_spectracn )
-
         #### phase_block.sh <asm.fasta> <hap1.meryl> <hap2.meryl> <out>
+        # docker run -it -v /scratch/mira:/scratch/mira "miramastoras/merqury:latest" /opt/merqury/trio/phase_block.sh /scratch/mira/test_polishing/merqury_eval/HG002.f1_assembly_v2_genbank.dip.fasta /scratch/mira/test_polishing/merqury_eval/paternal.hapmers.meryl /scratch/mira/test_polishing/merqury_eval/maternal.hapmers.meryl merqury_switch
 
         cat asmhap1.fasta asmhap2.fasta > asmdip.fasta
         cmdPhase+=( asmdip.fasta )
@@ -91,11 +59,9 @@ task merqurySwitch {
 
         # run commands
         ${cmdPhase[@]}
-        ${cmdSpectra[@]}
 
         # get output
         tar czvf $ASM_ID.merqury_switch.tar.gz $ASM_ID.merqury_switch*
-        tar czvf $ASM_ID.merqury_spectracn.tar.gz $ASM_ID.merqury_spectracn*
 
 	>>>
 	output {
