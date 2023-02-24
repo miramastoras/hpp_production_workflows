@@ -177,3 +177,6 @@ workflows:
    -  name: marginPhase
       subclass: WDL
       primaryDescriptorPath: /QC/wdl/tasks/marginPhase.wdl
+   -  name: whatsHapPhase
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/whatsHapPhase.wdl
