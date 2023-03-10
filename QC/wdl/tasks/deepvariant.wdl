@@ -48,26 +48,27 @@ task DeepVariant{
 
         ## Soft link fasta and index so they are in the same directory
         REF=$(basename ~{assembly})
-        REF_IDX=$(basename ~{assemblyIndex}) 
+        REF_IDX=$(basename ~{assemblyIndex})
 
         ln -s ~{assembly} ./$REF
         ln -s ~{assemblyIndex} ./$REF_IDX
 
-        
+
         ## Soft link reads and index so they are in the same directory
         READS=$(basename ~{inputReads})
-        READS_IDX=$(basename ~{inputReadsIdx}) 
+        READS_IDX=$(basename ~{inputReadsIdx})
 
         ln -s ~{inputReads} ./$READS
         ln -s ~{inputReadsIdx} ./$READS_IDX
 
-        
+
         ## Pass regions argument if callRegions is set, if not just pass empty string
         if [ -z "~{callRegions}" ]
         then
             REGIONS_TOKEN=""
         else
-            REGIONS_TOKEN="--regions ~{callRegions}"
+            REGIONS_STRING=`awk -v ORS=" " '{print $1":"$2"-"$3}' ~{callRegions}`
+            REGIONS_TOKEN="--regions $REGIONS_STRING"
         fi
 
 
