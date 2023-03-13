@@ -20,7 +20,7 @@ task DeepVariant{
         String sample
 
         String modelType = "HYBRID_PACBIO_ILLUMINA"
-        String? callRegions
+        File? callRegions
 
         Int memSizeGB = 128
         Int threadCount = 64
