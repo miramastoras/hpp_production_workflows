@@ -17,7 +17,9 @@ workflow runWhatsHapPhase {
 task WhatsHapPhase {
     input {
         File vcfFile
+        File vcfFileIdx
         File refFile
+        File refFileIdx
         File bamFile
         String outPrefix
 
