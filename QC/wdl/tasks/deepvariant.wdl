@@ -67,9 +67,7 @@ task DeepVariant{
         then
             REGIONS_TOKEN=""
         else
-            ln -s ~{callRegions} ./regions.bed
-            REGIONS_STRING=`awk -v ORS=" " '{print $1":"$2"-"$3}' ./regions.bed`
-            REGIONS_TOKEN="--regions $REGIONS_STRING"
+            REGIONS_TOKEN="--regions ~{callRegions}"
         fi
 
 
