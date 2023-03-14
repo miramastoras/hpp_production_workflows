@@ -21,6 +21,7 @@ task WhatsHapPhase {
         File refFile
         File refFileIdx
         File bamFile
+        File bamFileIdx
         String outPrefix
 
         String dockerImage = "tpesout/whatshap:latest"
@@ -46,7 +47,13 @@ task WhatsHapPhase {
         ln -s ~{vcfFile} ./$VCF
         ln -s ~{vcfFileIdx} ./$VCF_IDX
 
-        whatshap phase -o ~{outPrefix}.vcf.gz --indels -r $REF $VCF ~{bamFile} --ignore-read-groups
+        BAM=$(basename ~{bamFile})
+        BAM_IDX=$(basename ~{bamFileIdx})
+
+        ln -s ~{bamFile} ./$BAM
+        ln -s ~{bamFileIdx} ./$BAM_IDX
+
+        whatshap phase -o ~{outPrefix}.vcf.gz --indels -r $REF $VCF $BAM --ignore-read-groups
     >>>
     output {
         File phasedVcf = "~{outPrefix}.vcf.gz"
