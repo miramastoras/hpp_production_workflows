@@ -33,7 +33,20 @@ task WhatsHapPhase {
         set -eux -o pipefail
         set -o xtrace
 
-        whatshap phase -o ~{outPrefix}.vcf.gz --indels -r ~{refFile} ~{vcfFile} ~{bamFile} --ignore-read-groups
+        # soft link data and indexes so they are in same place
+        REF=$(basename ~{refFile})
+        REF_IDX=$(basename ~{refFileIdx})
+
+        ln -s ~{refFile} ./$REF
+        ln -s ~{refFileIdx} ./$REF_IDX
+
+        VCF=$(basename ~{vcfFile})
+        VCF_IDX=$(basename ~{vcfFileIdx})
+
+        ln -s ~{vcfFile} ./$VCF
+        ln -s ~{vcfFileIdx} ./$VCF_IDX
+
+        whatshap phase -o ~{outPrefix}.vcf.gz --indels -r $REF $VCF ~{bamFile} --ignore-read-groups
     >>>
     output {
         File phasedVcf = "~{outPrefix}.vcf.gz"
