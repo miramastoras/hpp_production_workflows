@@ -39,13 +39,13 @@ task SubBamByBed {
       ln -s ~{Bam} ./$BAMFILE
       ln -s ~{Bai} ./$BAIFILE
 
-      samtools view -@ ~{threadCount} -b -h -L ~{Bed} ./$BAMFILE > ${BAMID}_sub_${BEDID}.bam
-      samtools index ${BAMID}_sub_${BEDID}.bam
+      samtools view -@ ~{threadCount} -b -h -L ~{Bed} ./$BAMFILE > ${BAMID}_${BEDID}.sub.bam
+      samtools index ${BAMID}_${BEDID}.sub.bam
 
 	>>>
 	output {
-		  File subBam = glob("*sub*.bam")[0]
-		  File subBai = glob("*sub*.bai")[0]
+		  File subBam = glob("*sub.bam")[0]
+		  File subBai = glob("*sub.bam.bai")[0]
 	}
     runtime {
         memory: memSizeGB + " GB"

@@ -193,7 +193,7 @@ task Merfin{
         fi
     >>>
     output {
-        File filteredVCF=glob("*.merfin.polish.vcf")[0]
+        File filteredVCF=glob("*.merfin.*vcf")[0]
         File dumpStats=glob("*merfin.dump.tsv*")[0]
     }
     runtime {
