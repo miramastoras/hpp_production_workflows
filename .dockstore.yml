@@ -183,3 +183,6 @@ workflows:
    -  name: extractReads
       subclass: WDL
       primaryDescriptorPath: /QC/wdl/tasks/extract_reads.wdl
+   -  name: longReadAligner
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/long_read_aligner.wdl
