@@ -186,3 +186,6 @@ workflows:
    -  name: longReadAligner
       subclass: WDL
       primaryDescriptorPath: /QC/wdl/tasks/long_read_aligner.wdl
+   -  name: correctBam
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/correct_bam.wdl
