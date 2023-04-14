@@ -180,3 +180,6 @@ workflows:
    -  name: whatsHapPhase
       subclass: WDL
       primaryDescriptorPath: /QC/wdl/tasks/whatsHapPhase.wdl
+   -  name: extractReads
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/extract_reads.wdl
