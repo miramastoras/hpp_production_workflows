@@ -43,6 +43,8 @@ task correctBam {
         mkdir output
         OPTIONS="~{options}"
 
+        touch ${PREFIX}.excluded_read_ids.txt
+        
         if [ -n "~{phasingLogText}" ]
         then
             OPTIONS="${OPTIONS} --phasingLog ~{phasingLogText}"
@@ -68,7 +70,6 @@ task correctBam {
             OPTIONS="${OPTIONS} --exclude ${PREFIX}.excluded_read_ids.txt"
         fi
 
-
         correct_bam ${OPTIONS} -i ~{bam} -o output/$PREFIX.~{suffix}.bam -n~{threadCount}
         samtools index -@~{threadCount} output/$PREFIX.~{suffix}.bam
     >>>
@@ -82,6 +83,6 @@ task correctBam {
     output {
         File correctedBam = glob("output/*.bam")[0]
         File correctedBamIndex = glob("output/*.bam.bai")[0]
-        File? excludedReadIdsText = glob("*.excluded_read_ids.txt")[0]
+        File excludedReadIdsText = glob("*.excluded_read_ids.txt")[0]
     }
 }
