@@ -82,6 +82,6 @@ task correctBam {
     output {
         File correctedBam = glob("output/*.bam")[0]
         File correctedBamIndex = glob("output/*.bam.bai")[0]
-        File excludedReadIdsText = glob("*.excluded_read_ids.txt")[0]
+        File? excludedReadIdsText = glob("*.excluded_read_ids.txt")[0]
     }
 }
