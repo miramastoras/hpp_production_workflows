@@ -189,3 +189,6 @@ workflows:
    -  name: correctBam
       subclass: WDL
       primaryDescriptorPath: /QC/wdl/tasks/correct_bam.wdl
+   -  name: getMapQTable
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/get_mapq_table.wdl
