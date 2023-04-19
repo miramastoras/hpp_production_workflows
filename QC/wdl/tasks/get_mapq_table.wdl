@@ -33,21 +33,16 @@ task getMapQTable {
         set -o xtrace
 
         # softlink bam and index so they are in same directory
-        MATBAM=$(basename ~{allHifiToMatBam})
-        MATBAI=$(basename ~{allHifiToMatBai})
 
-        ln -s ~{allHifiToMatBam} ./$MATBAM
-        ln -s ~{allHifiToMatBai} ./$MATBAI
+        ln -s ~{allHifiToMatBam} mat.bam
+        ln -s ~{allHifiToMatBai} mat.bai
 
-        PATBAM=$(basename ~{allHifiToPatBam})
-        PATBAI=$(basename ~{allHifiToPatBai})
-
-        ln -s ~{allHifiToPatBam} ./$PATBAM
-        ln -s ~{allHifiToPatBai} ./$PATBAI
+        ln -s ~{allHifiToPatBam} pat.bam
+        ln -s ~{allHifiToPatBai} pat.bai
 
         # Set param file based on input hifi or ont read alignments
-        samtools view $PATBAM | awk '{print $1"\t"$3"\t"$4"\t"$5}' > mapq_table_pat.tsv
-        samtools view $MATBAM | awk '{print $1"\t"$3"\t"$4"\t"$5}' > mapq_table_mat.tsv
+        samtools view pat.bam | awk '{print $1"\t"$3"\t"$4"\t"$5}' > mapq_table_pat.tsv
+        samtools view mat.bam | awk '{print $1"\t"$3"\t"$4"\t"$5}' > mapq_table_mat.tsv
         cat mapq_table_pat.tsv mapq_table_mat.tsv > mapq_table_all.tsv
 
     >>>
