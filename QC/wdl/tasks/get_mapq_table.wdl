@@ -1,13 +1,39 @@
 version 1.0
 
+import "subBamByBed.wdl" as subBamByBed_t
+
 workflow getMapQTable {
     meta {
         author: "Mira Mastoras"
         email: "mmastora@ucsc.edu"
         description: "make table of mapq values for correctBam"
     }
-
-    call getMapQTable
+    input {
+        File allHifiToMatBam
+        File allHifiToMatBai
+        File allHifiToPatBam
+        File allHifiToPatBai
+        File secPhaseBed
+    }
+    call subBamByBed_t.SubBamByBed as subBamPaternal {
+        input:
+            Bam=allHifiToPatBam,
+            Bai=allHifiToPatBai,
+            Bed=secPhaseBed
+    }
+    call subBamByBed_t.SubBamByBed as subBamMaternal {
+        input:
+            Bam=allHifiToMatBam,
+            Bai=allHifiToMatBai,
+            Bed=secPhaseBed
+    }
+    call getMapQTable {
+        input:
+            allHifiToMatBam=subBamMaternal.subBam,
+            allHifiToMatBai=subBamMaternal.subBai,
+            allHifiToPatBam=subBamPaternal.subBam,
+            allHifiToPatBai=subBamPaternal.subBai
+    }
 
     output {
         File mapqTable = getMapQTable.mapqTable
