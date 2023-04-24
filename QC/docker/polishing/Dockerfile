@@ -33,6 +33,5 @@ RUN ln -s $BCFTOOLS_INSTALL_DIR/bin/bcftools /usr/bin/bcftools && \
 # put in path
 ENV PATH=${PATH}:/usr/bin/bcftools
 
-
 RUN apt-get update && \
 	apt-get install -y vcftools
