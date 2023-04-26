@@ -18,6 +18,7 @@ task SubBamByBed {
         File Bam
         File Bai
         File Bed
+        String Prefix
 
         Int memSizeGB = 128
         Int threadCount = 64
@@ -39,13 +40,13 @@ task SubBamByBed {
       ln -s ~{Bam} ./$BAMFILE
       ln -s ~{Bai} ./$BAIFILE
 
-      samtools view -@ ~{threadCount} -b -h -L ~{Bed} ./$BAMFILE > ${BAMID}_${BEDID}.sub.bam
-      samtools index ${BAMID}_${BEDID}.sub.bam
+      samtools view -@ ~{threadCount} -b -h -L ~{Bed} ./$BAMFILE > ~{Prefix}.sub.bam
+      samtools index ~{Prefix}.sub.bam
 
 	>>>
 	output {
-		  File subBam = glob("*sub.bam")[0]
-		  File subBai = glob("*sub.bam.bai")[0]
+		  File subBam = "~{Prefix}.sub.bam"
+		  File subBai = "~{Prefix}.sub.bai"
 	}
     runtime {
         memory: memSizeGB + " GB"
