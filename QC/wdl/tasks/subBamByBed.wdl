@@ -46,7 +46,7 @@ task SubBamByBed {
 	>>>
 	output {
 		  File subBam = "~{Prefix}.sub.bam"
-		  File subBai = "~{Prefix}.sub.bai"
+		  File subBai = "~{Prefix}.sub.bam.bai"
 	}
     runtime {
         memory: memSizeGB + " GB"
