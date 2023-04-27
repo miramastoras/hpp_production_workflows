@@ -43,7 +43,7 @@ workflow phasingHomozygous{
     }
 
     output {
-        File HomozygousBam=subDipBamByHomozygous.subBam,
+        File HomozygousBam=subDipBamByHomozygous.subBam
         File HomozygousBai=subDipBamByHomozygous.subBai
     }
 }
