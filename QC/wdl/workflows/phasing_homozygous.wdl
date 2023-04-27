@@ -27,7 +27,7 @@ workflow phasingHomozygous{
     }
 
     ## Get Homozygous regions
-    call findHomozygousRegions_t as findHomozygousRegions{
+    call findHomozygousRegions_t.FindHomozygousRegions as findHomozygousRegions{
         input:
             pafFile=alignmentPaf.pafFile,
             minWindowSizeBp="20000",
@@ -35,7 +35,7 @@ workflow phasingHomozygous{
             outPrefix=sampleName
     }
     ## subset diploid bamfile to homozygous regions
-    call subBamByBed_t as subDipBamByHomozygous{
+    call subBamByBed_t.SubBamByBed as subDipBamByHomozygous{
         input:
             Bam=allReadsToDiploidBam,
             Bai=allReadsToDiploidBai,
