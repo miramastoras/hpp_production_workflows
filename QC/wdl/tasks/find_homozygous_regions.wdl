@@ -10,7 +10,7 @@ workflow findHomozygousRegions {
     call FindHomozygousRegions
 
     output{
-        File bed=FindHomozygousRegions.bed,
+        File bed=FindHomozygousRegions.bed
         File extendedBed=FindHomozygousRegions.extendedBed
     }
 }
