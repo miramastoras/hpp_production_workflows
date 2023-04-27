@@ -44,6 +44,4 @@ task FindHomozygousRegions{
           docker: dockerImage
           preemptible: 1
       }
-  }
-
 }
