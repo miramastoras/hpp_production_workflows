@@ -100,5 +100,3 @@ workflow fullQualityControl {
         File merquryResults = merqury.outputTarball
 	}
 }
-
-

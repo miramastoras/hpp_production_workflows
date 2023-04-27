@@ -192,3 +192,6 @@ workflows:
    -  name: getMapQTable
       subclass: WDL
       primaryDescriptorPath: /QC/wdl/tasks/get_mapq_table.wdl
+   -  name: phasingHomozygous
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/phasing_homozygous.wdl
