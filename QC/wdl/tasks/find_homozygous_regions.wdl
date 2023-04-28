@@ -25,7 +25,7 @@ task FindHomozygousRegions{
         Int memSizeGB = 128
         Int threadCount = 64
         Int diskSizeGB = 128
-        String dockerImage = "mobinasri/secphase:dev-0.2.0"
+        String dockerImage = "mobinasri/secphase:dev-v0.2.0"
     }
     command <<<
         set -eux -o pipefail
