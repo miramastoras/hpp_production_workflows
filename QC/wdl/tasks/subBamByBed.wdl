@@ -34,19 +34,16 @@ task SubBamByBed {
       BEDID=`basename ~{Bed} | sed 's/.bed$//'`
 
       # softlink bam and index so they are in same directory
-      BAMFILE=$(basename ~{Bam})
-      BAIFILE=$(basename ~{Bai})
+      ln -s ~{Bam} ./bamfile.bam
+      ln -s ~{Bai} ./baifile.bai
 
-      ln -s ~{Bam} ./$BAMFILE
-      ln -s ~{Bai} ./$BAIFILE
-
-      samtools view -@ ~{threadCount} -b -h -L ~{Bed} ./$BAMFILE > ~{Prefix}.sub.bam
-      samtools index ~{Prefix}.sub.bam
+      samtools view -@ ~{threadCount} -b -h -L ~{Bed} ./bamfile.bam > ${BAMID}_sub_${BEDID}.bam
+      samtools index ${BAMID}_sub_${BEDID}.bam
 
 	>>>
 	output {
-		  File subBam = "~{Prefix}.sub.bam"
-		  File subBai = "~{Prefix}.sub.bam.bai"
+		  File subBam = glob("*sub*.bam")[0]
+		  File subBai = glob("*sub*.bam.bai")[0]
 	}
     runtime {
         memory: memSizeGB + " GB"
