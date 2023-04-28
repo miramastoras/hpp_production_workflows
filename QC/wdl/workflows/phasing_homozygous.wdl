@@ -25,7 +25,8 @@ workflow phasingHomozygous{
             readFastq_or_queryAssembly=maternalFasta,
             refAssembly=paternalFasta,
             suffix="mat2pat",
-            diskSize=256
+            diskSize=256,
+            kmerSize=19
     }
 
     ## Get Homozygous regions
