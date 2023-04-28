@@ -21,7 +21,7 @@ workflow phasingHomozygous{
         input:
             aligner="winnowmap",
             preset="asm5",
-            options="-Y -L --eqx --cs",
+            options="-Y -L --eqx --cs -c",
             readFastq_or_queryAssembly=maternalFasta,
             refAssembly=paternalFasta,
             suffix="mat2pat",
