@@ -35,7 +35,7 @@ task FindHomozygousRegions{
   	>>>
   	output {
   		  File bed = "~{outPrefix}.bed"
-  		  File extendedBed = "~{outPrefix}*flanking*.bed"
+  		  File extendedBed = glob("~{outPrefix}*flanking*.bed")[0]
   	}
       runtime {
           memory: memSizeGB + " GB"
