@@ -26,7 +26,8 @@ workflow phasingHomozygous{
             refAssembly=paternalFasta,
             suffix="mat2pat",
             diskSize=256,
-            kmerSize=19
+            kmerSize=19,
+            dockerImage="mobinasri/long_read_aligner:v0.2"
     }
 
     ## Get Homozygous regions
