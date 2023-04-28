@@ -24,15 +24,16 @@ workflow phasingHomozygous{
             options="-Y -L --eqx --cs",
             readFastq_or_queryAssembly=maternalFasta,
             refAssembly=paternalFasta,
-            suffix="mat2pat"
+            suffix="mat2pat",
+            diskSize=256
     }
 
     ## Get Homozygous regions
     call findHomozygousRegions_t.FindHomozygousRegions as findHomozygousRegions{
         input:
             pafFile=alignmentPaf.pafFile,
-            minWindowSizeBp="20000",
-            extendBp="50000",
+            minWindowSizeBp=20000,
+            extendBp=50000,
             outPrefix=sampleName
     }
     ## subset diploid bamfile to homozygous regions
