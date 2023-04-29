@@ -49,7 +49,7 @@ workflow phasingHomozygous{
     call extract_reads_t.extractReads as extractReads {
         input:
             dockerImage="tpesout/hpp_base:latest",
-            inputFiles=subDipBamByHomozygous.subBam
+            readFile=subDipBamByHomozygous.subBam
     }
 
     output {
