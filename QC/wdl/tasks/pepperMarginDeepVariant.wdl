@@ -127,6 +127,7 @@ task bcftoolsFilter {
 
     String inputPrefix = basename(inputVCF, ".vcf.gz")
     String outputFile  = "~{inputPrefix}.filtered.vcf.gz"
+    String outputFileIdx  = "~{inputPrefix}.filtered.vcf.gz.tbi"
 
     command <<<
         # exit when a command fails, fail with unset variables, print commands before execution
@@ -169,11 +170,14 @@ task bcftoolsFilter {
                 -Oz \
                 ~{inputVCF} \
                 > ~{outputFile}
-        fi 
+        fi
+
+        tabix -p vcf ~{outputFile}
     >>>
 
     output {
         File vcfOut = outputFile
+        File vcfOutIdx = outputFileIdx
     }
 
     runtime {

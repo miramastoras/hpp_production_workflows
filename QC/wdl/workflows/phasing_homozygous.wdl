@@ -8,6 +8,7 @@ import "../tasks/extract_reads.wdl" as extract_reads_t
 import "../tasks/correct_bam.wdl" as correct_bam_t
 import "../tasks/deepvariant.wdl" as deepvariant_t
 import "../tasks/pepperMarginDeepVariant.wdl" as pmdv_t
+import "../tasks/whatsHapPhase.wdl" as whatshap_phase_t
 
 
 workflow phasingHomozygous{
@@ -17,8 +18,15 @@ workflow phasingHomozygous{
         File paternalFastaIndex
         File maternalFasta
         File maternalFastaIndex
-        File allReadsToDiploidBam
-        File allReadsToDiploidBai
+
+        File allHifiToDiploidBam
+        File allHifiToDiploidBai
+
+        File allONTToMatBam
+        File allONTToPatBam
+        File allONTToMatBai
+        File allONTToPatBai
+
         String sampleName
     }
 
@@ -47,8 +55,8 @@ workflow phasingHomozygous{
     ## subset diploid bamfile to homozygous regions
     call subBamByBed_t.SubBamByBed as subDipBamByHomozygous{
         input:
-            Bam=allReadsToDiploidBam,
-            Bai=allReadsToDiploidBai,
+            Bam=allHifiToDiploidBam,
+            Bai=allHifiToDiploidBai,
             Bed=findHomozygousRegions.extendedBed
     }
 
@@ -88,7 +96,7 @@ workflow phasingHomozygous{
             bam=alignAllToPat.sortedBamFile,
             options="--maxDiv 0.02",
             suffix="maxDiv.02",
-            dockerImage="mobinasri/long_read_aligner:v0.2"
+            dockerImage="mobinasri/secphase:dev-v0.2.0-hom"
 
     }
 
@@ -97,7 +105,7 @@ workflow phasingHomozygous{
             bam=alignAllToMat.sortedBamFile,
             options="--maxDiv 0.02",
             suffix="maxDiv.02",
-            dockerImage="mobinasri/long_read_aligner:v0.2"
+            dockerImage="mobinasri/secphase:dev-v0.2.0-hom"
 
     }
 
@@ -135,11 +143,29 @@ workflow phasingHomozygous{
           applyFilters=""
     }
 
+    ## Phase variants with UL reads
+    call whatshap_phase_t.WhatsHapPhase as WhatsHapPhasePat {
+        input:
+          vcfFile=FilterDVPat.vcfOut,
+          vcfFileIdx=FilterDVPat.vcfOutIdx,
+          refFile=paternalFasta,
+          refFileIdx=paternalFastaIndex,
+          bamFile=allONTToPatBam,
+          bamFileIdx=allONTToPatBai,
+          outPrefix="phased_Vcf_UL_Pat"
+    }
+    call whatshap_phase_t.WhatsHapPhase as WhatsHapPhaseMat {
+        input:
+          vcfFile=FilterDVMat.vcfOut,
+          vcfFileIdx=FilterDVMat.vcfOutIdx,
+          refFile=maternalFasta,
+          refFileIdx=maternalFastaIndex,
+          bamFile=allONTToMatBam,
+          bamFileIdx=allONTToMatBai,
+          outPrefix="phased_Vcf_UL_Mat"
+    }
     output {
-        File vcfFiltPat=FilterDVPat.vcfOut
-        File vcfFiltMat=FilterDVMat.vcfOut
+        File phasedVcfMat=WhatsHapPhaseMat.phasedVcf
+        File phasedVcfPat=WhatsHapPhasePat.phasedVcf
     }
 }
-
-
-# bcftools view -e 'FORMAT/GQ<=10' -Oz ~{inputVCF} > ~{outputFile}
