@@ -6,13 +6,17 @@ import "../tasks/find_homozygous_regions.wdl" as findHomozygousRegions_t
 import "../tasks/subBamByBed.wdl" as subBamByBed_t
 import "../tasks/extract_reads.wdl" as extract_reads_t
 import "../tasks/correct_bam.wdl" as correct_bam_t
+import "../tasks/deepvariant.wdl" as deepvariant_t
+import "../tasks/pepperMarginDeepVariant.wdl" as pmdv_t
 
 
 workflow phasingHomozygous{
 
     input {
         File paternalFasta
+        File paternalFastaIndex
         File maternalFasta
+        File maternalFastaIndex
         File allReadsToDiploidBam
         File allReadsToDiploidBai
         String sampleName
@@ -83,7 +87,8 @@ workflow phasingHomozygous{
         input:
             bam=alignAllToPat.sortedBamFile,
             options="--maxDiv 0.02",
-            suffix="maxDiv.02"
+            suffix="maxDiv.02",
+            dockerImage="mobinasri/long_read_aligner:v0.2"
 
     }
 
@@ -91,16 +96,50 @@ workflow phasingHomozygous{
         input:
             bam=alignAllToMat.sortedBamFile,
             options="--maxDiv 0.02",
-            suffix="maxDiv.02"
+            suffix="maxDiv.02",
+            dockerImage="mobinasri/long_read_aligner:v0.2"
 
     }
+
+    ## call variants on each bam
+    call deepvariant_t.DeepVariant as DeepVariantPat{
+        input:
+            inputReads=correctBamMaxDivergencePat.correctedBam,
+            inputReadsIdx=correctBamMaxDivergencePat.correctedBamIndex,
+            assembly=paternalFasta,
+            assemblyIndex=paternalFastaIndex,
+            sample=sampleName,
+            modelType = "PACBIO"
+    }
+    call deepvariant_t.DeepVariant as DeepVariantMat{
+        input:
+            inputReads=correctBamMaxDivergenceMat.correctedBam,
+            inputReadsIdx=correctBamMaxDivergenceMat.correctedBamIndex,
+            assembly=maternalFasta,
+            assemblyIndex=maternalFastaIndex,
+            sample=sampleName,
+            modelType = "PACBIO"
+    }
+
+    ## filter variants by GQ
+    call pmdv_t.bcftoolsFilter as FilterDVPat{
+        input:
+          inputVCF=DeepVariantPat.vcfOut,
+          excludeExpr="'FORMAT/GQ<=10'",
+          applyFilters=""
+    }
+    call pmdv_t.bcftoolsFilter as FilterDVMat{
+        input:
+          inputVCF=DeepVariantMat.vcfOut,
+          excludeExpr="'FORMAT/GQ<=10'",
+          applyFilters=""
+    }
+
     output {
-        File matHifiDivCorrectedBam=correctBamMaxDivergenceMat.correctedBam
-        File matHifiDivCorrectedBamIndex=correctBamMaxDivergenceMat.correctedBamIndex
-        File patHifiDivCorrectedBam=correctBamMaxDivergencePat.correctedBam
-        File patHifiDivCorrectedBamIndex=correctBamMaxDivergencePat.correctedBamIndex
+        File vcfFiltPat=FilterDVPat.vcfOut
+        File vcfFiltMat=FilterDVMat.vcfOut
     }
-
 }
+
 
 # bcftools view -e 'FORMAT/GQ<=10' -Oz ~{inputVCF} > ~{outputFile}
