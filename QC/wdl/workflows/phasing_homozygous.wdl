@@ -79,7 +79,7 @@ workflow phasingHomozygous{
     }
 
     output {
-        File allHifiToMat=alignAllToMat.sortedBamFile,
+        File allHifiToMat=alignAllToMat.sortedBamFile
         File allHifiToPat=alignAllToPat.sortedBamFile
     }
 
