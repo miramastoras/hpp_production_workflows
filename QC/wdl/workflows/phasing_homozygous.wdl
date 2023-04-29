@@ -5,6 +5,7 @@ import "../tasks/long_read_aligner.wdl" as long_read_aligner_t
 import "../tasks/find_homozygous_regions.wdl" as findHomozygousRegions_t
 import "../tasks/subBamByBed.wdl" as subBamByBed_t
 import "../tasks/extract_reads.wdl" as extract_reads_t
+import "../tasks/correct_bam.wdl" as correct_bam_t
 
 
 workflow phasingHomozygous{
@@ -77,10 +78,27 @@ workflow phasingHomozygous{
             dockerImage="mobinasri/long_read_aligner:v0.2",
             diskSize=256
     }
+    ## correct bams for maxDivergence of reads
+    call correct_bam_t.correctBam as correctBamMaxDivergencePat {
+        input:
+            bam=alignAllToPat.sortedBamFile,
+            options="--maxDiv 0.02",
+            suffix="maxDiv.02"
 
+    }
+
+    call correct_bam_t.correctBam as correctBamMaxDivergenceMat {
+        input:
+            bam=alignAllToMat.sortedBamFile,
+            options="--maxDiv 0.02",
+            suffix="maxDiv.02"
+
+    }
     output {
-        File allHifiToMat=alignAllToMat.sortedBamFile
-        File allHifiToPat=alignAllToPat.sortedBamFile
+        File matHifiDivCorrectedBam=correctBamMaxDivergenceMat.correctedBam
+        File matHifiDivCorrectedBamIndex=correctBamMaxDivergenceMat.correctedBamIndex
+        File patHifiDivCorrectedBam=correctBamMaxDivergencePat.correctedBam
+        File patHifiDivCorrectedBamIndex=correctBamMaxDivergencePat.correctedBamIndex
     }
 
 }
