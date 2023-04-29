@@ -46,13 +46,41 @@ workflow phasingHomozygous{
             Bai=allReadsToDiploidBai,
             Bed=findHomozygousRegions.extendedBed
     }
+
+    ## convert homozygous reads to fastq
     call extract_reads_t.extractReads as extractReads {
         input:
             readFile=subDipBamByHomozygous.subBam
     }
+    ## align all homozygous reads to pat
+    call long_read_aligner_t.alignmentBam as alignAllToPat {
+        input:
+            readFastq_or_queryAssembly=extractReads.extractedRead,
+            refAssembly=paternalFasta,
+            aligner="winnowmap",
+            preset="map-pb",
+            suffix="all2pat.winnowmap",
+            options="--cs --eqx -Y -L",
+            dockerImage="mobinasri/long_read_aligner:v0.2",
+            diskSize=256
+    }
+
+    ## align all homozygous reads to mat
+    call long_read_aligner_t.alignmentBam as alignAllToMat {
+        input:
+            readFastq_or_queryAssembly=extractReads.extractedRead,
+            refAssembly=maternalFasta,
+            aligner="winnowmap",
+            preset="map-pb",
+            suffix="all2mat.winnowmap",
+            options="--cs --eqx -Y -L",
+            dockerImage="mobinasri/long_read_aligner:v0.2",
+            diskSize=256
+    }
 
     output {
-        File extractedRead=extractReads.extractedRead
+        File allHifiToMat=alignAllToMat.sortedBamFile,
+        File allHifiToPat=alignAllToPat.sortedBamFile
     }
 
 }
