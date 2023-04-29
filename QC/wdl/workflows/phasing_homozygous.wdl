@@ -4,6 +4,7 @@ version 1.0
 import "../tasks/long_read_aligner.wdl" as long_read_aligner_t
 import "../tasks/find_homozygous_regions.wdl" as findHomozygousRegions_t
 import "../tasks/subBamByBed.wdl" as subBamByBed_t
+import "../tasks/extract_reads.wdl" as extract_reads_t
 
 
 workflow phasingHomozygous{
@@ -45,9 +46,16 @@ workflow phasingHomozygous{
             Bai=allReadsToDiploidBai,
             Bed=findHomozygousRegions.extendedBed
     }
+    call extract_reads_t.extractReads as extractReads {
+        input:
+            dockerImage="tpesout/hpp_base:latest",
+            inputFiles=subDipBamByHomozygous.subBam
+    }
 
     output {
-        File HomozygousBam=subDipBamByHomozygous.subBam
-        File HomozygousBai=subDipBamByHomozygous.subBai
+        File extractedRead=extractReads.extractedRead
     }
+
 }
+
+# bcftools view -e 'FORMAT/GQ<=10' -Oz ~{inputVCF} > ~{outputFile}
