@@ -1,11 +1,11 @@
 version 1.0
 
-import "../../ext/hpp_production_workflows/QC/wdl/tasks/extract_reads.wdl" as extractReads_t
-import "../../ext/hpp_production_workflows/QC/wdl/tasks/arithmetic.wdl" as arithmetic_t
-import "../tasks/alignment/merge_bams.wdl" as mergeBams_t
-import "../tasks/alignment/read_set_splitter.wdl" as readSetSplitter_t
-import "../tasks/alignment/long_read_aligner.wdl" as longReadAligner_t
-import "../tasks/alignment/calmd.wdl" as calmd_t
+import "extract_reads.wdl" as extractReads_t
+import "arithmetic.wdl" as arithmetic_t
+import "merge_bams.wdl" as mergeBams_t
+import "read_set_splitter.wdl" as readSetSplitter_t
+import "long_read_aligner.wdl" as longReadAligner_t
+import "calmd.wdl" as calmd_t
 
 workflow longReadAlignmentScattered {
     input {
