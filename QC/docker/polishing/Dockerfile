@@ -58,6 +58,8 @@ RUN apt-get update && \
 
 ## Get script
 
+RUN VAR=var
+
 RUN git clone https://github.com/miramastoras/useful_scripts.git
 
 ENV PATH=/opt/useful_scripts/rmdups_vcf.py:$PATH
