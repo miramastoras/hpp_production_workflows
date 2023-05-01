@@ -10,7 +10,7 @@ workflow runFilterDupsVCF {
     }
     call filterDups
     output {
-        File
+        File filtVCF=filterDups.filtVCF
     }
 }
 
