@@ -31,10 +31,10 @@ task filterDups{
 
         BAMID=`basename ~{VCF} | sed 's/.vcf.gz$//'`
 
-        python3 /opt/useful_scripts/rmdups_vcf.py -i ~{VCF} -o ./${BAMID}_rmDups.vcf.gz
+        python3 /opt/useful_scripts/rmdups_vcf.py -i ~{VCF} -o ./rmDups.polisher.vcf.gz
     >>>
     output {
-        File filtVCF=glob("*_rmDups.vcf.gz")[0]
+        File filtVCF="rmDups.polisher.vcf.gz"
     }
     runtime {
         memory: memSizeGB + " GB"
