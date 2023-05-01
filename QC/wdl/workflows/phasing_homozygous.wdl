@@ -93,7 +93,7 @@ workflow phasingHomozygous{
     ## correct bams for maxDivergence of reads
     call correct_bam_t.correctBam as correctBamMaxDivergencePat {
         input:
-            bam=alignAllToPat.sortedBamFile,
+            bam=alignAllToPat.bamFile,
             options="--maxDiv 0.02",
             suffix="maxDiv.02",
             dockerImage="mobinasri/secphase:dev-v0.2.0-hom"
@@ -102,7 +102,7 @@ workflow phasingHomozygous{
 
     call correct_bam_t.correctBam as correctBamMaxDivergenceMat {
         input:
-            bam=alignAllToMat.sortedBamFile,
+            bam=alignAllToMat.bamFile,
             options="--maxDiv 0.02",
             suffix="maxDiv.02",
             dockerImage="mobinasri/secphase:dev-v0.2.0-hom"
