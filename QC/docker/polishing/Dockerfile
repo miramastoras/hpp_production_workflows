@@ -56,6 +56,8 @@ RUN apt-get update && \
     apt-get clean && \
     apt-get purge
 
+## Get script
+
 RUN git clone https://github.com/miramastoras/useful_scripts.git
 
 ENV PATH=/opt/useful_scripts/rmdups_vcf.py:$PATH
