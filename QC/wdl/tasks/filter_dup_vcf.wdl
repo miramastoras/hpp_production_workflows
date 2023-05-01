@@ -34,7 +34,7 @@ task filterDups{
         python3 /opt/useful_scripts/rmdups_vcf.py -i ~{VCF} -o ./${BAMID}_rmDups.vcf.gz
     >>>
     output {
-        File filtVCF="glob("*_rmDups.vcf.gz")[0]"
+        File filtVCF=glob("*_rmDups.vcf.gz")[0]
     }
     runtime {
         memory: memSizeGB + " GB"
