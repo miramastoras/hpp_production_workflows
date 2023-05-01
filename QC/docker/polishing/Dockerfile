@@ -51,7 +51,10 @@ RUN python -m pip install boto3 pandas pysam plotnine
 
 WORKDIR /opt/
 
-RUN apt install -y git wget
+RUN apt-get update && \
+    apt-get -y install time git wget && \
+    apt-get clean && \
+    apt-get purge
 
 RUN git clone https://github.com/miramastoras/useful_scripts.git
 
