@@ -43,7 +43,6 @@ workflow longReadAlignmentScattered {
             input:
                 readFile=readFile,
                 referenceFasta=referenceFasta,
-                fastqOptions = fastqOptions,
                 memSizeGB=4,
                 threadCount=4,
                 diskSizeGB=extractReadsDiskSize,
