@@ -51,6 +51,8 @@ RUN python -m pip install boto3 pandas pysam plotnine
 
 WORKDIR /opt/
 
+RUN apt install -y git wget
+
 RUN git clone https://github.com/miramastoras/useful_scripts.git
 
 ENV PATH=/opt/useful_scripts/rmdups_vcf.py:$PATH
