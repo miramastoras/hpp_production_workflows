@@ -9,7 +9,7 @@ workflow runCalMD{
 task calmd {
     input {
         File bamFile
-        File assemblyFastaGz
+        File assemblyFasta
         # runtime configurations
         Int memSize=16
         Int threadCount=8
@@ -33,10 +33,7 @@ task calmd {
         BAM_FILENAME=$(basename ~{bamFile})
         BAM_PREFIX=${BAM_FILENAME%.bam}
 
-        ASM_FILENAME=$(basename ~{assemblyFastaGz})
-        ASM_PREFIX=${ASM_FILENAME%.fa.gz}
-        gunzip -c  ~{assemblyFastaGz} > ${ASM_PREFIX}.fa
-        samtools calmd -@8 -b ~{bamFile} ${ASM_PREFIX}.fa > ${BAM_PREFIX}.bam
+        samtools calmd -@8 -b ~{bamFile} ~{assemblyFasta} > ${BAM_PREFIX}.bam
         samtools index ${BAM_PREFIX}.bam
     >>>
     runtime {
