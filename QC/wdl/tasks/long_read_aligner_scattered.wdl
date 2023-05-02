@@ -103,7 +103,7 @@ workflow longReadAlignmentScattered {
     call calmd_t.calmd {
         input:
             bamFile = mergeBams.mergedBam,
-            assemblyFastaGz = assembly,
+            assemblyFasta = assembly,
             diskSize = floor(bamSize.value * 2.5) + 32,
             preemptible = preemptible,
             zones = zones
