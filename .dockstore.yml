@@ -200,4 +200,4 @@ workflows:
       primaryDescriptorPath: /QC/wdl/tasks/filter_dup_vcf.wdl
    -  name: phasingHomozygousFaster
       subclass: WDL
-      primaryDescriptorPath: /QC/wdl/tasks/phasing_homozygous_test_faster.wdl
+      primaryDescriptorPath: /QC/wdl/workflows/phasing_homozygous_test_faster.wdl
