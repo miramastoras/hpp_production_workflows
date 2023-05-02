@@ -63,7 +63,7 @@ workflow phasingHomozygous{
 
     call long_read_aligner_scattered_t.longReadAlignmentScattered as alignAllToPatScattered{
         input:
-            readFiles=Array[subDipBamByHomozygous.subBam],
+            readFiles=[subDipBamByHomozygous.subBam],
             assembly=paternalFasta,
             aligner="winnowmap",
             preset="map-pb",
@@ -75,7 +75,7 @@ workflow phasingHomozygous{
 
     call long_read_aligner_scattered_t.longReadAlignmentScattered as alignAllToMatScattered{
         input:
-            readFiles=Array[subDipBamByHomozygous.subBam],
+            readFiles=[subDipBamByHomozygous.subBam],
             assembly=maternalFasta,
             aligner="winnowmap",
             preset="map-pb",
