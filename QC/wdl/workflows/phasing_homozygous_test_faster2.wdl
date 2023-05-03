@@ -146,7 +146,7 @@ workflow phasingHomozygous{
             bamIndex = allONTToPatBai,
             splitNumber = 16,
             threadCount = 16,
-            diskSize = 2 * ceil(size(bam, "GB")) + 64
+            diskSize = 2 * ceil(size(allONTToPatBam, "GB")) + 64
     }
     scatter (part in zip(splitbamContigWisePat.splitBams, splitbamContigWisePat.splitBeds)) {
         call whatshap_phase_t.WhatsHapPhase as WhatsHapPhasePat {
@@ -174,7 +174,7 @@ workflow phasingHomozygous{
             bamIndex = allONTToMatBai,
             splitNumber = 16,
             threadCount = 16,
-            diskSize = 2 * ceil(size(bam, "GB")) + 64
+            diskSize = 2 * ceil(size(allONTToMatBam, "GB")) + 64
     }
     scatter (part in zip(splitbamContigWiseMat.splitBams, splitbamContigWiseMat.splitBeds)) {
         call whatshap_phase_t.WhatsHapPhase as WhatsHapPhaseMat {
