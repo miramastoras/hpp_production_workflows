@@ -192,7 +192,7 @@ workflow phasingHomozygous{
     call mergeVcf as mergeVcfMat{
         input:
             vcfGzFiles = WhatsHapPhaseMat.phasedVcf,
-            outputName = basename("${allONTToMatBam}", ".bam")
+            outputName = basename("${allONTToMatBam}")
     }
     output {
         File phasedVcfMat=mergeVcfMat.vcfGz
