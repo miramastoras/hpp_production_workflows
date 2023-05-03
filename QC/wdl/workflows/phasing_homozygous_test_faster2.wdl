@@ -139,16 +139,16 @@ workflow phasingHomozygous{
           applyFilters=""
     }
 
-    call splitBamContigWise as splitBamContigWisePat{
+    call splitbamContigWise as splitbamContigWisePat{
         input:
             assemblyFasta = paternalFasta,
-            BamContig = allONTToPatBam,
+            bam = allONTToPatBam,
             bamIndex = allONTToPatBai,
             splitNumber = 16,
             threadCount = 16,
             diskSize = 2 * ceil(size(bam, "GB")) + 64
     }
-    scatter (part in zip(splitBamContigWisePat.splitBams, splitBamContigWisePat.splitBeds)) {
+    scatter (part in zip(splitbamContigWisePat.splitBams, splitbamContigWisePat.splitBeds)) {
         call whatshap_phase_t.WhatsHapPhase as WhatsHapPhasePat {
             input:
               vcfFile=FilterDVPat.vcfOut,
@@ -167,16 +167,16 @@ workflow phasingHomozygous{
             outputName = basename("${allONTToPatBam}", ".bam")
     }
 
-    call splitBamContigWise as splitBamContigWiseMat{
+    call splitbamContigWise as splitbamContigWiseMat{
         input:
             assemblyFasta = maternalFasta,
-            BamContig = allONTToMatBam,
+            bam = allONTToMatBam,
             bamIndex = allONTToMatBai,
             splitNumber = 16,
             threadCount = 16,
             diskSize = 2 * ceil(size(bam, "GB")) + 64
     }
-    scatter (part in zip(splitBamContigWiseMat.splitBams, splitBamContigWiseMat.splitBeds)) {
+    scatter (part in zip(splitbamContigWiseMat.splitBams, splitbamContigWiseMat.splitBeds)) {
         call whatshap_phase_t.WhatsHapPhase as WhatsHapPhaseMat {
             input:
               vcfFile=FilterDVMat.vcfOut,
@@ -200,10 +200,10 @@ workflow phasingHomozygous{
     }
 }
 
-task splitBamContigWise{
+task splitbamContigWise{
     input{
         File assemblyFasta
-        File BamContig
+        File bam
         File bamIndex
         Int splitNumber
         Int memSize=32
@@ -232,9 +232,9 @@ task splitBamContigWise{
         samtools faidx ${ASSEMBLY_PREFIX}.fa
 
         ## hard link the bam and bai files to the working directory
-        BAM_NAME=$(basename ~{BamContig})
+        BAM_NAME=$(basename ~{bam})
         BAM_PREFIX=${BAM_NAME%%.bam}
-        ln -f ~{BamContig} > ${BAM_PREFIX}.bam
+        ln -f ~{bam} > ${BAM_PREFIX}.bam
         ln -f ~{bamIndex} > ${BAM_PREFIX}.bam.bai
 
         ## make a bed file that covers the whole assembly
