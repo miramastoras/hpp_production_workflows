@@ -232,7 +232,7 @@ task splitBamContigWise{
         samtools faidx ${ASSEMBLY_PREFIX}.fa
 
         ## hard link the bam and bai files to the working directory
-        BAM_NAME=$(basename ~{bam})
+        BAM_NAME=$(basename ~{BamContig})
         BAM_PREFIX=${BAM_NAME%%.bam}
         ln -f ~{bam} > ${BAM_PREFIX}.bam
         ln -f ~{bamIndex} > ${BAM_PREFIX}.bam.bai
