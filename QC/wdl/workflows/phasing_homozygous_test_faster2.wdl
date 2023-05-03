@@ -234,7 +234,7 @@ task splitBamContigWise{
         ## hard link the bam and bai files to the working directory
         BAM_NAME=$(basename ~{BamContig})
         BAM_PREFIX=${BAM_NAME%%.bam}
-        ln -f ~{bam} > ${BAM_PREFIX}.bam
+        ln -f ~{BamContig} > ${BAM_PREFIX}.bam
         ln -f ~{bamIndex} > ${BAM_PREFIX}.bam.bai
 
         ## make a bed file that covers the whole assembly
