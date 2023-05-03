@@ -142,7 +142,7 @@ workflow phasingHomozygous{
     call splitbamContigWise as splitbamContigWisePat{
         input:
             assemblyFasta = paternalFasta,
-            bam = allONTToPatBam,
+            Nam = allONTToPatBam,
             bamIndex = allONTToPatBai,
             splitNumber = 16,
             threadCount = 16,
@@ -170,7 +170,7 @@ workflow phasingHomozygous{
     call splitbamContigWise as splitbamContigWiseMat{
         input:
             assemblyFasta = maternalFasta,
-            bam = allONTToMatBam,
+            Nam = allONTToMatBam,
             bamIndex = allONTToMatBai,
             splitNumber = 16,
             threadCount = 16,
@@ -192,7 +192,7 @@ workflow phasingHomozygous{
     call mergeVcf as mergeVcfMat{
         input:
             vcfGzFiles = WhatsHapPhaseMat.phasedVcf,
-            outputName = basename("${allONTToMatBam}")
+            outputName = basename("${allONTToMatBam}",".bam")
     }
     output {
         File phasedVcfMat=mergeVcfMat.vcfGz
@@ -203,7 +203,7 @@ workflow phasingHomozygous{
 task splitbamContigWise{
     input{
         File assemblyFasta
-        File bam
+        File Nam
         File bamIndex
         Int splitNumber
         Int memSize=32
@@ -232,9 +232,9 @@ task splitbamContigWise{
         samtools faidx ${ASSEMBLY_PREFIX}.fa
 
         ## hard link the bam and bai files to the working directory
-        BAM_NAME=$(basename ~{bam})
+        BAM_NAME=$(basename ~{Nam})
         BAM_PREFIX=${BAM_NAME%%.bam}
-        ln -f ~{bam} > ${BAM_PREFIX}.bam
+        ln -f ~{Nam} > ${BAM_PREFIX}.bam
         ln -f ~{bamIndex} > ${BAM_PREFIX}.bam.bai
 
         ## make a bed file that covers the whole assembly
