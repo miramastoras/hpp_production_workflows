@@ -158,7 +158,7 @@ workflow phasingHomozygous{
               bamFile=allONTToPatBam,
               bamFileIdx=allONTToPatBai,
               outPrefix="phased_Vcf_UL_Pat",
-              diskSize = 2 * ceil(size(part.left, "GB")) + 64,
+              diskSizeGB = 2 * ceil(size(part.left, "GB")) + 64,
               }
     }
     call mergeVcf as mergeVcfPat{
@@ -186,7 +186,7 @@ workflow phasingHomozygous{
               bamFile=allONTToMatBam,
               bamFileIdx=allONTToMatBai,
               outPrefix="phased_Vcf_UL_Mat",
-              diskSize = 2 * ceil(size(part.left, "GB")) + 64,
+              diskSizeGB = 2 * ceil(size(part.left, "GB")) + 64,
               }
     }
     call mergeVcf as mergeVcfMat{
