@@ -142,7 +142,7 @@ workflow phasingHomozygous{
     call splitBamContigWise as splitBamContigWisePat{
         input:
             assemblyFasta = paternalFasta,
-            bam = allONTToPatBam,
+            BamContig = allONTToPatBam,
             bamIndex = allONTToPatBai,
             splitNumber = 16,
             threadCount = 16,
@@ -170,7 +170,7 @@ workflow phasingHomozygous{
     call splitBamContigWise as splitBamContigWiseMat{
         input:
             assemblyFasta = maternalFasta,
-            bam = allONTToMatBam,
+            BamContig = allONTToMatBam,
             bamIndex = allONTToMatBai,
             splitNumber = 16,
             threadCount = 16,
@@ -203,7 +203,7 @@ workflow phasingHomozygous{
 task splitBamContigWise{
     input{
         File assemblyFasta
-        File bam
+        File BamContig
         File bamIndex
         Int splitNumber
         Int memSize=32
