@@ -201,3 +201,6 @@ workflows:
    -  name: phasingHomozygousFaster
       subclass: WDL
       primaryDescriptorPath: /QC/wdl/workflows/phasing_homozygous_test_faster.wdl
+   -  name: phasingHomozygousFaster2
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/workflows/phasing_homozygous_test_faster2.wdl
