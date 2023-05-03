@@ -148,7 +148,7 @@ workflow phasingHomozygous{
             threadCount = 16,
             diskSize = 2 * ceil(size(bam, "GB")) + 64
     }
-    scatter (part in zip(splitBamContigWise.splitBams, splitBamContigWise.splitBeds)) {
+    scatter (part in zip(splitBamContigWisePat.splitBams, splitBamContigWisePat.splitBeds)) {
         call whatshap_phase_t.WhatsHapPhase as WhatsHapPhasePat {
             input:
               vcfFile=FilterDVPat.vcfOut,
@@ -176,7 +176,7 @@ workflow phasingHomozygous{
             threadCount = 16,
             diskSize = 2 * ceil(size(bam, "GB")) + 64
     }
-    scatter (part in zip(splitBamContigWise.splitBams, splitBamContigWise.splitBeds)) {
+    scatter (part in zip(splitBamContigWiseMat.splitBams, splitBamContigWiseMat.splitBeds)) {
         call whatshap_phase_t.WhatsHapPhase as WhatsHapPhaseMat {
             input:
               vcfFile=FilterDVMat.vcfOut,
