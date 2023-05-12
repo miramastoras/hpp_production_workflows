@@ -42,6 +42,7 @@ workflow dipcall_happy {
         File dipCallhapDotPyVCF    = happy_t.vcfOut
         File dipCallhapDotPyVCFIdx = happy_t.vcfIdxOut
         File dipCallhapDotPyTar    = happy_t.happyTar
+        File dipCallTar = dipcall_t.outputTarball
     }
 }
 
