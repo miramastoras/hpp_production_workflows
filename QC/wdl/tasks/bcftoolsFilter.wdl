@@ -5,7 +5,7 @@ import "pepperMarginDeepVariant.wdl" as PMDV
 
 workflow filterVCF {
 
-    call PMDV.bcftoolsFilter as filter_t {
+    call PMDV.bcftoolsFilter as filter_t
 
     output {
         File filtVcfOut=filter_t.vcfOut
