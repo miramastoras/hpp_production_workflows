@@ -204,3 +204,6 @@ workflows:
    -  name: phasingHomozygousFaster2
       subclass: WDL
       primaryDescriptorPath: /QC/wdl/workflows/phasing_homozygous_test_faster2.wdl
+   -  name: bcftoolsFilter
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/bcftoolsFilter.wdl
