@@ -98,7 +98,7 @@ workflow phasingHomozygous{
 
     call correct_bam_t.correctBam as correctBamMaxDivergenceMat {
         input:
-            bam=alignAllToMatScattered.bamFile,
+            Bam=alignAllToMatScattered.bamFile,
             options="--maxDiv 0.02",
             suffix="maxDiv.02",
             dockerImage="mobinasri/secphase:dev-v0.2.0-hom"
