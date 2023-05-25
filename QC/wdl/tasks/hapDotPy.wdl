@@ -19,7 +19,8 @@ task hapDotPy{
         File assemblyIndex
         String sample
         File? bedRegions
-        File? stratifications
+        File? stratificationsTSV
+        File? stratificationsBedTar
         String? extraArgs
 
         Boolean passOnly = true
@@ -72,9 +73,12 @@ task hapDotPy{
             EXTRA_ARGS=""
         fi
 
-        if [[ ! -z "~{stratifications}" ]]
+        if [[ ! -z "~{stratificationsTSV}" ]]
         then
-            STRAT="--stratification=~{stratifications}"
+            STRAT="--stratification=~{stratificationsTSV}"
+
+            tar -xf ~{stratificationsBedTar} -C ./
+            mv ./GRCh38/* ./
         else
             STRAT=""
         fi
