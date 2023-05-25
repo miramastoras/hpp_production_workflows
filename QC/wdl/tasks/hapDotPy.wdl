@@ -19,6 +19,7 @@ task hapDotPy{
         File assemblyIndex
         String sample
         File? bedRegions
+        File? stratifications
         String? extraArgs
 
         Boolean passOnly = true
@@ -71,6 +72,12 @@ task hapDotPy{
             EXTRA_ARGS=""
         fi
 
+        if [[ ! -z "~{stratifications}" ]]
+        then
+            STRAT="--stratification=~{stratifications}"
+        else
+            STRAT=""
+        fi
         ## make directory to put output into
         mkdir happy_out
 
@@ -83,6 +90,7 @@ task hapDotPy{
             $PASS_ONLY_TOKEN \
             $BEDFILE \
             $EXTRA_ARGS \
+            $STRAT \
             --engine=vcfeval \
             --threads=~{threadCount}
 

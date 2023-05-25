@@ -33,7 +33,7 @@ workflow phasingHomozygous{
     ## Align maternal to paternal assembly
     call long_read_aligner_t.alignmentPaf as alignmentPaf{
         input:
-            aligner="winnowmap",
+            aligner=asm2asmAligner,
             preset="asm5",
             options="-L --eqx --cs -c",
             readFastq_or_queryAssembly=maternalFasta,
