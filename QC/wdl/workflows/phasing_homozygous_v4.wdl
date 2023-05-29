@@ -143,6 +143,7 @@ workflow phasingHomozygous{
     call margin_phase_t.marginPhase as marginPhasePat {
         input:
           vcfFile=FilterDVPat.vcfOut,
+          vcfFileIdx=FilterDVPat.vcfOutIdx,
           refFile=paternalFasta,
           refFileIdx=paternalFastaIndex,
           bamFile=allONTToPatBam,
