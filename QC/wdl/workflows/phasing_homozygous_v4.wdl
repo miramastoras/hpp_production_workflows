@@ -170,7 +170,7 @@ workflow phasingHomozygous{
         File homExtendedbed=findHomozygousRegions.extendedBed
         File homBed=findHomozygousRegions.bed
 
-        File dipBamHomozygous=subDipBamByHomozygous.
+        File dipBamHomozygous=subDipBamByHomozygous.subBam
 
         File allHomToPatBam=alignAllToPatScattered.bamFile
         File allHomToMatBam=alignAllToMatScattered.bamFile
