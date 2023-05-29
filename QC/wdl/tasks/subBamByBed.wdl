@@ -18,8 +18,7 @@ task SubBamByBed {
         File Bam
         File Bai
         File Bed
-        String Prefix
-
+        
         Int memSizeGB = 128
         Int threadCount = 64
         Int diskSizeGB = 128
