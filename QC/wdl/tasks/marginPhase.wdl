@@ -17,9 +17,12 @@ workflow runMarginPhase {
 task marginPhase {
     input {
         File vcfFile
+        File vcfFileIdx
         File refFile
+        File refFileIdx
         File bamFile
-        String sampleName
+        File bamFileIdx
+        String outPrefix
         String HifiOrONT
 
         String dockerImage = "miramastoras/marginphase_sv:latest"
@@ -40,10 +43,28 @@ task marginPhase {
             PARAMS=/opt/margin/params/phase/allParams.phase_vcf.pb-hifi.json
         fi
 
-        samtools index -@ ~{threads} ~{bamFile}
-        samtools faidx ~{refFile}
+        # soft link data and indexes so they are in same place
+        REF=$(basename ~{refFile})
+        REF_IDX=$(basename ~{refFileIdx})
+
+        ln -s ~{refFile} ./$REF
+        ln -s ~{refFileIdx} ./$REF_IDX
+
+        VCF=$(basename ~{vcfFile})
+        VCF_IDX=$(basename ~{vcfFileIdx})
+
+        ln -s ~{vcfFile} ./$VCF
+        ln -s ~{vcfFileIdx} ./$VCF_IDX
+
+        BAM=$(basename ~{bamFile})
+        BAM_IDX=$(basename ~{bamFileIdx})
+
+        ln -s ~{bamFile} ./$BAM
+        ln -s ~{bamFileIdx} ./$BAM_IDX
+
         mkdir output/
-        margin phase ~{bamFile} ~{refFile} ~{vcfFile} $PARAMS -t ~{threads} -o output/~{sampleName} -M
+        margin phase ${BAM} ${REF} ${VCF} ${PARAMS} -t ~{threads} -o output/~{outPrefix} -M
+
     >>>
     output {
     File phasedVcf = glob("output/*.vcf")[0]

@@ -34,7 +34,7 @@ task FindHomozygousRegions{
         python3 /home/programs/src/find_homozygous_regions.py -p ~{pafFile} -m ~{minWindowSizeBp} -e ~{extendBp} -o ~{outPrefix}
 
         cut -f 4-6 ~{outPrefix}.bed | cat ~{outPrefix}.bed - | cut -f1-3 > tmp; mv tmp ~{outPrefix}.bed
-        cut -f 4-6 ~{outPrefix}flanking_~{extendBp}.bed | cat ~{outPrefix}flanking_~{extendBp}.bed  - | cut -f1-3 > tmp; mv tmp ~{outPrefix}flanking_~{extendBp}.bed 
+        cut -f 4-6 ~{outPrefix}flanking_~{extendBp}.bed | cat ~{outPrefix}flanking_~{extendBp}.bed  - | cut -f1-3 > tmp; mv tmp ~{outPrefix}flanking_~{extendBp}.bed
   	>>>
   	output {
   		  File bed = "~{outPrefix}.bed"

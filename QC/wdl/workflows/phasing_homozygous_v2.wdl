@@ -1,4 +1,4 @@
-version 1.0
+version 2.0
 
 import "../tasks/long_read_aligner.wdl" as long_read_aligner_t
 import "../tasks/find_homozygous_regions.wdl" as findHomozygousRegions_t
