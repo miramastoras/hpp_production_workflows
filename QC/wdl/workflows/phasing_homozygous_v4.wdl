@@ -162,8 +162,8 @@ workflow phasingHomozygous{
           HifiOrONT="ONT"
     }
     output {
-        File phasedVcfMat=WhatsHapPhaseMat.phasedVcf
-        File phasedVcfPat=WhatsHapPhasePat.phasedVcf
+        File phasedVcfMat=marginPhaseMat.phasedVcf
+        File phasedVcfPat=marginPhasePat.phasedVcf
 
         File asm2asmPaf=alignmentPaf.pafFile
 
