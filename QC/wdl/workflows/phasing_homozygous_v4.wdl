@@ -1,4 +1,4 @@
-version 4.0
+version 1.0
 
 import "../tasks/long_read_aligner.wdl" as long_read_aligner_t
 import "../tasks/find_homozygous_regions.wdl" as findHomozygousRegions_t
@@ -166,7 +166,7 @@ workflow phasingHomozygous{
         File phasedVcfPat=WhatsHapPhasePat.phasedVcf
 
         File asm2asmPaf=alignmentPaf.pafFile
-        
+
         File homExtendedbed=findHomozygousRegions.extendedBed
         File homBed=findHomozygousRegions.bed
 
