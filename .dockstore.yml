@@ -201,3 +201,6 @@ workflows:
    -  name: phasingHomozygousV4
       subclass: WDL
       primaryDescriptorPath: /QC/wdl/workflows/phasing_homozygous_v4.wdl
+   -  name: Asm2AsmAlignerPaf
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/Asm2AsmAlignerPaf.wdl
