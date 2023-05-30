@@ -16,6 +16,6 @@ workflow asm2asmAlignerPaf{
           dockerImage="mobinasri/long_read_aligner:v0.2"
       }
   output {
-      asm2asmPaf=alignmentPaf.pafFile
+      File asm2asmPaf=alignmentPaf.pafFile
   }
 }
