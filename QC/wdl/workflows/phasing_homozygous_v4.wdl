@@ -9,6 +9,8 @@ import "../tasks/deepvariant.wdl" as deepvariant_t
 import "../tasks/pepperMarginDeepVariant.wdl" as pmdv_t
 import "../tasks/marginPhase.wdl" as margin_phase_t
 import "../tasks/long_read_aligner_scattered_PhaseHom.wdl" as long_read_aligner_scattered_t
+import "../tasks/secphase.wdl" as secphase_t
+import "../tasks/concatVcf.wdl" as concatVcf_t
 
 
 workflow phasingHomozygous{
@@ -18,6 +20,8 @@ workflow phasingHomozygous{
         File paternalFastaIndex
         File maternalFasta
         File maternalFastaIndex
+
+        File diploidFaGz
 
         File allHifiToDiploidBam
         File allHifiToDiploidBai
@@ -65,10 +69,10 @@ workflow phasingHomozygous{
         input:
             readFiles=[subDipBamByHomozygous.subBam],
             assembly=paternalFasta,
-            aligner="minimap",
+            aligner="minimap2",
             preset="map-pb",
             sampleName=sampleName,
-            sampleSuffix="all2pat.minimap",
+            sampleSuffix="all2pat.minimap2",
             options="--cs --eqx -Y -L",
             dockerImage="mobinasri/long_read_aligner:v0.2"
     }
@@ -77,10 +81,10 @@ workflow phasingHomozygous{
         input:
             readFiles=[subDipBamByHomozygous.subBam],
             assembly=maternalFasta,
-            aligner="minimap",
+            aligner="minimap2",
             preset="map-pb",
             sampleName=sampleName,
-            sampleSuffix="all2mat.minimap",
+            sampleSuffix="all2mat.minimap2",
             options="--cs --eqx -Y -L",
             dockerImage="mobinasri/long_read_aligner:v0.2"
     }
@@ -150,6 +154,13 @@ workflow phasingHomozygous{
           bamFileIdx=allONTToPatBai,
           outPrefix="phased_Vcf_UL_Pat",
           HifiOrONT="ONT"
+    }
+    call secphase_t.runSecPhase as runSecPhase {
+        input:
+          inputBam=allHifiToDiploidBam,
+          diploidAssemblyFastaGz=diploidFastaGz
+          phasedVcf=
+        File? variantBed
     }
     call margin_phase_t.marginPhase as marginPhaseMat {
         input:
