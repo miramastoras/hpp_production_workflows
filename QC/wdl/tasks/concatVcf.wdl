@@ -6,8 +6,8 @@ workflow concatVCF {
     call bcftoolsConcat
 
     output {
-        File filtVcfOut=filter_t.vcfOut
-        File filtVcfOutIdx=filter_t.vcfOutIdx
+        File concatVcf=bcftoolsConcat.vcfOut
+        File concatVcfIdx=bcftoolsConcat.vcfOutIdx
     }
 }
 
@@ -22,26 +22,30 @@ task bcftoolsConcat {
         String dockerImage = "kishwars/pepper_deepvariant:r0.8"
 
     }
-
-    parameter_meta {
-        vcf1: "VCF #1 to combine. Must be bgzipped."
-        vcf2: "VCF #2 to combine. Must be bgzipped."
-    }
-
     command <<<
         # exit when a command fails, fail with unset variables, print commands before execution
         set -eux -o pipefail
         set -o xtrace
 
+        VCF1_PREFIX=$(basename ~{vcf1})
+        VCF2_PREFIX=$(basename ~{vcf2})
 
-        bcftools concat -a ~{}
+        bgzip -c ~{vcf1} > ./vcf1.vcf.gz
+        bgzip -c ~{vcf2} > ./vcf2.vcf.gz
 
-        tabix -p vcf ~{outputFile}
+        tabix -p vcf ./vcf1.vcf.gz
+        tabix -p vcf ./vcf2.vcf.gz
+
+        mkdir output
+
+        bcftools concat -a ./vcf1.vcf.gz ./vcf2.vcf.gz > output/${VCF1_PREFIX}_${VCF2_PREFIX}.vcf.gz
+
+        tabix -p vcf output/${VCF1_PREFIX}_${VCF2_PREFIX}.vcf.gz
     >>>
 
     output {
-        File vcfOut = outputFile
-        File vcfOutIdx = outputFileIdx
+        File vcfOut = glob("output/*.vcf.gz")[0]
+        File vcfOutIdx = glob("output/*.vcf.gz.tbi")[0]
     }
 
     runtime {

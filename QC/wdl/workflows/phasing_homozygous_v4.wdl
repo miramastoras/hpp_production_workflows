@@ -155,13 +155,7 @@ workflow phasingHomozygous{
           outPrefix="phased_Vcf_UL_Pat",
           HifiOrONT="ONT"
     }
-    call secphase_t.runSecPhase as runSecPhase {
-        input:
-          inputBam=allHifiToDiploidBam,
-          diploidAssemblyFastaGz=diploidFastaGz
-          phasedVcf=
-        File? variantBed
-    }
+
     call margin_phase_t.marginPhase as marginPhaseMat {
         input:
           vcfFile=FilterDVMat.vcfOut,
@@ -172,6 +166,20 @@ workflow phasingHomozygous{
           bamFileIdx=allONTToMatBai,
           outPrefix="phased_Vcf_UL_Mat",
           HifiOrONT="ONT"
+    }
+
+    call concatVcf_t.bcftoolsConcat as bcftoolsConcat {
+        input:
+          vcf1=marginPhasePat.phasedVcf,
+          vcf2=marginPhaseMat.phasedVcf
+    }
+
+    call secphase_t.runSecPhase as runSecPhase {
+        input:
+          inputBam=allHifiToDiploidBam,
+          diploidAssemblyFastaGz=diploidFastaGz
+          phasedVcf=bcftoolsConcat.vcfOut
+          variantBed=findHomozygousRegions.bed
     }
     output {
         File phasedVcfMat=marginPhaseMat.phasedVcf
@@ -196,5 +204,7 @@ workflow phasingHomozygous{
         File deepVariantPatFilt=FilterDVPat.vcfOut
         File deepVariantMatFilt=FilterDVMat.vcfOut
 
+        File secphaseOutLog=runSecPhase.outLog
+        File secphaseVariantBlocks=runSecPhase.variantBlocksBed
     }
 }

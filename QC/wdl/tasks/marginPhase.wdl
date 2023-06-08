@@ -65,9 +65,10 @@ task marginPhase {
         mkdir output/
         margin phase ${BAM} ${REF} ${VCF} ${PARAMS} -t ~{threads} -o output/~{outPrefix} -M
 
+
     >>>
     output {
-    File phasedVcf = glob("output/*.vcf")[0]
+        File phasedVcf = glob("output/*.vcf")[0]
     }
 
     runtime {
