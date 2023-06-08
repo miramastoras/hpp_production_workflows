@@ -38,8 +38,9 @@ task bcftoolsConcat {
 
         mkdir output
 
-        bcftools concat -a ./vcf1.vcf.gz ./vcf2.vcf.gz > output/${VCF1_PREFIX}_${VCF2_PREFIX}.vcf.gz
+        bcftools concat -a ./vcf1.vcf.gz ./vcf2.vcf.gz > output/${VCF1_PREFIX}_${VCF2_PREFIX}.vcf
 
+        bgzip output/${VCF1_PREFIX}_${VCF2_PREFIX}.vcf
         tabix -p vcf output/${VCF1_PREFIX}_${VCF2_PREFIX}.vcf.gz
     >>>
 
