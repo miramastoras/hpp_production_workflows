@@ -11,6 +11,8 @@ import "../tasks/marginPhase.wdl" as margin_phase_t
 import "../tasks/long_read_aligner_scattered_PhaseHom.wdl" as long_read_aligner_scattered_t
 import "../tasks/secphase.wdl" as secphase_t
 import "../tasks/concatVcf.wdl" as concatVcf_t
+import "../tasks/get_mapq_table.wdl" as get_mapq_t
+import "../tasks/sepReadsByHaplotype.wdl" as sepReadsByHap_t
 
 
 workflow phasingHomozygous{
@@ -181,6 +183,30 @@ workflow phasingHomozygous{
           phasedVcf=bcftoolsConcat.vcfOut,
           variantBed=findHomozygousRegions.bed
     }
+
+    call get_mapq_t.getMapQTable as getMapQTable {
+        input:
+          allHifiToMatBam=correctBamMaxDivergenceMat.correctedBam,
+          allHifiToMatBai=correctBamMaxDivergenceMat.correctedBamIndex,
+          allHifiToPatBam=correctBamMaxDivergencePat.correctedBam,
+          allHifiToPatBai=correctBamMaxDivergencePat.correctedBamIndex,
+          secPhaseBed=runSecPhase.variantBlocksBed
+    }
+
+    call correct_bam_t.correctBam as correctBamSecPhase {
+        input:
+          Bam=allHifiToDiploidBam,
+          mapqTableText=getMapQTable.mapqTable,
+          phasingLogText=runSecPhase.outLog,
+          suffix="UL_phased"
+    }
+
+    call sepReadsByHap_t.Separate as sepPhasedReadsByHap {
+        input:
+          dipBam=correctBamSecPhase.correctedBam,
+          hap1Fai=paternalFastaIndex,
+          hap2Fai=maternalFastaIndex
+    }
     output {
         File phasedVcfMat=marginPhaseMat.phasedVcf
         File phasedVcfPat=marginPhasePat.phasedVcf
@@ -206,5 +232,8 @@ workflow phasingHomozygous{
 
         File secphaseOutLog=runSecPhase.outLog
         File secphaseVariantBlocks=runSecPhase.variantBlocksBed
+
+        File finalPhasedHap1Bam=sepPhasedReadsByHap.hap1Bam
+        File finalPhasedHap2Bam=sepPhasedReadsByHap.hap2Bam
     }
 }
