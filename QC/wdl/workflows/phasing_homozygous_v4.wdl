@@ -177,7 +177,7 @@ workflow phasingHomozygous{
     call secphase_t.runSecPhase as runSecPhase {
         input:
           inputBam=allHifiToDiploidBam,
-          diploidAssemblyFastaGz=diploidFastaGz,
+          diploidAssemblyFastaGz=diploidFaGz,
           phasedVcf=bcftoolsConcat.vcfOut,
           variantBed=findHomozygousRegions.bed
     }
