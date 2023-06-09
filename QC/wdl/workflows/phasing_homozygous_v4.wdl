@@ -71,10 +71,10 @@ workflow phasingHomozygous{
         input:
             readFiles=[subDipBamByHomozygous.subBam],
             assembly=paternalFasta,
-            aligner="minimap2",
+            aligner="winnowmap",
             preset="map-pb",
             sampleName=sampleName,
-            sampleSuffix="all2pat.minimap2",
+            sampleSuffix="all2pat.winnowmap",
             options="--cs --eqx -Y -L",
             dockerImage="mobinasri/long_read_aligner:v0.2"
     }
@@ -83,10 +83,10 @@ workflow phasingHomozygous{
         input:
             readFiles=[subDipBamByHomozygous.subBam],
             assembly=maternalFasta,
-            aligner="minimap2",
+            aligner="winnowmap",
             preset="map-pb",
             sampleName=sampleName,
-            sampleSuffix="all2mat.minimap2",
+            sampleSuffix="all2mat.winnowmap",
             options="--cs --eqx -Y -L",
             dockerImage="mobinasri/long_read_aligner:v0.2"
     }
