@@ -22,9 +22,9 @@ task FindHomozygousRegions{
         String extendBp
         String outPrefix
 
-        Int memSizeGB = 128
-        Int threadCount = 64
-        Int diskSizeGB = 128
+        Int memSizeGB = 8
+        Int threadCount = 2
+        Int diskSizeGB = 8
         String dockerImage = "mobinasri/secphase:dev-v0.2.0"
     }
     command <<<
