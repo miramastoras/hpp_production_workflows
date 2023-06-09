@@ -181,9 +181,7 @@ workflow phasingHomozygous{
           inputBam=allHifiToDiploidBam,
           diploidAssemblyFastaGz=diploidFaGz,
           phasedVcf=bcftoolsConcat.vcfOut,
-          variantBed=findHomozygousRegions.bed,
-          secphaseDockerImage = "mobinasri/secphase:v0.4.0",
-          version = "v0.4.0"
+          variantBed=findHomozygousRegions.bed
     }
 
     call get_mapq_t.getMapQTable as getMapQTable {
