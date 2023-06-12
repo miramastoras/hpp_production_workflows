@@ -16,7 +16,11 @@ import "../tasks/sepReadsByHaplotype.wdl" as sepReadsByHap_t
 
 
 workflow phasingHomozygous{
-
+    meta {
+        author: "Mira Mastoras"
+        email: "mmastora@ucsc.edu"
+        description: "workflow to phase hifi reads in homozygous regions using ONT UL data"
+    }
     input {
         File paternalFasta
         File paternalFastaIndex
