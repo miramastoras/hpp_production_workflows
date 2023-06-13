@@ -1,6 +1,6 @@
 version 1.0
 
-# This is a task level wdl workflow to apply a set of variants to an assembly for polishing using bcftools consensus
+# This is a task level wdl workflow to apply a set of polishing variants to a diploid assembly using bcftools consensus
 
 workflow runApplyPolish {
     meta {
@@ -17,7 +17,8 @@ workflow runApplyPolish {
 
 task applyPolish{
     input {
-        File polishingVcf
+        File hap1PolishingVcf
+        File hap2PolishingVcf
         File hap1AsmRaw
         File hap2AsmRaw
         String outPrefix
@@ -33,19 +34,29 @@ task applyPolish{
         set -eux -o pipefail
         set -o xtrace
 
-        VCF_FILENAME="~{polishingVcf}"
+        H1_VCF_FILENAME="~{hap1PolishingVcf}"
+        H2_VCF_FILENAME="~{hap2PolishingVcf}"
 
-        FILENAME=$(basename -- "~{polishingVcf}")
-        SUFFIX="${FILENAME##*.}"
+        H1_FILENAME=$(basename -- "~{hap1PolishingVcf}")
+        H2_FILENAME=$(basename -- "~{hap2PolishingVcf}")
 
-        if [[ "$SUFFIX" != "gz" ]] ; then
-            bcftools view -Oz ~{polishingVcf} > "~{polishingVcf}".gz
-            VCF_FILENAME="~{polishingVcf}".gz
+        H1_SUFFIX="${H1_FILENAME##*.}"
+        H2_SUFFIX="${H2_FILENAME##*.}"
+
+        if [[ "$H1_SUFFIX" != "gz" ]] ; then
+            bcftools view -Oz ~{hap1PolishingVcf} > "~{hap1PolishingVcf}".gz
+            H1_VCF_FILENAME="~{hap1PolishingVcf}".gz
         fi
 
-        bcftools index $VCF_FILENAME
+        if [[ "$H2_SUFFIX" != "gz" ]] ; then
+            bcftools view -Oz ~{hap2PolishingVcf} > "~{hap2PolishingVcf}".gz
+            H1_VCF_FILENAME="~{hap2PolishingVcf}".gz
+        fi
 
-        bcftools consensus -f ~{hap1AsmRaw} -H 2 $VCF_FILENAME > ~{outPrefix}.hap1.polished.fasta
+        bcftools index $H1_VCF_FILENAME
+        bcftools index $H2_VCF_FILENAME
+
+        bcftools consensus -f ~{hap1AsmRaw} -H 2 $H1_VCF_FILENAME > ~{outPrefix}.hap1.polished.fasta
         bcftools consensus -f ~{hap2AsmRaw} -H 2 $VCF_FILENAME > ~{outPrefix}.hap2.polished.fasta
     >>>
     output {
