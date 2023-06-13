@@ -17,7 +17,7 @@ workflow diploid_DeepPolisher {
         File paternalRawFasta
         File paternalRawFastaIndex
         File maternalRawFasta
-        File maternalRawFastaIdx
+        File maternalRawFastaIndex
 
         File ModelFilesTarGZ
         File DeepPolisherDocker
