@@ -204,3 +204,12 @@ workflows:
    -  name: Asm2AsmAlignerPaf
       subclass: WDL
       primaryDescriptorPath: /QC/wdl/tasks/Asm2AsmAlignerPaf.wdl
+   -  name: DiploidDeepPolisher
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/workflows/diploid_DeepPolisher.wdl
+   -  name: HPRCDeepPolisher
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/workflows/hprc_DeepPolisher.wdl
+   -  name: DeepPolisher
+      subclass: WDL
+      primaryDescriptorPath: /QC/wdl/tasks/DeepPolisher.wdl
