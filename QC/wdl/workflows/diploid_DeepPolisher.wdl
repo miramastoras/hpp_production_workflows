@@ -1,7 +1,7 @@
 version 1.0
 
 import "../tasks/sepReadsByHaplotype.wdl" as sepReadsByHap_t
-import "../tasks/DeepPolisher.wdl" as deepPolisher_t
+import "../tasks/DeepPolisher.wdl" as DeepPolisher_t
 
 workflow diploid_DeepPolisher {
     meta {
@@ -23,7 +23,6 @@ workflow diploid_DeepPolisher {
         File DeepPolisherDocker
 
         String sampleName
-
     }
 
     call sepReadsByHap_t.Separate as sepPhasedReadsByHap {
@@ -33,7 +32,7 @@ workflow diploid_DeepPolisher {
           hap2Fai=maternalRawFastaIndex
     }
 
-    call deepPolisher_t.runDeepPolisher as runDeepPolisherHap1 {
+    call DeepPolisher_t.runDeepPolisher as runDeepPolisherHap1 {
         input:
           Bam=sepPhasedReadsByHap.hap1Bam,
           Bai=sepPhasedReadsByHap.hap1Bai,
@@ -43,7 +42,7 @@ workflow diploid_DeepPolisher {
           sampleName=sampleName
     }
 
-    call deepPolisher_t.runDeepPolisher as runDeepPolisherHap2 {
+    call DeepPolisher_t.runDeepPolisher as runDeepPolisherHap2 {
         input:
           Bam=sepPhasedReadsByHap.hap2Bam,
           Bai=sepPhasedReadsByHap.hap2Bai,
@@ -54,9 +53,10 @@ workflow diploid_DeepPolisher {
     }
 
     output {
-        File Hap1_deepPolisherVcf=runDeepPolisherHap1.PolisherVcf
-        File Hap1_deepPolisherVcfTbi=runDeepPolisherHap1.PolisherVcfTbi
+        File Hap1_DeepPolisherVcf=runDeepPolisherHap1.PolisherVcf
+        File Hap1_DeepPolisherVcfTbi=runDeepPolisherHap1.PolisherVcfTbi
 
-        File Hap2_deepPolisherVcf=runDeepPolisherHap2.PolisherVcf
-        File Hap2_deepPolisherVcfTbi=runDeepPolisherHap2.PolisherVcfTbi
+        File Hap2_DeepPolisherVcf=runDeepPolisherHap2.PolisherVcf
+        File Hap2_DeepPolisherVcfTbi=runDeepPolisherHap2.PolisherVcfTbi
     }
+}
