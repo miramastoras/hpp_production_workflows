@@ -25,7 +25,7 @@ workflow runDeepPolisher {
             sampleName=sampleName,
             dockerImage=dockerImage
     }
-    call DCPostProcess {
+    call DPPostProcess {
         input:
             VCFsTarGz=Polisher.VCFsTarGz
     }
