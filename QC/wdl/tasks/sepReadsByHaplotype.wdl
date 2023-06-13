@@ -51,7 +51,7 @@ task Separate{
         File hap1Bam = glob("*hap1.bam")[0]
         File hap1Bai = glob("*hap1.bam.bai")[0]
         File hap2Bam = glob("*hap2.bam")[0]
-        File hap2Bai = glob("*hap2.bai")[0]
+        File hap2Bai = glob("*hap2.bam.bai")[0]
     }
     runtime {
         memory: memSizeGB + " GB"
