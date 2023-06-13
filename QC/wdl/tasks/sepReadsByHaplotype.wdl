@@ -11,7 +11,9 @@ workflow runSepReadsByHap {
     call Separate
     output {
         File hap1Bam = Separate.hap1Bam
+        File hap1Bai = Separate.hap1Bai
         File hap2Bam = Separate.hap2Bam
+        File hap2Bai = Separate.hap2Bai
     }
 }
 
@@ -41,10 +43,15 @@ task Separate{
         samtools view -@ ~{threadCount} -bh -L ~{hap1Fai}.bed ~{dipBam} > ${PREFIX}.hap1.bam
         samtools view -@ ~{threadCount} -bh -L ~{hap2Fai}.bed ~{dipBam} > ${PREFIX}.hap2.bam
 
+        samtools index ${PREFIX}.hap1.bam
+        samtools index ${PREFIX}.hap2.bam
+
     >>>
     output {
         File hap1Bam = glob("*hap1.bam")[0]
+        File hap1Bai = glob("*hap1.bam.bai")[0]
         File hap2Bam = glob("*hap2.bam")[0]
+        File hap2Bai = glob("*hap2.bai")[0]
     }
     runtime {
         memory: memSizeGB + " GB"
