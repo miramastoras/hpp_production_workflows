@@ -21,12 +21,16 @@ workflow hprc_DeepPolisher {
         File diploidRawFasta
         File diploidRawFastaIdx
 
+        Array[File] ONTReadsUL
+        Array[File] HifiReads
+
         String deepPolisherDocker
         String sampleName
     }
 
     call long_read_aligner_scattered_t.longReadAlignmentScattered as alignHifiToDiploid {
         assembly=diploidRawFasta,
+        readFiles=HifiReads,
         aligner="winnowmap",
         preset="map-pb",
         sampleName=sampleName,
@@ -36,6 +40,7 @@ workflow hprc_DeepPolisher {
 
     call long_read_aligner_scattered_t.longReadAlignmentScattered as alignONTToPat {
         assembly=paternalRawFasta,
+        readFiles=ONTReadsUL,
         aligner="winnowmap",
         preset="map-ont",
         sampleName=sampleName,
@@ -44,8 +49,13 @@ workflow hprc_DeepPolisher {
     }
 
     call long_read_aligner_scattered_t.longReadAlignmentScattered as alignONTToMat {
-
-
+        assembly=maternalRawFasta,
+        readFiles=ONTReadsUL,
+        aligner="winnowmap",
+        preset="map-ont",
+        sampleName=sampleName,
+        options="--cs --eqx -L -Y",
+        dockerImage="mobinasri/long_read_aligner:v0.2"
     }
 
     call phasing_homozygous_t as phaseHomozygousRegions {

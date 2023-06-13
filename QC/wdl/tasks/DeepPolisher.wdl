@@ -132,7 +132,7 @@ task DPPostProcess{
         cat polisher_output.header polisher_output.sorted.calls_only > polisher_output.vcf
 
         bgzip polisher_output.vcf
-        tabix -p vcf polisher_output.vcf.gz.tbi
+        tabix -p vcf polisher_output.vcf.gz
 
         >>>
 
