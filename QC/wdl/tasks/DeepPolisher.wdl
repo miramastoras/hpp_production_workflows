@@ -27,7 +27,7 @@ workflow runDeepPolisher {
     }
     call DPPostProcess {
         input:
-            VCFsTarGz=Polisher.VCFsTarGz
+            VCFsTarGz=DeepPolisher.VCFsTarGz
     }
     output {
         File PolisherVcf = DPPostProcess.vcfFile
