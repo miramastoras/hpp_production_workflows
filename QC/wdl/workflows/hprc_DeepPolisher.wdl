@@ -9,8 +9,7 @@ workflow hprc_DeepPolisher {
     meta {
         author: "Mira Mastoras"
         email: "mmastora@ucsc.edu"
-        description: "Full HPRC polishing pipeline: aligning Hifi reads to raw diploid assembly,
-        phasing homozygous regions with ONT UL, running DeepPolisher and applying polish to raw assemblies"
+        description: "Full HPRC polishing pipeline: aligning Hifi reads to raw diploid assembly, phasing homozygous regions with ONT UL, running DeepPolisher and applying polish to raw assemblies"
     }
 
     input {
@@ -91,7 +90,7 @@ workflow hprc_DeepPolisher {
         sampleName=sampleName
     }
 
-    ## Apply polishing variants to assemblies 
+    ## Apply polishing variants to assemblies
     call applyPolish_t.applyPolish as applyDPPolish {
         hap1PolishingVcf=DeepPolisher.Hap1_DeepPolisherVcf,
         hap2PolishingVcf=DeepPolisher.Hap2_DeepPolisherVcf,
