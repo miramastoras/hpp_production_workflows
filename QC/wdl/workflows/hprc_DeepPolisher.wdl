@@ -65,7 +65,7 @@ workflow hprc_DeepPolisher {
     }
 
     ## Phase reads in homozygous regions with UL, secphase marker mode in non-homoyzgous regions
-    call phasing_homozygous_t as phaseHomozygousRegions {
+    call phasing_homozygous_t.phasingHomozygous as phaseHomozygousRegions {
         input:
           paternalFasta=paternalRawFasta,
           paternalFastaIndex=paternalRawFastaIndex,
