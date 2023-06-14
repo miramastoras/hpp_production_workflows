@@ -50,14 +50,14 @@ task applyPolish{
 
         if [[ "$H2_SUFFIX" != "gz" ]] ; then
             bcftools view -Oz ~{hap2PolishingVcf} > "~{hap2PolishingVcf}".gz
-            H1_VCF_FILENAME="~{hap2PolishingVcf}".gz
+            H2_VCF_FILENAME="~{hap2PolishingVcf}".gz
         fi
 
         bcftools index $H1_VCF_FILENAME
         bcftools index $H2_VCF_FILENAME
 
         bcftools consensus -f ~{hap1AsmRaw} -H 2 $H1_VCF_FILENAME > ~{outPrefix}.hap1.polished.fasta
-        bcftools consensus -f ~{hap2AsmRaw} -H 2 $VCF_FILENAME > ~{outPrefix}.hap2.polished.fasta
+        bcftools consensus -f ~{hap2AsmRaw} -H 2 $H2_VCF_FILENAME > ~{outPrefix}.hap2.polished.fasta
     >>>
     output {
         File hap1Polished = "~{outPrefix}.hap1.polished.fasta"
