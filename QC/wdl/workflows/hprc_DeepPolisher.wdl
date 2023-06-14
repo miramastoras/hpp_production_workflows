@@ -30,73 +30,79 @@ workflow hprc_DeepPolisher {
 
     ## Align all hifi reads to diploid assembly
     call long_read_aligner_scattered_t.longReadAlignmentScattered as alignHifiToDiploid {
-        assembly=diploidRawFasta,
-        readFiles=HifiReads,
-        aligner="winnowmap",
-        preset="map-pb",
-        sampleName=sampleName,
-        options="--cs --eqx -L -Y -I8g",
-        dockerImage="mobinasri/long_read_aligner:v0.2"
+        input:
+          assembly=diploidRawFasta,
+          readFiles=HifiReads,
+          aligner="winnowmap",
+          preset="map-pb",
+          sampleName=sampleName,
+          options="--cs --eqx -L -Y -I8g",
+          dockerImage="mobinasri/long_read_aligner:v0.2"
     }
 
     ## Align all ONT UL reads to paternal haplotype
     call long_read_aligner_scattered_t.longReadAlignmentScattered as alignONTToPat {
-        assembly=paternalRawFasta,
-        readFiles=ONTReadsUL,
-        aligner="winnowmap",
-        preset="map-ont",
-        sampleName=sampleName,
-        options="--cs --eqx -L -Y",
-        dockerImage="mobinasri/long_read_aligner:v0.2"
+        input:
+          assembly=paternalRawFasta,
+          readFiles=ONTReadsUL,
+          aligner="winnowmap",
+          preset="map-ont",
+          sampleName=sampleName,
+          options="--cs --eqx -L -Y",
+          dockerImage="mobinasri/long_read_aligner:v0.2"
     }
 
     ## Align all ONT UL reads to maternal haplotype
     call long_read_aligner_scattered_t.longReadAlignmentScattered as alignONTToMat {
-        assembly=maternalRawFasta,
-        readFiles=ONTReadsUL,
-        aligner="winnowmap",
-        preset="map-ont",
-        sampleName=sampleName,
-        options="--cs --eqx -L -Y",
-        dockerImage="mobinasri/long_read_aligner:v0.2"
+        input:
+          assembly=maternalRawFasta,
+          readFiles=ONTReadsUL,
+          aligner="winnowmap",
+          preset="map-ont",
+          sampleName=sampleName,
+          options="--cs --eqx -L -Y",
+          dockerImage="mobinasri/long_read_aligner:v0.2"
     }
 
     ## Phase reads in homozygous regions with UL, secphase marker mode in non-homoyzgous regions
     call phasing_homozygous_t as phaseHomozygousRegions {
-        paternalFasta=paternalRawFasta,
-        paternalFastaIndex=paternalRawFastaIndex,
-        maternalFasta=maternalRawFasta,
-        maternalFastaIndex=maternalRawFastaIndex,
-        diploidFaGz=diploidRawFasta,
-        allHifiToDiploidBam=alignHifiToDiploid.bamFile,
-        allHifiToDiploidBai=alignHifiToDiploid.baiFile
-        allONTToMatBam=alignONTToMat.bamFile,
-        allONTToPatBam=alignONTToPat.bamFile,
-        allONTToMatBai=alignONTToMat.baiFile,
-        allONTToPatBai=alignONTToPat.baiFile,
-        sampleName=sampleName
+        input:
+          paternalFasta=paternalRawFasta,
+          paternalFastaIndex=paternalRawFastaIndex,
+          maternalFasta=maternalRawFasta,
+          maternalFastaIndex=maternalRawFastaIndex,
+          diploidFaGz=diploidRawFasta,
+          allHifiToDiploidBam=alignHifiToDiploid.bamFile,
+          allHifiToDiploidBai=alignHifiToDiploid.baiFile
+          allONTToMatBam=alignONTToMat.bamFile,
+          allONTToPatBam=alignONTToPat.bamFile,
+          allONTToMatBai=alignONTToMat.baiFile,
+          allONTToPatBai=alignONTToPat.baiFile,
+          sampleName=sampleName
     }
 
     ## Pass final phased hifi alignments to deepPolisher to produce polishing variants
     call diploid_deepPolisher_t.diploid_DeepPolisher as DeepPolisher {
-        hifiPhasedDipBam=phaseHomozygousRegions.finalPhasedDipBam,
-        hifiPhasedDipBai=phaseHomozygousRegions.finalPhasedDipBai,
-        paternalRawFasta=paternalRawFasta,
-        paternalRawFastaIndex=paternalRawFastaIndex,
-        maternalRawFasta=maternalRawFasta,
-        maternalRawFastaIndex=maternalRawFastaIndex,
-        ModelFilesTarGZ=DeepPolisherModelFilesTarGZ,
-        DeepPolisherDocker=DeepPolisherDocker,
-        sampleName=sampleName
+        input:
+          hifiPhasedDipBam=phaseHomozygousRegions.finalPhasedDipBam,
+          hifiPhasedDipBai=phaseHomozygousRegions.finalPhasedDipBai,
+          paternalRawFasta=paternalRawFasta,
+          paternalRawFastaIndex=paternalRawFastaIndex,
+          maternalRawFasta=maternalRawFasta,
+          maternalRawFastaIndex=maternalRawFastaIndex,
+          ModelFilesTarGZ=DeepPolisherModelFilesTarGZ,
+          DeepPolisherDocker=DeepPolisherDocker,
+          sampleName=sampleName
     }
 
     ## Apply polishing variants to assemblies
     call applyPolish_t.applyPolish as applyDPPolish {
-        hap1PolishingVcf=DeepPolisher.Hap1_DeepPolisherVcf,
-        hap2PolishingVcf=DeepPolisher.Hap2_DeepPolisherVcf,
-        hap1AsmRaw=paternalRawFasta,
-        hap2AsmRaw=maternalRawFasta,
-        outPrefix=sampleName
+        input:
+          hap1PolishingVcf=DeepPolisher.Hap1_DeepPolisherVcf,
+          hap2PolishingVcf=DeepPolisher.Hap2_DeepPolisherVcf,
+          hap1AsmRaw=paternalRawFasta,
+          hap2AsmRaw=maternalRawFasta,
+          outPrefix=sampleName
     }
 
     output {
