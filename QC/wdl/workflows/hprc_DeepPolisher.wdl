@@ -73,7 +73,7 @@ workflow hprc_DeepPolisher {
           maternalFastaIndex=maternalRawFastaIndex,
           diploidFaGz=diploidRawFasta,
           allHifiToDiploidBam=alignHifiToDiploid.bamFile,
-          allHifiToDiploidBai=alignHifiToDiploid.baiFile
+          allHifiToDiploidBai=alignHifiToDiploid.baiFile,
           allONTToMatBam=alignONTToMat.bamFile,
           allONTToPatBam=alignONTToPat.bamFile,
           allONTToMatBai=alignONTToMat.baiFile,
