@@ -6,10 +6,7 @@ workflow asm2asmAlignerPaf{
 
   call long_read_aligner_t.alignmentPaf as alignmentPaf{
       input:
-          aligner="winnowmap",
           preset="asm5",
-          options="-L --eqx --cs -c",
-          suffix="mat2pat",
           diskSize=512,
           threadCount=64,
           kmerSize=19,
