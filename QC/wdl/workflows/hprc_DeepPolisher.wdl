@@ -2,7 +2,7 @@ version 1.0
 
 import "../tasks/long_read_aligner_scattered_PhaseHom.wdl" as long_read_aligner_scattered_t
 import "./phasing_homozygous_v4.wdl" as phasing_homozygous_t
-import "./diploid_DeepPolisher.wdl" as diploid_deepPolisher_t
+import "../tasks/DeepPolisher.wdl" as deepPolisher_t
 import "../tasks/applyPolish.wdl" as applyPolish_t
 
 workflow hprc_DeepPolisher {
@@ -82,32 +82,25 @@ workflow hprc_DeepPolisher {
     }
 
     ## Pass final phased hifi alignments to deepPolisher to produce polishing variants
-    call diploid_deepPolisher_t.diploid_DeepPolisher as DeepPolisher {
+    call deepPolisher_t.runDeepPolisher as DeepPolisher {
         input:
-          hifiPhasedDipBam=phaseHomozygousRegions.finalPhasedDipBam,
-          hifiPhasedDipBai=phaseHomozygousRegions.finalPhasedDipBai,
-          paternalRawFasta=paternalRawFasta,
-          paternalRawFastaIndex=paternalRawFastaIndex,
-          maternalRawFasta=maternalRawFasta,
-          maternalRawFastaIndex=maternalRawFastaIndex,
+          Bam=phaseHomozygousRegions.finalPhasedDipBam,
+          Bai=phaseHomozygousRegions.finalPhasedDipBai,
+          Fasta=diploidRawFasta,
           ModelFilesTarGZ=DeepPolisherModelFilesTarGZ,
-          DeepPolisherDocker=DeepPolisherDocker,
+          dockerImage=DeepPolisherDocker,
           sampleName=sampleName
     }
 
     ## Apply polishing variants to assemblies
     call applyPolish_t.applyPolish as applyDPPolish {
         input:
-          hap1PolishingVcf=DeepPolisher.Hap1_DeepPolisherVcf,
-          hap2PolishingVcf=DeepPolisher.Hap2_DeepPolisherVcf,
-          hap1AsmRaw=paternalRawFasta,
-          hap2AsmRaw=maternalRawFasta,
+          polishingVcf=DeepPolisher.PolisherVcf,
+          asmRaw=diploidRawFasta,
           outPrefix=sampleName
     }
 
     output {
-        File polishedAsmHap1=applyDPPolish.hap1Polished
-        File polishedAsmHap2=applyDPPolish.hap2Polished
-
+        File polishedAsm=applyDPPolish.asmPolished
     }
 }
