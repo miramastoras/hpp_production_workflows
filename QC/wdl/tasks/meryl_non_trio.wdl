@@ -37,26 +37,28 @@ task Meryl{
         # make illumina meryls
         samtools fastq -@~{threadCount} ~{ilmBam} > output/${ILM_ID}.fq
         meryl count threads=~{threadCount} k=~{kmerSize} output/${ILM_ID}.fq output output/ilm.k~{kmerSize}.meryl
-        meryl greater-than 1 output/ilm.k~{kmerSize}.meryl output output/ilm.k~{kmerSize}.gt1.meryl
-        rm -rf output/ilm.k~{kmerSize}.meryl
 
         # make hybrid db if hifi supplied
         if [[ ! -z "~{hifiBam}" ]]; then
+
           HIFI_ID=`basename ~{hifiBam} | sed 's/.bam$//'`
           samtools fastq -@~{threadCount} ~{hifiBam} > output/${HIFI_ID}.fq
           meryl count threads=~{threadCount} k=~{kmerSize} output/${HIFI_ID}.fq output output/hifi.k~{kmerSize}.meryl
+
+          # remove low freq kmers to avoid overestimating QV 
           meryl greater-than 1 output/hifi.k~{kmerSize}.meryl output output/hifi.k~{kmerSize}.gt1.meryl
+          meryl greater-than 1 output/ilm.k~{kmerSize}.meryl output output/ilm.k~{kmerSize}.gt1.meryl
           rm -rf output/hifi.k~{kmerSize}.meryl
 
-          # merge with ilm
+          # merge hifi and ilm
           meryl union-max output/ilm.k~{kmerSize}.gt1.meryl output/hifi.k~{kmerSize}.gt1.meryl output hybrid.k~{kmerSize}.gt1.meryl
 
           # tarball
           tar -zcvf hybrid.k~{kmerSize}.gt1.meryl.tar.gz hybrid.k~{kmerSize}.gt1.meryl
 
         else # if not hybrid, return just illumina meryl db
-          mv output/ilm.k~{kmerSize}.gt1.meryl ilm.k~{kmerSize}.gt1.meryl
-          tar -zcvf ilm.k~{kmerSize}.gt1.meryl.tar.gz ilm.k~{kmerSize}.gt1.meryl
+          mv output/ilm.k~{kmerSize}.meryl ilm.k~{kmerSize}.meryl
+          tar -zcvf ilm.k~{kmerSize}.meryl.tar.gz ilm.k~{kmerSize}.meryl
 
         fi
     >>>
