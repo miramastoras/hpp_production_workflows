@@ -32,8 +32,9 @@ ENV PATH=/opt/meryl/build/bin:$PATH
 
 # 5. Get Merqury
 WORKDIR /opt
-wget https://github.com/marbl/merqury/archive/v1.3.tar.gz
-tar -zxvf v1.3.tar.gz
+
+RUN wget https://github.com/marbl/merqury/archive/v1.3.tar.gz && \
+    tar -zxvf v1.3.tar.gz
 ENV PATH=/opt/merqury-1.3:$PATH
 
 WORKDIR /data
