@@ -37,4 +37,6 @@ RUN wget https://github.com/marbl/merqury/archive/v1.3.tar.gz && \
     tar -zxvf v1.3.tar.gz
 ENV PATH=/opt/merqury-1.3:$PATH
 
+ARG MERQURY=/opt/merqury-1.3
+
 WORKDIR /data
