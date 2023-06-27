@@ -38,10 +38,10 @@ task merqury {
         ASM_ID=$(basename ~{assemblyFasta} | sed 's/.gz$//' | sed 's/.fa\(sta\)*$//' | sed 's/[._][pm]at\(ernal\)*//')
 
         # extract kmers
-        tar xvf ~{kmerTarball} &
+        tar xvf ~{kmerTarball} --no-same-owner &
         if [[ -f "~{matKmerTarball}" && -f "~{patKmerTarball}" ]]; then
-            tar xvf ~{matKmerTarball} &
-            tar xvf ~{patKmerTarball} &
+            tar xvf ~{matKmerTarball} --no-same-owner &
+            tar xvf ~{patKmerTarball} --no-same-owner &
         fi
         wait
 
