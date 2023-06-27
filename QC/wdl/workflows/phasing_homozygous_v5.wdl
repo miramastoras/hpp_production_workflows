@@ -168,7 +168,8 @@ workflow phasingHomozygous{
           bamFile=allONTToMatBam,
           bamFileIdx=allONTToMatBai,
           outPrefix="phased_Vcf_UL_Mat"
-
+    }
+    
     call concatVcf_t.bcftoolsConcat as bcftoolsConcat {
         input:
           vcf1=WhatsHapPhasePat.phasedVcf,
