@@ -53,7 +53,7 @@ task applyPolish{
         bcftools consensus -f ~{asmRaw} -H 2 $VCF_FILENAME > ${PREFIX}.polished.fasta
     >>>
     output {
-        File asmPolished = "~{outPrefix}.polished.fasta"
+        File asmPolished = glob("*.polished.fasta")[0]
     }
     runtime {
         memory: memSizeGB + " GB"
