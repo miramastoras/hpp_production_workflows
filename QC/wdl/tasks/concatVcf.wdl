@@ -27,11 +27,26 @@ task bcftoolsConcat {
         set -eux -o pipefail
         set -o xtrace
 
+        FILENAME1=$(basename -- "~{vcf1}")
+        SUFFIX1="${FILENAME1##*.}"
+
+        FILENAME2=$(basename -- "~{vcf2}")
+        SUFFIX2="${FILENAME2##*.}"
+
+        if [[ "$SUFFIX1" != "gz" ]] ; then
+            bgzip -c ~{vcf1} > ./vcf1.vcf.gz
+        else
+            cp ~{vcf1} ./vcf1.vcf.gz
+        fi
+
+        if [[ "$SUFFIX2" != "gz" ]] ; then
+            bgzip -c ~{vcf2} > ./vcf2.vcf.gz
+        else
+            cp ~{vcf2} ./vcf2.vcf.gz 
+        fi
+
         VCF1_PREFIX=$(basename ~{vcf1})
         VCF2_PREFIX=$(basename ~{vcf2})
-
-        bgzip -c ~{vcf1} > ./vcf1.vcf.gz
-        bgzip -c ~{vcf2} > ./vcf2.vcf.gz
 
         tabix -p vcf ./vcf1.vcf.gz
         tabix -p vcf ./vcf2.vcf.gz
