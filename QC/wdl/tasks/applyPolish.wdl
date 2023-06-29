@@ -19,6 +19,7 @@ task applyPolish{
         File polishingVcf
         File asmRaw
         String outPrefix
+        String? HaplotypeLabel
 
         String dockerImage = "kishwars/pepper_deepvariant:r0.8"
         Int memSizeGB = 128
@@ -36,6 +37,11 @@ task applyPolish{
         FILENAME=$(basename -- "~{polishingVcf}")
         SUFFIX="${FILENAME##*.}"
 
+        PREFIX="~{outPrefix}"
+
+        if [[ -n "~{HaplotypeLabel}" ]];then
+            PREFIX="${PREFIX}_~{HaplotypeLabel}"
+
         if [[ "$SUFFIX" != "gz" ]] ; then
             bcftools view -Oz ~{polishingVcf} > "~{polishingVcf}".gz
             VCF_FILENAME="~{polishingVcf}".gz
@@ -43,7 +49,7 @@ task applyPolish{
 
         bcftools index $VCF_FILENAME
 
-        bcftools consensus -f ~{asmRaw} -H 2 $VCF_FILENAME > ~{outPrefix}.polished.fasta
+        bcftools consensus -f ~{asmRaw} -H 2 $VCF_FILENAME > ${PREFIX}.polished.fasta
     >>>
     output {
         File asmPolished = "~{outPrefix}.polished.fasta"
