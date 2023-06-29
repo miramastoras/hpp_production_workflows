@@ -93,8 +93,8 @@ task merqury {
 	>>>
 	output {
 		File QV = glob("*.merqury.qv")[0]
-    File FPkmers = glob("*.FPkmers.tar.gz")[0]
 		File outputTarball = glob("*.merqury.tar.gz")[0]
+    File FPkmers = glob("*.FPkmers.tar.gz")[0]
 	}
     runtime {
         memory: memSizeGB + " GB"
