@@ -5,6 +5,7 @@ workflow runMerqury {
     output {
         File QV = merqury.QV
         File outputTarball = merqury.outputTarball
+        File FPkmers = merqury.FPkmers
     }
 }
 
