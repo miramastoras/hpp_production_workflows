@@ -41,6 +41,7 @@ task applyPolish{
 
         if [[ -n "~{HaplotypeLabel}" ]];then
             PREFIX="${PREFIX}_~{HaplotypeLabel}"
+        fi
 
         if [[ "$SUFFIX" != "gz" ]] ; then
             bcftools view -Oz ~{polishingVcf} > "~{polishingVcf}".gz
