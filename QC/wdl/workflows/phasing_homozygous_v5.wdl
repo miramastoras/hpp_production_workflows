@@ -169,7 +169,7 @@ workflow phasingHomozygous{
           bamFileIdx=allONTToMatBai,
           outPrefix="phased_Vcf_UL_Mat"
     }
-    
+
     call concatVcf_t.bcftoolsConcat as bcftoolsConcat {
         input:
           vcf1=WhatsHapPhasePat.phasedVcf,
@@ -198,7 +198,8 @@ workflow phasingHomozygous{
           Bam=allHifiToDiploidBam,
           mapqTableText=getMapQTable.mapqTable,
           phasingLogText=runSecPhase.outLog,
-          suffix="UL_phased"
+          suffix="UL_phased",
+          options="--maxDiv 0.002"
     }
 
     output {
