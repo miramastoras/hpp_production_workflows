@@ -75,6 +75,9 @@ task bedtoolsIntersect {
             bedtools intersect -a ${BED1_ID}_intersect_${BED2_ID}.bed -b ~{BED3} > ${BED1_ID}_intersect_${BED2_ID}_intersect_${BED3_ID}.bed
             rm ${BED1_ID}_intersect_${BED2_ID}.bed
         fi
+
+        echo "Size of final bedfile used in hap.py"
+        awk '{sum += $3-$2}END{print sum}' ${BED1_ID}_intersect_${BED2_ID}.bed
     >>>
     output{
         File outputBED = glob("*intersect*.bed")[0]
