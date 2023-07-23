@@ -23,8 +23,7 @@ workflow runMerfin {
         input:
             genomeScopeStdout = GenomeScope.genomeScopeStdOut,
             lookupTable       = GenomeScope.lookupTable,
-            readmerDBTarball  = readmerDBTarball,
-            vcfFile = CombineVCF.dipVCF
+            readmerDBTarball  = readmerDBTarball
     }
     output {
         File merfinFilteredVcf = Merfin.filteredVCF
