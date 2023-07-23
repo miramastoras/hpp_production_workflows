@@ -11,8 +11,6 @@ workflow runMerfin {
     input {
         File readmerDBTarball
     }
-    call CombineVCF {
-    }
     call MerylHist {
         input:
             readmerDBTarball  = readmerDBTarball
