@@ -91,7 +91,7 @@ task MerylHist {
         set -o xtrace
 
         # untar readmer dbs
-        tar xvf ~{readmerDBTarball}
+        tar xvf ~{readmerDBTarball} --no-same-owner
         READMER_DIR=$(basename ~{readmerDBTarball} | sed 's/.gz$//' | sed 's/.tar$//')
 
         # run genomescope
@@ -166,7 +166,7 @@ task Merfin{
         PREFIX=${FILENAME%.vcf.gz}
 
         # untar readmer dbs
-        tar xvf ~{readmerDBTarball}
+        tar xvf ~{readmerDBTarball} --no-same-owner
         READMER_DIR=$(basename ~{readmerDBTarball} | sed 's/.gz$//' | sed 's/.tar$//')
 
         # Pull out peak value from genomescope output
