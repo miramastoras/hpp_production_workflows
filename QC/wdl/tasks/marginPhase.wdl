@@ -38,9 +38,9 @@ task marginPhase {
 
         # Set param file based on input hifi or ont read alignments
         if [[ ~{HifiOrONT} =~ Hifi ]]; then
-            PARAMS=/opt/margin/params/phase/allParams.phase_vcf.ont.json
-        else
             PARAMS=/opt/margin/params/phase/allParams.phase_vcf.pb-hifi.json
+        else
+            PARAMS=/opt/margin/params/phase/allParams.phase_vcf.ont.json
         fi
 
         # soft link data and indexes so they are in same place
