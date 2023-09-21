@@ -7,13 +7,13 @@ import "../tasks/iris.wdl" as runIris
 import "../tasks/jasmine.wdl" as runJasmine
 
 workflow sv_assembly{
-    
+
     meta{
         author: "Avani Khadilkar"
         email: "akhadilk@ucsc.edu"
         description: "WDL implementation of the small variant like errors calling section of the [T2T Polishing Case Study](https://github.com/arangrhie/T2T-Polish/blob/master/doc/T2T_polishing_case_study.md)."
     }
-    
+
     input{
         File IlluminaInputBam
         File IlluminaIndexBam
@@ -22,13 +22,30 @@ workflow sv_assembly{
         File RefGenome
         File IndexGenome
         String SampleName
-        
+
         Boolean? ParlFilterShortContigs = true
         Boolean? RunParl = false
         String? ParlOtherArgs
         Int? maxDist
         Float? minSeqID
         Int? specReads
+    }
+
+    parameter_meta {
+        inputReads: "Array of Unmapped BAM/s or FASTQ file/s containing ONT R9 reads."
+        referenceFasta: "Reference"
+        threads: "Threads to pass to minimap2, DV, Margin, & Shasta"
+        referenceVntrAnnotations: "Optional vntr annotation input for sniffles"
+        shastaFasta: "Optional input Shasta assembly, assembly is skipped in workflow"
+        inputMappedBams: "Array of input sorted BAMs aligned to the reference"
+        sampleName: "Name of Sample"
+        nbReadsPerChunk: "Number of reads to put into a chunk for parallel alignment chunking"
+        chrs: "list of mapped chromosomes to run PMDV on, instead of calling variants whole genome"
+        inputHaplotaggedBam: "haplotagged BAM from a previous run, skips PMDV"
+        inputHaplotaggedBamIdx: "haplotagged BAM.bai file froma previous run"
+        inputPhasedVCF: "small variant PMDV VCF from previous run"
+        singleInputMappedBamIdx: "mapped BAM.bai from a previous run, skips indexing again"
+        runModbam2bed: "modbam2bed boolean flag in preparation of switching to modkit"
     }
 
     # Run PARLIAMENT on Illumina data if user has chosen to
@@ -54,7 +71,7 @@ workflow sv_assembly{
             SampleName = SampleName,
             outputFileTag = "HiFi"
     }
-    
+
     # Run SNIFFLES on ONT data
 
     call runSniffles.Sniffles as OntSniffles{

@@ -156,7 +156,6 @@ workflow PHARAOH{
     ## Phase variants with UL reads using Margin or WhatsHap
 
     if (useMargin==false) {
-
         call whatshap_phase_t.WhatsHapPhase as WhatsHapPhaseMat {
             input:
               vcfFile=FilterDVMat.vcfOut,
@@ -178,14 +177,9 @@ workflow PHARAOH{
               bamFileIdx=allONTToPatBai,
               outPrefix="phased_Vcf_UL_Pat"
         }
-
-        call concatVcf_t.bcftoolsConcat as bcftoolsConcat {
-            input:
-              vcf1? = WhatsHapPhasePat.phasedVcf,
-              vcf2? = WhatsHapPhaseMat.phasedVcf
-        }
     }
 
+    if (useMargin==true) {
         call margin_phase_t.marginPhase as marginPhasePat {
             input:
               vcfFile=FilterDVPat.vcfOut,
@@ -209,14 +203,13 @@ workflow PHARAOH{
               outPrefix="phased_Vcf_UL_Mat",
               HifiOrONT="ONT"
         }
-
-        call concatVcf_t.bcftoolsConcat as bcftoolsConcat {
-            input:
-              vcf1? = marginPhasePat.phasedVcf,
-              vcf2? = marginPhaseMat.phasedVcf
-        }
     }
 
+    call concatVcf_t.bcftoolsConcat as bcftoolsConcat {
+        input:
+          vcf1 = select_first([marginPhasePat.phasedVcf, WhatsHapPhasePat.phasedVcf]) ,
+          vcf2 = select_first([marginPhaseMat.phasedVcf, WhatsHapPhaseMat.phasedVcf])
+    }
     call secphase_t.runSecPhase as runSecPhase {
         input:
           inputBam=allHifiToDiploidBam,
@@ -245,6 +238,8 @@ workflow PHARAOH{
 
     output {
         File asm2asmPaf=alignmentPaf.pafFile
+
+        File phasedVcf=bcftoolsConcat.vcfOut
 
         File homExtendedbed=findHomozygousRegions.extendedBed
         File homBed=findHomozygousRegions.bed
