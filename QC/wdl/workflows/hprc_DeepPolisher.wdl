@@ -1,7 +1,7 @@
 version 1.0
 
 import "../tasks/long_read_aligner_scattered_PhaseHom.wdl" as long_read_aligner_scattered_t
-import "./phasing_homozygous_v4.wdl" as phasing_homozygous_t
+import "./PHARAOH.wdl" as PHARAOH_t
 import "../tasks/DeepPolisher.wdl" as deepPolisher_t
 import "../tasks/applyPolish.wdl" as applyPolish_t
 
@@ -26,6 +26,7 @@ workflow hprc_DeepPolisher {
         String DeepPolisherDocker
         String sampleName
         String DeepPolisherModelFilesTarGZ
+        Boolean useMargin
     }
 
     ## Align all hifi reads to diploid assembly
@@ -65,7 +66,7 @@ workflow hprc_DeepPolisher {
     }
 
     ## Phase reads in homozygous regions with UL, secphase marker mode in non-homoyzgous regions
-    call phasing_homozygous_t.phasingHomozygous as phaseHomozygousRegions {
+    call PHARAOH_t.PHARAOH as PHARAOH {
         input:
           paternalFasta=paternalRawFasta,
           paternalFastaIndex=paternalRawFastaIndex,
@@ -78,7 +79,8 @@ workflow hprc_DeepPolisher {
           allONTToPatBam=alignONTToPat.bamFile,
           allONTToMatBai=alignONTToMat.baiFile,
           allONTToPatBai=alignONTToPat.baiFile,
-          sampleName=sampleName
+          sampleName=sampleName,
+          useMargin=useMargin
     }
 
     ## Pass final phased hifi alignments to deepPolisher to produce polishing variants
