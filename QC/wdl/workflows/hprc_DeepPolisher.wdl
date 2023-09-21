@@ -86,8 +86,8 @@ workflow hprc_DeepPolisher {
     ## Pass final phased hifi alignments to deepPolisher to produce polishing variants
     call deepPolisher_t.runDeepPolisher as DeepPolisher {
         input:
-          Bam=phaseHomozygousRegions.finalPhasedDipBam,
-          Bai=phaseHomozygousRegions.finalPhasedDipBai,
+          Bam=PHARAOH.finalPhasedDipBam,
+          Bai=PHARAOH.finalPhasedDipBai,
           Fasta=diploidRawFasta,
           ModelFilesTarGZ=DeepPolisherModelFilesTarGZ,
           dockerImage=DeepPolisherDocker,
