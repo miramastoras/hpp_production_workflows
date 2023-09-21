@@ -218,7 +218,7 @@ workflow PHARAOH{
           variantBed=findHomozygousRegions.bed
     }
 
-    call get_mapq_t.getMapQTable as getMapQTable {
+    call get_mapq_t.runGetMapQTable as getMapQ {
         input:
           allHifiToMatBam=correctBamMaxDivergenceMat.correctedBam,
           allHifiToMatBai=correctBamMaxDivergenceMat.correctedBamIndex,
@@ -230,7 +230,7 @@ workflow PHARAOH{
     call correct_bam_t.correctBam as correctBamSecPhase {
         input:
           Bam=allHifiToDiploidBam,
-          mapqTableText=getMapQTable.mapqTable,
+          mapqTableText=getMapQ.mapqTable,
           phasingLogText=runSecPhase.outLog,
           suffix="PHARAOH",
           options="--maxDiv 0.002"

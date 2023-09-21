@@ -2,7 +2,7 @@ version 1.0
 
 import "subBamByBed.wdl" as subBamByBed_t
 
-workflow getMapQTable {
+workflow runGetMapQTable {
     meta {
         author: "Mira Mastoras"
         email: "mmastora@ucsc.edu"
