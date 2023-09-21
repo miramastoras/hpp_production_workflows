@@ -186,7 +186,7 @@ workflow PHARAOH{
         }
     }
 
-    if (useMargin==true) {
+    else {
 
         call margin_phase_t.marginPhase as marginPhasePat {
             input:
