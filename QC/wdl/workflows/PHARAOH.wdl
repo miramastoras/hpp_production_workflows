@@ -181,12 +181,10 @@ workflow PHARAOH{
 
         call concatVcf_t.bcftoolsConcat as bcftoolsConcat {
             input:
-              vcf1=WhatsHapPhasePat.phasedVcf,
-              vcf2=WhatsHapPhaseMat.phasedVcf
+              vcf1? = WhatsHapPhasePat.phasedVcf,
+              vcf2? = WhatsHapPhaseMat.phasedVcf
         }
     }
-
-    else {
 
         call margin_phase_t.marginPhase as marginPhasePat {
             input:
@@ -214,8 +212,8 @@ workflow PHARAOH{
 
         call concatVcf_t.bcftoolsConcat as bcftoolsConcat {
             input:
-              vcf1=marginPhasePat.phasedVcf,
-              vcf2=marginPhaseMat.phasedVcf
+              vcf1? = marginPhasePat.phasedVcf,
+              vcf2? = marginPhaseMat.phasedVcf
         }
     }
 
