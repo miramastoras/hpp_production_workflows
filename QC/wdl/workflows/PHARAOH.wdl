@@ -232,7 +232,7 @@ workflow PHARAOH{
           Bam=allHifiToDiploidBam,
           mapqTableText=getMapQTable.mapqTable,
           phasingLogText=runSecPhase.outLog,
-          suffix="UL_phased",
+          suffix="PHARAOH",
           options="--maxDiv 0.002"
     }
 
