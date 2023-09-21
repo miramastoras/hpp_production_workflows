@@ -8,6 +8,7 @@ import "../tasks/correct_bam.wdl" as correct_bam_t
 import "../tasks/deepvariant.wdl" as deepvariant_t
 import "../tasks/pepperMarginDeepVariant.wdl" as pmdv_t
 import "../tasks/whatsHapPhase.wdl" as whatshap_phase_t
+import "../tasks/marginPhase.wdl" as margin_phase_t
 import "../tasks/long_read_aligner_scattered_PhaseHom.wdl" as long_read_aligner_scattered_t
 import "../tasks/secphase.wdl" as secphase_t
 import "../tasks/concatVcf.wdl" as concatVcf_t
