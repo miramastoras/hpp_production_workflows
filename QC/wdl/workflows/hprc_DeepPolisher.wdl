@@ -17,22 +17,22 @@ workflow hprc_DeepPolisher {
         File paternalRawFastaIndex
         File maternalRawFasta
         File maternalRawFastaIndex
-        File diploidRawFasta
-        File diploidRawFastaIndex
+        File diploidRawFastaGz
+        File diploidRawFastaGzIndex
+        File DeepPolisherModelFilesTarGZ
 
         Array[File] ONTReadsUL
         Array[File] HifiReads
 
         String DeepPolisherDocker
         String sampleName
-        String DeepPolisherModelFilesTarGZ
         Boolean useMargin
     }
 
     ## Align all hifi reads to diploid assembly
     call long_read_aligner_scattered_t.longReadAlignmentScattered as alignHifiToDiploid {
         input:
-          assembly=diploidRawFasta,
+          assembly=diploidRawFastaGz,
           readFiles=HifiReads,
           aligner="winnowmap",
           preset="map-pb",
@@ -72,7 +72,7 @@ workflow hprc_DeepPolisher {
           paternalFastaIndex=paternalRawFastaIndex,
           maternalFasta=maternalRawFasta,
           maternalFastaIndex=maternalRawFastaIndex,
-          diploidFaGz=diploidRawFasta,
+          diploidFaGz=diploidRawFastaGz,
           allHifiToDiploidBam=alignHifiToDiploid.bamFile,
           allHifiToDiploidBai=alignHifiToDiploid.baiFile,
           allONTToMatBam=alignONTToMat.bamFile,
@@ -88,7 +88,7 @@ workflow hprc_DeepPolisher {
         input:
           Bam=PHARAOH.finalPhasedDipBam,
           Bai=PHARAOH.finalPhasedDipBai,
-          Fasta=diploidRawFasta,
+          Fasta=diploidRawFastaGz,
           ModelFilesTarGZ=DeepPolisherModelFilesTarGZ,
           dockerImage=DeepPolisherDocker,
           sampleName=sampleName
@@ -98,7 +98,7 @@ workflow hprc_DeepPolisher {
     call applyPolish_t.applyPolish as applyDPPolish {
         input:
           polishingVcf=DeepPolisher.PolisherVcf,
-          asmRaw=diploidRawFasta,
+          asmRaw=diploidRawFastaGz,
           outPrefix=sampleName
     }
 
