@@ -75,7 +75,7 @@ task alignmentBam{
         Int kmerSize=15
         # runtime configurations
         Int memSize=64
-        Int threadCount=32
+        Int threadCount=8
         Int diskSize
         String dockerImage="quay.io/masri2019/hpp_long_read_aligner:latest"
         Int preemptible=2

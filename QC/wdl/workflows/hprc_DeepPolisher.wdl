@@ -34,11 +34,11 @@ workflow hprc_DeepPolisher {
         input:
           assembly=dipRawFastaGz,
           readFiles=HifiReads,
-          aligner="winnowmap",
-          preset="map-pb",
+          aligner="minimap2",
+          preset="map-hifi",
           sampleName=sampleName,
           options="--cs --eqx -L -Y -I8g",
-          dockerImage="mobinasri/long_read_aligner:v0.2"
+          dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
 
     ## Align all ONT UL reads to paternal haplotype
@@ -46,11 +46,11 @@ workflow hprc_DeepPolisher {
         input:
           assembly=paternalRawFasta,
           readFiles=ONTReadsUL,
-          aligner="winnowmap",
+          aligner="minimap2",
           preset="map-ont",
           sampleName=sampleName,
           options="--cs --eqx -L -Y",
-          dockerImage="mobinasri/long_read_aligner:v0.2"
+          dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
 
     ## Align all ONT UL reads to maternal haplotype
@@ -58,11 +58,11 @@ workflow hprc_DeepPolisher {
         input:
           assembly=maternalRawFasta,
           readFiles=ONTReadsUL,
-          aligner="winnowmap",
+          aligner="minimap2",
           preset="map-ont",
           sampleName=sampleName,
           options="--cs --eqx -L -Y",
-          dockerImage="mobinasri/long_read_aligner:v0.2"
+          dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
 
     ## Phase reads in homozygous regions with UL, secphase marker mode in non-homoyzgous regions

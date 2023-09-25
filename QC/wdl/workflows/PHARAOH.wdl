@@ -46,7 +46,7 @@ workflow PHARAOH{
     ## Align maternal to paternal assembly
     call long_read_aligner_t.alignmentPaf as alignmentPaf{
         input:
-            aligner="winnowmap",
+            aligner="minimap2",
             preset="asm5",
             options="-L --eqx --cs -c",
             readFastq_or_queryAssembly=maternalFasta,
@@ -55,7 +55,7 @@ workflow PHARAOH{
             diskSize=512,
             threadCount=64,
             kmerSize=19,
-            dockerImage="mobinasri/long_read_aligner:v0.2"
+            dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
 
     ## Get Homozygous regions between the two haplotypes
@@ -80,24 +80,24 @@ workflow PHARAOH{
         input:
             readFiles=[subDipBamByHomozygous.subBam],
             assembly=paternalFasta,
-            aligner="winnowmap",
-            preset="map-pb",
+            aligner="minimap2",
+            preset="map-hifi",
             sampleName=sampleName,
-            sampleSuffix="all2pat.winnowmap",
+            sampleSuffix="all2pat.minimap2",
             options="--cs --eqx -Y -L",
-            dockerImage="mobinasri/long_read_aligner:v0.2"
+            dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
 
     call long_read_aligner_scattered_t.longReadAlignmentScattered as alignAllToMatScattered{
         input:
             readFiles=[subDipBamByHomozygous.subBam],
             assembly=maternalFasta,
-            aligner="winnowmap",
-            preset="map-pb",
+            aligner="minimap2",
+            preset="map-hifi",
             sampleName=sampleName,
-            sampleSuffix="all2mat.winnowmap",
+            sampleSuffix="all2mat.minimap2",
             options="--cs --eqx -Y -L",
-            dockerImage="mobinasri/long_read_aligner:v0.2"
+            dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
 
     ## remove reads with de > 0.02
