@@ -42,6 +42,9 @@ workflow PHARAOH{
         # PHARAOH defaults to using WhatsHap for phasing. To use Margin instead, set to true
         Boolean? useMargin = false
 
+        # option to pass in separate config to margin
+        File? marginConfig
+
         # for minimap2, use k=19 and present "map-hifi" and "map-ont"
         # for winnpwmap, use k=15 and preset "map-pb" and "map-ont"
         String PharaohAligner="minimap2"
@@ -197,7 +200,8 @@ workflow PHARAOH{
               bamFile=allONTToPatBam,
               bamFileIdx=allONTToPatBai,
               outPrefix="phased_Vcf_UL_Pat",
-              HifiOrONT="ONT"
+              HifiOrONT="ONT",
+              configFile=marginConfig
         }
 
         call margin_phase_t.marginPhase as marginPhaseMat {
@@ -209,7 +213,8 @@ workflow PHARAOH{
               bamFile=allONTToMatBam,
               bamFileIdx=allONTToMatBai,
               outPrefix="phased_Vcf_UL_Mat",
-              HifiOrONT="ONT"
+              HifiOrONT="ONT",
+              configFile=marginConfig
         }
     }
 
