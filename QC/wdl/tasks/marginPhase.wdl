@@ -7,7 +7,8 @@ workflow runMarginPhase {
         description: "phase variants with margin phase"
     }
 
-    call marginPhase
+    call marginPhase {
+    }
 
     output {
         File out_margin_phase_svs = marginPhase.phasedVcf
@@ -25,6 +26,8 @@ task marginPhase {
         String outPrefix
         String HifiOrONT
 
+        File? configFile # if config file is passed in, it will override HifiOrONT
+
         String dockerImage = "miramastoras/marginphase_sv:latest"
         Int threads = 32
         Int memSizeGb = 128
@@ -37,7 +40,10 @@ task marginPhase {
         set -o xtrace
 
         # Set param file based on input hifi or ont read alignments
-        if [[ ~{HifiOrONT} =~ Hifi ]]; then
+
+        if [[ -f "~{configFile}" ]] ; then
+            PARAMS=~{configFile}
+        elif [[ ~{HifiOrONT} =~ Hifi ]]; then
             PARAMS=/opt/margin/params/phase/allParams.phase_vcf.pb-hifi.json
         else
             PARAMS=/opt/margin/params/phase/allParams.phase_vcf.ont.json
