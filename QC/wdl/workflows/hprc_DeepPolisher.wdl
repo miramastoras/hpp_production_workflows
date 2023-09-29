@@ -32,8 +32,8 @@ workflow hprc_DeepPolisher {
         # for winnowmap, use k=15 and preset "map-pb" and "map-ont"
         # default is minimap2
 
-        String alignerToUse="minimap2",
-        String alignerHiFiPreset="map-hifi",
+        String alignerToUse="minimap2"
+        String alignerHiFiPreset="map-hifi"
         String alignerONTPreset="map-ont"
         String alignerKmerSize="19"
     }
