@@ -31,11 +31,11 @@ workflow hprc_DeepPolisher {
         # for minimap2, use k=19 and present "map-hifi" and "map-ont"
         # for winnowmap, use k=15 and preset "map-pb" and "map-ont"
         # default is minimap2
-        
-        alignerToUse="minimap2",
-        alignerHiFiPreset="map-hifi",
-        alignerONTPreset="map-ont"
-        alignerKmerSize="19"
+
+        String alignerToUse="minimap2",
+        String alignerHiFiPreset="map-hifi",
+        String alignerONTPreset="map-ont"
+        String alignerKmerSize="19"
     }
 
     ## Align all hifi reads to diploid assembly
