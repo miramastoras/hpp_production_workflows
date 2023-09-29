@@ -41,12 +41,18 @@ workflow PHARAOH{
 
         # PHARAOH defaults to using WhatsHap for phasing. To use Margin instead, set to true
         Boolean? useMargin = false
+
+        # for minimap2, use k=19 and present "map-hifi" and "map-ont"
+        # for winnpwmap, use k=15 and preset "map-pb" and "map-ont"
+        String PharaohAligner="minimap2"
+        String PharaohKmerSize=19
+        String PharaohHiFiPreset="map-hifi"
     }
 
     ## Align maternal to paternal assembly
     call long_read_aligner_t.alignmentPaf as alignmentPaf{
         input:
-            aligner="minimap2",
+            aligner=PharaohAligner,
             preset="asm5",
             options="-L --eqx --cs -c",
             readFastq_or_queryAssembly=maternalFasta,
@@ -54,7 +60,7 @@ workflow PHARAOH{
             suffix="mat2pat",
             diskSize=512,
             threadCount=64,
-            kmerSize=19,
+            kmerSize=PharaohKmerSize,
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
 
@@ -80,10 +86,11 @@ workflow PHARAOH{
         input:
             readFiles=[subDipBamByHomozygous.subBam],
             assembly=paternalFasta,
-            aligner="minimap2",
-            preset="map-hifi",
+            aligner=PharaohAligner,
+            preset=PharaohHiFiPreset,
             sampleName=sampleName,
-            sampleSuffix="all2pat.minimap2",
+            kmerSize=PharaohKmerSize,
+            sampleSuffix="all2pat",
             options="--cs --eqx -Y -L",
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
@@ -92,10 +99,11 @@ workflow PHARAOH{
         input:
             readFiles=[subDipBamByHomozygous.subBam],
             assembly=maternalFasta,
-            aligner="minimap2",
-            preset="map-hifi",
+            aligner=PharaohAligner,
+            preset=PharaohHiFiPreset,
+            kmerSize=PharaohKmerSize,
             sampleName=sampleName,
-            sampleSuffix="all2mat.minimap2",
+            sampleSuffix="all2mat",
             options="--cs --eqx -Y -L",
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }

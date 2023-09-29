@@ -27,6 +27,15 @@ workflow hprc_DeepPolisher {
         String DeepPolisherDocker
         String sampleName
         Boolean useMargin
+
+        # for minimap2, use k=19 and present "map-hifi" and "map-ont"
+        # for winnowmap, use k=15 and preset "map-pb" and "map-ont"
+        # default is minimap2
+        
+        alignerToUse="minimap2",
+        alignerHiFiPreset="map-hifi",
+        alignerONTPreset="map-ont"
+        alignerKmerSize="19"
     }
 
     ## Align all hifi reads to diploid assembly
@@ -34,8 +43,9 @@ workflow hprc_DeepPolisher {
         input:
           assembly=dipRawFastaGz,
           readFiles=HifiReads,
-          aligner="minimap2",
-          preset="map-hifi",
+          aligner=alignerToUse,
+          preset=alignerHiFiPreset,
+          kmerSize=alignerKmerSize,
           sampleName=sampleName,
           options="--cs --eqx -L -Y -I8g",
           dockerImage="mobinasri/long_read_aligner:v0.3.3"
@@ -46,8 +56,9 @@ workflow hprc_DeepPolisher {
         input:
           assembly=paternalRawFasta,
           readFiles=ONTReadsUL,
-          aligner="minimap2",
-          preset="map-ont",
+          aligner=alignerToUse,
+          preset=alignerONTPreset,
+          kmerSize=alignerKmerSize,
           sampleName=sampleName,
           options="--cs --eqx -L -Y",
           dockerImage="mobinasri/long_read_aligner:v0.3.3"
@@ -58,8 +69,9 @@ workflow hprc_DeepPolisher {
         input:
           assembly=maternalRawFasta,
           readFiles=ONTReadsUL,
-          aligner="minimap2",
-          preset="map-ont",
+          aligner=alignerToUse,
+          preset=alignerONTPreset,
+          kmerSize=alignerKmerSize,
           sampleName=sampleName,
           options="--cs --eqx -L -Y",
           dockerImage="mobinasri/long_read_aligner:v0.3.3"
@@ -80,7 +92,11 @@ workflow hprc_DeepPolisher {
           allONTToMatBai=alignONTToMat.baiFile,
           allONTToPatBai=alignONTToPat.baiFile,
           sampleName=sampleName,
-          useMargin=useMargin
+          useMargin=useMargin,
+          PharaohAligner=alignerToUse,
+          PharaohHiFiPreset=alignerHiFiPreset,
+          PharaohKmerSize=alignerKmerSize
+
     }
 
     ## Pass final phased hifi alignments to deepPolisher to produce polishing variants
