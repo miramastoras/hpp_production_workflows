@@ -28,14 +28,15 @@ workflow hprc_DeepPolisher {
         String sampleName
         Boolean useMargin
 
-        # for minimap2, use k=19 and present "map-hifi" and "map-ont"
-        # for winnowmap, use k=15 and preset "map-pb" and "map-ont"
+        # for minimap2, use k=19 for "map-hifi" and k=15 for "map-ont"
+        # for winnowmap, use k=15 for preset "map-pb" and "map-ont"
         # default is minimap2
 
         String alignerToUse="minimap2"
         String alignerHiFiPreset="map-hifi"
         String alignerONTPreset="map-ont"
-        String alignerKmerSize="19"
+        String alignerHiFiKmerSize="19"
+        String alignerONTKmerSize="15"
     }
 
     ## Align all hifi reads to diploid assembly
@@ -45,7 +46,7 @@ workflow hprc_DeepPolisher {
           readFiles=HifiReads,
           aligner=alignerToUse,
           preset=alignerHiFiPreset,
-          kmerSize=alignerKmerSize,
+          kmerSize=alignerHiFiKmerSize,
           sampleName=sampleName,
           options="--cs --eqx -L -Y -I8g",
           dockerImage="mobinasri/long_read_aligner:v0.3.3"
@@ -58,7 +59,7 @@ workflow hprc_DeepPolisher {
           readFiles=ONTReadsUL,
           aligner=alignerToUse,
           preset=alignerONTPreset,
-          kmerSize=alignerKmerSize,
+          kmerSize=alignerONTKmerSize,
           sampleName=sampleName,
           options="--cs --eqx -L -Y",
           dockerImage="mobinasri/long_read_aligner:v0.3.3"
@@ -71,7 +72,7 @@ workflow hprc_DeepPolisher {
           readFiles=ONTReadsUL,
           aligner=alignerToUse,
           preset=alignerONTPreset,
-          kmerSize=alignerKmerSize,
+          kmerSize=alignerONTKmerSize,
           sampleName=sampleName,
           options="--cs --eqx -L -Y",
           dockerImage="mobinasri/long_read_aligner:v0.3.3"
@@ -95,7 +96,7 @@ workflow hprc_DeepPolisher {
           useMargin=useMargin,
           PharaohAligner=alignerToUse,
           PharaohHiFiPreset=alignerHiFiPreset,
-          PharaohKmerSize=alignerKmerSize
+          PharaohKmerSize=alignerHiFiKmerSize
 
     }
 

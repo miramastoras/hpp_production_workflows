@@ -63,7 +63,7 @@ workflow PHARAOH{
             suffix="mat2pat",
             diskSize=512,
             threadCount=64,
-            kmerSize=PharaohKmerSize,
+            kmerSize=19,
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
 
