@@ -45,8 +45,10 @@ workflow PHARAOH{
         # option to pass in separate config to margin
         File? marginConfig
 
-        # for minimap2, use k=19 and present "map-hifi" and "map-ont"
-        # for winnpwmap, use k=15 and preset "map-pb" and "map-ont"
+        # for minimap2, use k=19 for "map-hifi" and k=15 for "map-ont"
+        # for winnowmap, use k=15 for preset "map-pb" and "map-ont"
+        # default is minimap2
+
         String PharaohAligner="minimap2"
         String PharaohKmerSize=19
         String PharaohHiFiPreset="map-hifi"
