@@ -182,8 +182,10 @@ task alignmentPaf{
         fi
 
         if [ -z ~{preset} ]; then
+            echo '${ALIGNER_CMD} ~{options} -t~{threadCount} ~{refAssembly} ~{readFastq_or_queryAssembly} > ${OUTPUT_FILE}'
             ${ALIGNER_CMD} ~{options} -t~{threadCount} ~{refAssembly} ~{readFastq_or_queryAssembly} > ${OUTPUT_FILE}
         else
+            echo '${ALIGNER_CMD} ~{options} -x ~{preset} -t~{threadCount} ~{refAssembly} ~{readFastq_or_queryAssembly} > ${OUTPUT_FILE}'
             ${ALIGNER_CMD} ~{options} -x ~{preset} -t~{threadCount} ~{refAssembly} ~{readFastq_or_queryAssembly} > ${OUTPUT_FILE}
         fi
 
