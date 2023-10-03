@@ -106,6 +106,8 @@ task alignmentBam{
         fi
 
         fileBasename=$(basename ~{readFastq_or_queryAssembly})
+        echo '${ALIGNER_CMD} -a -x ~{preset} ~{options} -t~{threadCount} ~{refAssembly} ~{readFastq_or_queryAssembly} | samtools view -h -b > ${fileBasename%.*.*}.bam'
+
         ${ALIGNER_CMD} -a -x ~{preset} ~{options} -t~{threadCount} ~{refAssembly} ~{readFastq_or_queryAssembly} | samtools view -h -b > ${fileBasename%.*.*}.bam
 
         if [ -z ~{suffix} ]; then
