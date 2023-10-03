@@ -49,7 +49,8 @@ workflow hprc_DeepPolisher {
           kmerSize=alignerHiFiKmerSize,
           sampleName=sampleName,
           options="--cs --eqx -L -Y -I8g",
-          dockerImage="mobinasri/long_read_aligner:v0.3.3"
+          dockerImage="mobinasri/long_read_aligner:v0.3.3",
+          sampleSuffix="hifi.to.diploid.asm"
     }
 
     ## Align all ONT UL reads to paternal haplotype
@@ -62,7 +63,8 @@ workflow hprc_DeepPolisher {
           kmerSize=alignerONTKmerSize,
           sampleName=sampleName,
           options="--cs --eqx -L -Y",
-          dockerImage="mobinasri/long_read_aligner:v0.3.3"
+          dockerImage="mobinasri/long_read_aligner:v0.3.3",
+          sampleSuffix="ONT.to.pat.asm"
     }
 
     ## Align all ONT UL reads to maternal haplotype
@@ -75,7 +77,8 @@ workflow hprc_DeepPolisher {
           kmerSize=alignerONTKmerSize,
           sampleName=sampleName,
           options="--cs --eqx -L -Y",
-          dockerImage="mobinasri/long_read_aligner:v0.3.3"
+          dockerImage="mobinasri/long_read_aligner:v0.3.3",
+          sampleSuffix="ONT.to.mat.asm"
     }
 
     ## Phase reads in homozygous regions with UL, secphase marker mode in non-homoyzgous regions
