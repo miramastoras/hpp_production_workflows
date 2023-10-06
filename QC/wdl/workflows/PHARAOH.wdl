@@ -49,15 +49,15 @@ workflow PHARAOH{
         # for winnowmap, use k=15 for preset "map-pb" and "map-ont"
         # default is minimap2
 
-        String PharaohAligner="minimap2"
-        String PharaohKmerSize=19
-        String PharaohHiFiPreset="map-hifi"
+        String PharaohAligner="winnowmap"
+        String PharaohKmerSize=15
+        String PharaohHiFiPreset="map-pb"
     }
 
     ## Align maternal to paternal assembly
     call long_read_aligner_t.alignmentPaf as alignmentPaf{
         input:
-            aligner=PharaohAligner,
+            aligner="winnowmap",
             preset="asm5",
             options="-L --eqx --cs -c",
             readFastq_or_queryAssembly=maternalFasta,

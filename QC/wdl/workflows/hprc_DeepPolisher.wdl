@@ -32,10 +32,11 @@ workflow hprc_DeepPolisher {
         # for winnowmap, use k=15 for preset "map-pb" and "map-ont"
         # default is minimap2
 
-        String alignerToUse="minimap2"
-        String alignerHiFiPreset="map-hifi"
+        String hifiAlignerToUse="winnowmap"
+        String ONTAlignerToUse="minimap2"
+        String alignerHiFiPreset="map-pb"
         String alignerONTPreset="map-ont"
-        String alignerHiFiKmerSize="19"
+        String alignerHiFiKmerSize="15"
         String alignerONTKmerSize="15"
     }
 
@@ -44,7 +45,7 @@ workflow hprc_DeepPolisher {
         input:
           assembly=dipRawFastaGz,
           readFiles=HifiReads,
-          aligner=alignerToUse,
+          aligner=hifiAlignerToUse,
           preset=alignerHiFiPreset,
           kmerSize=alignerHiFiKmerSize,
           sampleName=sampleName,
@@ -58,7 +59,7 @@ workflow hprc_DeepPolisher {
         input:
           assembly=paternalRawFasta,
           readFiles=ONTReadsUL,
-          aligner=alignerToUse,
+          aligner=ONTAlignerToUse,
           preset=alignerONTPreset,
           kmerSize=alignerONTKmerSize,
           sampleName=sampleName,
@@ -72,7 +73,7 @@ workflow hprc_DeepPolisher {
         input:
           assembly=maternalRawFasta,
           readFiles=ONTReadsUL,
-          aligner=alignerToUse,
+          aligner=ONTAlignerToUse,
           preset=alignerONTPreset,
           kmerSize=alignerONTKmerSize,
           sampleName=sampleName,
@@ -97,7 +98,7 @@ workflow hprc_DeepPolisher {
           allONTToPatBai=alignONTToPat.baiFile,
           sampleName=sampleName,
           useMargin=useMargin,
-          PharaohAligner=alignerToUse,
+          PharaohAligner=hifiAlignerToUse,
           PharaohHiFiPreset=alignerHiFiPreset,
           PharaohKmerSize=alignerHiFiKmerSize
 
