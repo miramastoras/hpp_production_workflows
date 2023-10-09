@@ -9,6 +9,7 @@ task dipcall {
         File assemblyFastaPat
         File assemblyFastaMat
         File referenceFasta
+				File referenceFai
         Boolean isMaleSample
         Boolean referenceIsHS38 = true
         Int memSizeGB = 64
@@ -63,7 +64,7 @@ task dipcall {
         else
             ln -s ~{referenceFasta}
         fi
-        samtools faidx $REF_FILENAME
+        ln -s ~{referenceFai}
 
         # initialize script
         cmd=( /opt/dipcall/dipcall.kit/run-dipcall )

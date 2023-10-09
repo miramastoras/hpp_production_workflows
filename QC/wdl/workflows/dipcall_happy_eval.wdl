@@ -19,7 +19,8 @@ workflow dipcall_happy {
     ## Run dipcall
     call runDipcall.dipcall as dipcall_t {
         input:
-            referenceFasta=referenceFasta
+            referenceFasta=referenceFasta,
+            referenceFai=referenceFastaFai
     }
 
     ## Call bedtoolsIntersect to subset happy -f bedfile by dipcall bedfile. Intersections written relative to BED1
