@@ -52,12 +52,13 @@ workflow PHARAOH{
         String PharaohAligner="winnowmap"
         String PharaohKmerSize=15
         String PharaohHiFiPreset="map-pb"
+        String pafAligner="minimap2"
     }
 
     ## Align maternal to paternal assembly
     call long_read_aligner_t.alignmentPaf as alignmentPaf{
         input:
-            aligner="winnowmap",
+            aligner=pafAligner,
             preset="asm5",
             options="-L --eqx --cs -c",
             readFastq_or_queryAssembly=maternalFasta,

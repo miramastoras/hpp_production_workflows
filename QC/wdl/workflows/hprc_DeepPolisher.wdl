@@ -34,6 +34,7 @@ workflow hprc_DeepPolisher {
 
         String hifiAlignerToUse="winnowmap"
         String ONTAlignerToUse="minimap2"
+        String pafAligner="minimap2"
         String alignerHiFiPreset="map-pb"
         String alignerONTPreset="map-ont"
         String alignerHiFiKmerSize="15"
@@ -100,7 +101,8 @@ workflow hprc_DeepPolisher {
           useMargin=useMargin,
           PharaohAligner=hifiAlignerToUse,
           PharaohHiFiPreset=alignerHiFiPreset,
-          PharaohKmerSize=alignerHiFiKmerSize
+          PharaohKmerSize=alignerHiFiKmerSize,
+          pafAligner=pafAligner
 
     }
 
