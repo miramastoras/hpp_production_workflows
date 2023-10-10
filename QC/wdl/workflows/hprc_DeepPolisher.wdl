@@ -26,7 +26,7 @@ workflow hprc_DeepPolisher {
 
         String DeepPolisherDocker
         String sampleName
-        Boolean useMargin
+        Boolean useMargin=false
 
         # for minimap2, use k=19 for "map-hifi" and k=15 for "map-ont"
         # for winnowmap, use k=15 for preset "map-pb" and "map-ont"
