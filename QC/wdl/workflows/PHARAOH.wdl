@@ -40,7 +40,7 @@ workflow PHARAOH{
         String sampleName
 
         # PHARAOH defaults to using WhatsHap for phasing. To use Margin instead, set to true
-        Boolean? useMargin = false
+        Boolean useMargin = false
 
         # option to pass in separate config to margin
         File? marginConfig
