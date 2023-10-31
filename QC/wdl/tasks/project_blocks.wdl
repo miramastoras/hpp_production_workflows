@@ -31,15 +31,15 @@ workflow projectBlocks {
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
 
-    call project_blocks as projectBlocks {
+    call project_blocks {
         input:
             pafFile=alignAsm2Ref.pafFile,
             bedFile=bedFile,
             mode=mode
     }
     output {
-        File projectionBedFile = projectBlocks.projectionBedFile
-        File projectableBedFile = projectBlocks.projectableBedFile
+        File projectionBedFile = project_blocks.projectionBedFile
+        File projectableBedFile = project_blocks.projectableBedFile
     }
 }
 
