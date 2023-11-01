@@ -68,8 +68,8 @@ task project_blocks{
             --mode ~{mode} \
             --paf {pafFile} \
             --blocks ~{bedFile} \
-            --outputProjectable ${fileBasename}_${bedBasename}.projectable.bed \
-            --outputProjection ${fileBasename}_${bedBasename}.projection.bed
+            --outputProjectable ${pafBasename}_${bedBasename}.projectable.bed \
+            --outputProjection ${pafBasename}_${bedBasename}.projection.bed
     	>>>
 
       output {

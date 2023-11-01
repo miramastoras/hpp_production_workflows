@@ -15,7 +15,9 @@ workflow kmerPolishingEval {
       File rawHap2Fasta
       File polishedHap1Fasta
       File polishedHap2Fasta
+      File grch38Fasta
 
+      File? ilmMerylDBTarGz
 
     }
     call runMeryl
