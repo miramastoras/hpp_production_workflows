@@ -14,7 +14,7 @@ workflow projectBlocks {
       File refFasta
       File bedFile
       String pafAligner="minimap2"
-      String mode
+      String mode="ref2asm"
 
     }
     call long_read_aligner_t.alignmentPaf as alignAsm2Ref{
