@@ -70,7 +70,7 @@ workflow kmerPolishingEval {
         input:
             assemblyFasta=polishedHap2Fasta,
             refFasta=grch38Fasta,
-            bedFile=grch38OutsideConfRegions
+            bedFile=grch38OutsideConfRegions1
     }
     call subset_fastas {
 

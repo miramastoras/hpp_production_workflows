@@ -63,7 +63,7 @@ task project_blocks{
             pafBasename=$(basename ~{pafFile})
             bedBasename=$(basename ~{bedFile})
 
-            python3 /home/programs/src/project_blocks_multi_thread.py \
+            /home/programs/src/project_blocks_multi_thread.py \
             --threads ~{threadCount} \
             --mode ~{mode} \
             --paf {pafFile} \
