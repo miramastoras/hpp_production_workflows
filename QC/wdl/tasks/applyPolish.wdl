@@ -51,7 +51,7 @@ task applyPolish{
 
         bcftools index $VCF_FILENAME
 
-        bcftools consensus -f ~{asmRaw} -H 2 $VCF_FILENAME > ${PREFIX}.polished.fasta 2>&1 apply_polish_log.txt
+        bcftools consensus -f ~{asmRaw} -H 2 $VCF_FILENAME > ${PREFIX}.polished.fasta &> apply_polish_log.txt
     >>>
     output {
         File asmPolished = glob("*.polished.fasta")[0]
