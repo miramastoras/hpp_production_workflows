@@ -11,7 +11,6 @@ workflow runApplyPolish {
     call applyPolish
     output {
         File asmPolished = applyPolish.asmPolished
-        File applyPolishLog=applyPolish.applyPolishLog
     }
 }
 
@@ -51,11 +50,10 @@ task applyPolish{
 
         bcftools index $VCF_FILENAME
 
-        bcftools consensus -f ~{asmRaw} -H 2 $VCF_FILENAME > ${PREFIX}.polished.fasta &> apply_polish_log.txt
+        bcftools consensus -f ~{asmRaw} -H 2 $VCF_FILENAME > ${PREFIX}.polished.fasta
     >>>
     output {
         File asmPolished = glob("*.polished.fasta")[0]
-        File applyPolishLog = "apply_polish_log.txt"
     }
     runtime {
         memory: memSizeGB + " GB"
