@@ -145,7 +145,7 @@ task alignmentPaf{
         Int memSize=64
         Int threadCount=32
         Int diskSize
-        String dockerImage="quay.io/masri2019/hpp_long_read_aligner:latest"
+        String dockerImage="mobinasri/long_read_aligner:v0.3.3"
         Int preemptible=2
         String zones="us-west2-a"
     }

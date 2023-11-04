@@ -10,7 +10,7 @@ workflow asm2asmAlignerPaf{
           diskSize=512,
           threadCount=64,
           kmerSize=19,
-          dockerImage="mobinasri/long_read_aligner:v0.2"
+          dockerImage="mobinasri/long_read_aligner:v0.3.3"
       }
   output {
       File asm2asmPaf=alignmentPaf.pafFile
