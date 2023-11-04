@@ -11,7 +11,7 @@ workflow runApplyPolish {
     call applyPolish
     output {
         File asmPolished = applyPolish.asmPolished
-        File applyPolishLog=applyPolish.apply_polish_log.txt
+        File applyPolishLog=applyPolish.applyPolishLog
     }
 }
 
