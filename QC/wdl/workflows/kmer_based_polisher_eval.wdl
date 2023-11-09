@@ -102,19 +102,19 @@ workflow kmerPolishingEval {
     }
 
     # Run merqury QV whole genome
-    call merqury_t as merquryWholeGenome {
+    call merqury_t.merqury as merquryWholeGenome {
         input:
             assemblyFasta=hap1Fasta,
             altHapFasta=hap2Fasta,
             kmerTarball=ilmMerylDBTarGz
     }
-    call merqury_t as merquryInsideConf {
+    call merqury_t.merqury as merquryInsideConf {
         input:
             assemblyFasta=subHap1InsideConf.subFasta,
             altHapFasta=subHap2InsideConf.subFasta,
             kmerTarball=ilmMerylDBTarGz
     }
-    call merqury_t as merquryOutsideConf {
+    call merqury_t.merqury as merquryOutsideConf {
         input:
             assemblyFasta=subHap1OutsideConf.subFasta,
             altHapFasta=subHap2OutsideConf.subFasta,
@@ -122,7 +122,7 @@ workflow kmerPolishingEval {
     }
 
     # Run Yak QV whole genome, inside and outside conf
-    call yak_t as yakQCWholeGenome {
+    call yak_t.runYakAssemblyStats as yakQCWholeGenome {
         input:
             maternalReadsILM=maternalReadsILM,
             paternalReadsILM=paternalReadsILM,
@@ -131,7 +131,7 @@ workflow kmerPolishingEval {
             assemblyFastaMat=hap2Fasta
     }
 
-    call yak_t as yakQCInsideConf {
+    call yak_t.runYakAssemblyStats as yakQCInsideConf {
         input:
             maternalReadsILM=maternalReadsILM,
             paternalReadsILM=paternalReadsILM,
@@ -139,7 +139,7 @@ workflow kmerPolishingEval {
             assemblyFastaPat=subHap1InsideConf.subFasta,
             assemblyFastaMat=subHap2InsideConf.subFasta
     }
-    call yak_t as yakQCOutsideConf {
+    call yak_t.runYakAssemblyStats as yakQCOutsideConf {
         input:
             maternalReadsILM=maternalReadsILM,
             paternalReadsILM=paternalReadsILM,
