@@ -20,7 +20,7 @@ task SubFastaByBed {
         Int memSizeGB = 128
         Int threadCount = 64
         Int diskSizeGB = 128
-        String dockerImage = "biocontainers/bedtools:latest"
+        String dockerImage = "quay.io/biocontainers/bedtools:latest"
     }
 
 	command <<<
