@@ -83,22 +83,22 @@ workflow kmerPolishingEval {
     call subset_fasta_t.SubFastaByBed as subHap1InsideConf {
         input:
             Fasta=hap1Fasta,
-            Bed=projectInsideConfHap1.bedFile
+            Bed=projectInsideConfHap1.projectionBedFile
     }
     call subset_fasta_t.SubFastaByBed as subHap2InsideConf {
         input:
             Fasta=hap2Fasta,
-            Bed=projectInsideConfHap2.bedFile
+            Bed=projectInsideConfHap2.projectionBedFile
     }
     call subset_fasta_t.SubFastaByBed as subHap1OutsideConf {
         input:
             Fasta=hap1Fasta,
-            Bed=projectOutsideConfHap1.bedFile
+            Bed=projectOutsideConfHap1.projectionBedFile
     }
     call subset_fasta_t.SubFastaByBed as subHap2OutsideConf {
         input:
             Fasta=hap2Fasta,
-            Bed=projectOutsideConfHap2.bedFile
+            Bed=projectOutsideConfHap2.projectionBedFile
     }
 
     # Run merqury QV whole genome
