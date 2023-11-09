@@ -1,7 +1,5 @@
 version 1.0
 
-import "../tasks/long_read_aligner.wdl" as long_read_aligner_t
-
 workflow projectBlocks {
     meta {
       author: "Mira Mastoras"
@@ -9,34 +7,7 @@ workflow projectBlocks {
       description: "Project bed coordinates from one genome assembly to another"
       }
 
-    input {
-      File assemblyFasta
-      File refFasta
-      File bedFile
-      String pafAligner="minimap2"
-      String mode="ref2asm"
-
-    }
-    call long_read_aligner_t.alignmentPaf as alignAsm2Ref{
-        input:
-            aligner=pafAligner,
-            preset="asm5",
-            options="-L --eqx --cs -c",
-            readFastq_or_queryAssembly=assemblyFasta,
-            refAssembly=refFasta,
-            suffix="asmToRef",
-            diskSize=512,
-            threadCount=64,
-            kmerSize=19,
-            dockerImage="mobinasri/long_read_aligner:v0.3.3"
-    }
-
-    call project_blocks {
-        input:
-            pafFile=alignAsm2Ref.pafFile,
-            bedFile=bedFile,
-            mode=mode
-    }
+    call project_blocks
     output {
         File projectionBedFile = project_blocks.projectionBedFile
         File projectableBedFile = project_blocks.projectableBedFile
@@ -76,7 +47,7 @@ task project_blocks{
           File projectionBedFile = glob("*.projection.bed")[0]
           File projectableBedFile = glob("*.projectable.bed")[0]
       }
-      
+
       runtime{
           memory: memSizeGB + " GB"
           cpu: threadCount

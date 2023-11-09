@@ -1,22 +1,20 @@
 version 1.0
 
-workflow subBamByBed {
+workflow subFastaByBed {
     meta {
         author: "Mira Mastoras"
         email: "mmastora@ucsc.edu"
         description: "subset bamfile by coordinates in a bed file "
 }
-    call SubBamByBed
+    call SubFastaByBed
     output {
-        File subBam = SubBamByBed.subBam
-        File subBamBai = SubBamByBed.subBai
+        File subFasta = SubFastaByBed.subFasta
     }
 }
 
 task SubBamByBed {
     input {
-        File Bam
-        File Bai
+        File Fasta
         File Bed
 
         Int memSizeGB = 128
@@ -49,6 +47,5 @@ task SubBamByBed {
         cpu: threadCount
         disks: "local-disk " + diskSizeGB + " SSD"
         docker: dockerImage
-        preemptible: 1
     }
 }
