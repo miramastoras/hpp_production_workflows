@@ -18,10 +18,7 @@ task hapDotPy{
         File assembly
         File assemblyIndex
         String sample
-        File? bedRegions
-        File? stratificationsTSV
-        File? stratificationsBedTar
-        String? extraArgs
+        File bedRegions
 
         Boolean passOnly = true
 
@@ -48,40 +45,6 @@ task hapDotPy{
         ln -s ~{assembly} ./$REF
         ln -s ~{assemblyIndex} ./$REF_IDX
 
-
-        ## Pass argument if callRegions is set, if not just pass empty string
-
-        if [[ ~{passOnly} ]]
-        then
-            PASS_ONLY_TOKEN="--pass-only"
-        else
-            PASS_ONLY_TOKEN=""
-        fi
-
-        ## Pass argument if bedRegions is set, if not just pass empty string
-        if [[ ! -z "~{bedRegions}" ]]
-        then
-            BEDFILE="-f ~{bedRegions}"
-        else
-            BEDFILE=""
-        fi
-
-        if [[ ! -z "~{extraArgs}" ]]
-        then
-            EXTRA_ARGS="~{extraArgs}"
-        else
-            EXTRA_ARGS=""
-        fi
-
-        if [[ ! -z "~{stratificationsTSV}" ]]
-        then
-            STRAT="--stratification=~{stratificationsTSV}"
-
-            tar -xf ~{stratificationsBedTar} -C ./
-            mv ./GRCh38/* ./
-        else
-            STRAT=""
-        fi
         ## make directory to put output into
         mkdir happy_out
 
@@ -90,14 +53,9 @@ task hapDotPy{
             ~{truthVCF} \
             ~{queryVCF} \
             -r $REF \
+            -f ~{bedRegions} \
             -o happy_out/~{outputPrefix} \
-            $PASS_ONLY_TOKEN \
-            $BEDFILE \
-            $EXTRA_ARGS \
-            $STRAT \
-            --engine=vcfeval \
-            --threads=~{threadCount} \
-            --no-roc --no-json
+            --pass-only --no-roc --no-json --engine=vcfeval --threads=~{threadCount}
 
         tar czvf ~{sample}_happy.tar.gz happy_out/
     >>>
