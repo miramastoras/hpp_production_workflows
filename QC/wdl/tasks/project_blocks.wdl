@@ -63,7 +63,7 @@ task project_blocks{
             pafBasename=$(basename ~{pafFile})
             bedBasename=$(basename ~{bedFile})
 
-            /home/programs/src/project_blocks_multi_thread.py \
+            python3 /home/programs/src/project_blocks_multi_thread.py \
             --threads ~{threadCount} \
             --mode ~{mode} \
             --paf {pafFile} \
@@ -75,5 +75,12 @@ task project_blocks{
       output {
           File projectionBedFile = glob("*.projection.bed")[0]
           File projectableBedFile = glob("*.projectable.bed")[0]
+      }
+      
+      runtime{
+          memory: memSizeGB + " GB"
+          cpu: threadCount
+          disks: "local-disk " + diskSizeGB + " SSD"
+          docker: dockerImage
       }
 }
