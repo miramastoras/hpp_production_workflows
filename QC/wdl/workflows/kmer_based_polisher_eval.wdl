@@ -4,6 +4,7 @@ import "../tasks/long_read_aligner.wdl" as long_read_aligner_t
 import "../tasks/merqury.wdl" as merqury_t
 import "../tasks/yak.wdl" as yak_t
 import "../tasks/project_blocks.wdl" as project_blocks_t
+import "../tasks/subFastaByBed.wdl" as subset_fasta_t
 
 workflow kmerPolishingEval {
     meta {
@@ -25,8 +26,12 @@ workflow kmerPolishingEval {
       String mode="ref2asm"
 
       File ilmMerylDBTarGz
+      Array[File] maternalReadsILM
+      Array[File] paternalReadsILM
+      Array[File] sampleReadsILM
       }
 
+    # Align hap1 and hap2 to grch38, in paf format
     call long_read_aligner_t.alignmentPaf as alignHap1ToRef{
         input:
             aligner=pafAligner,
@@ -53,7 +58,7 @@ workflow kmerPolishingEval {
             kmerSize=19,
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
-
+    # project inside and outside confidence regions to Hap1 and Hap2 coordinates
     call project_blocks_t.project_blocks as projectInsideConfHap1 {
         input:
             pafFile=alignHap1ToRef.pafFile,
@@ -75,27 +80,80 @@ workflow kmerPolishingEval {
             bedFile=grch38OutsideConfRegions
     }
 
-    call subset_fastas {
-
+    call subset_fasta_t.SubFastaByBed as subHap1InsideConf {
+        input:
+            Fasta=hap1Fasta,
+            Bed=projectInsideConfHap1.bedFile
     }
-    call
+    call subset_fasta_t.SubFastaByBed as subHap2InsideConf {
+        input:
+            Fasta=hap2Fasta,
+            Bed=projectInsideConfHap2.bedFile
+    }
+    call subset_fasta_t.SubFastaByBed as subHap1OutsideConf {
+        input:
+            Fasta=hap1Fasta,
+            Bed=projectOutsideConfHap1.bedFile
+    }
+    call subset_fasta_t.SubFastaByBed as subHap2OutsideConf {
+        input:
+            Fasta=hap2Fasta,
+            Bed=projectOutsideConfHap2.bedFile
+    }
+
+    # Run merqury QV whole genome
+    call merqury_t as merquryWholeGenome {
+        input:
+            assemblyFasta=hap1Fasta,
+            altHapFasta=hap2Fasta,
+            kmerTarball=ilmMerylDBTarGz
+    }
+    call merqury_t as merquryInsideConf {
+        input:
+            assemblyFasta=subHap1InsideConf.subFasta,
+            altHapFasta=subHap2InsideConf.subFasta,
+            kmerTarball=ilmMerylDBTarGz
+    }
+    call merqury_t as merquryOutsideConf {
+        input:
+            assemblyFasta=subHap1OutsideConf.subFasta,
+            altHapFasta=subHap2OutsideConf.subFasta,
+            kmerTarball=ilmMerylDBTarGz
+    }
+
+    # Run Yak QV whole genome, inside and outside conf
+    call yak_t as yakQCWholeGenome {
+        input:
+            maternalReadsILM=maternalReadsILM,
+            paternalReadsILM=paternalReadsILM,
+            sampleReadsILM=sampleReadsILM,
+            assemblyFastaPat=hap1Fasta,
+            assemblyFastaMat=hap2Fasta
+    }
+
+    call yak_t as yakQCInsideConf {
+        input:
+            maternalReadsILM=maternalReadsILM,
+            paternalReadsILM=paternalReadsILM,
+            sampleReadsILM=sampleReadsILM,
+            assemblyFastaPat=subHap1InsideConf.subFasta,
+            assemblyFastaMat=subHap2InsideConf.subFasta
+    }
+    call yak_t as yakQCOutsideConf {
+        input:
+            maternalReadsILM=maternalReadsILM,
+            paternalReadsILM=paternalReadsILM,
+            sampleReadsILM=sampleReadsILM,
+            assemblyFastaPat=subHap1OutsideConf.subFasta,
+            assemblyFastaMat=subHap2OutsideConf.subFasta
+    }
 
     output {
-        File QV = merqury.QV
-        File outputTarball = merqury.outputTarball
-        File FPkmers = merqury.FPkmers
+        File QV_whole_genome = merquryWholeGenome.QV
+        File QV_inside_conf = merquryInsideConf.QV
+        File QV_outside_conf = merqurOutsideConf.QV
+        File yakTarBallWG=yakQCWholeGenome.outputTarball
+        File yakTarBallInsideConf=yakQCInsideConf.outputTarball
+        File yakTarBallOutsideConf=yakQCOutsideConf.outputTarball
     }
 }
-
-# subset fasta to inside and outside conf regions
-task subset_fastas {
-
-}
-
-
-
-# project inside and outside GIAB conf regions to raw and polished assembly
-# subset raw and polished fasta to inside and outside conf regions
-# run merqury and yak Qv on all 6 fasta files
-# run yak switch and hamming on whole genome fasta files
-# combine results into one csv file
