@@ -45,7 +45,7 @@ workflow kmerPolishingEval {
             kmerSize=19,
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
-    call long_read_aligner_t.alignmentPaf as alignHap1ToRef{
+    call long_read_aligner_t.alignmentPaf as alignHap2ToRef{
         input:
             aligner=pafAligner,
             preset="asm5",
