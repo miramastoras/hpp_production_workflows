@@ -37,7 +37,7 @@ task project_blocks{
             python3 /home/programs/src/project_blocks_multi_thread.py \
             --threads ~{threadCount} \
             --mode ~{mode} \
-            --paf {pafFile} \
+            --paf ~{pafFile} \
             --blocks ~{bedFile} \
             --outputProjectable ${pafBasename}_${bedBasename}.projectable.bed \
             --outputProjection ${pafBasename}_${bedBasename}.projection.bed
