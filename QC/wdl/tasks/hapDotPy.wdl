@@ -97,6 +97,7 @@ task hapDotPy{
             $STRAT \
             --engine=vcfeval \
             --threads=~{threadCount}
+            --no-roc --no-json
 
         tar czvf ~{sample}_happy.tar.gz happy_out/
     >>>
