@@ -12,7 +12,7 @@ workflow subFastaByBed {
     }
 }
 
-task SubBamByBed {
+task SubFastaByBed {
     input {
         File Fasta
         File Bed
@@ -20,27 +20,21 @@ task SubBamByBed {
         Int memSizeGB = 128
         Int threadCount = 64
         Int diskSizeGB = 128
-        String dockerImage = "mobinasri/flagger:latest"
+        String dockerImage = "biocontainers/bedtools:latest"
     }
 
 	command <<<
       set -eux -o pipefail
       set -o xtrace
 
-      BAMID=`basename ~{Bam} | sed 's/.bam$//'`
       BEDID=`basename ~{Bed} | sed 's/.bed$//'`
+      FASTAID=`basename ~{Fasta} | sed 's/.bed$//'`
 
-      # softlink bam and index so they are in same directory
-      ln -s ~{Bam} ./bamfile.bam
-      ln -s ~{Bai} ./baifile.bai
-
-      samtools view -@ ~{threadCount} -b -h -L ~{Bed} ./bamfile.bam > ${BAMID}_sub_${BEDID}.bam
-      samtools index ${BAMID}_sub_${BEDID}.bam
+      bedtools getfasta -fi ~{Fasta} -bed ~{Bed} -fo ${FASTAID}_sub_${BEDID}.fasta
 
 	>>>
 	output {
-		  File subBam = glob("*sub*.bam")[0]
-		  File subBai = glob("*sub*.bam.bai")[0]
+		  File subBam = glob("*sub*.fasta")[0]
 	}
     runtime {
         memory: memSizeGB + " GB"
