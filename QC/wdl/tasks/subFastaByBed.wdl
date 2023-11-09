@@ -4,7 +4,7 @@ workflow subFastaByBed {
     meta {
         author: "Mira Mastoras"
         email: "mmastora@ucsc.edu"
-        description: "subset bamfile by coordinates in a bed file "
+        description: "subset fasta file by coordinates in a bed file "
 }
     call SubFastaByBed
     output {
@@ -34,7 +34,7 @@ task SubFastaByBed {
 
 	>>>
 	output {
-		  File subBam = glob("*sub*.fasta")[0]
+		  File subFasta = glob("*sub*.fasta")[0]
 	}
     runtime {
         memory: memSizeGB + " GB"
