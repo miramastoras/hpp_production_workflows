@@ -15,7 +15,8 @@ workflow dipcall_happy {
         File referenceFasta
         File referenceFastaFai
         File confidenceBedFile
-        File polishingVcf
+        File hap1PolishingVcf
+        File hap2PolishingVcf
         File hap1Fasta
         File hap2Fasta
         String sampleID
@@ -23,14 +24,14 @@ workflow dipcall_happy {
 
     call apply_polish_wf.applyPolish as applyPolishHap1 {
         input:
-            polishingVcf=polishingVcf,
+            polishingVcf=hap1PolishingVcf,
             asmRaw=hap1Fasta,
             outPrefix=sampleID,
             HaplotypeLabel="hap1"
     }
     call apply_polish_wf.applyPolish as applyPolishHap2 {
         input:
-            polishingVcf=polishingVcf,
+            polishingVcf=hap2PolishingVcf,
             asmRaw=hap2Fasta,
             outPrefix=sampleID,
             HaplotypeLabel="hap2"
