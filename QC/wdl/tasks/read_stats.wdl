@@ -77,9 +77,9 @@ workflow runReadStats {
 
     call consolidateReadStats {
         input:
-            readStatsTarballs=flatten([readStats.outputTarball, 
+            readStatsTarballs=flatten([readStats.outputTarball,
                                       [concatReadStats.outputTarball]]),
-            readStatsReports=flatten([readStats.reportForConsolidation, 
+            readStatsReports=flatten([readStats.reportForConsolidation,
                                      [concatReadStats.reportForConsolidation]]),
             identifier=identifierAll,
 
@@ -88,7 +88,7 @@ workflow runReadStats {
 	output {
 		File ReadStatsTarball = consolidateReadStats.outputTarball
 		File ReadStatsReport = consolidateReadStats.outputReport
-        
+
 
         ## File ReadStatsTarballAll = consolidateReadStatsAll.outputTarball
         ## File ReadStatsReportAll = consolidateReadStatsAll.outputReport
@@ -118,7 +118,7 @@ task indexReads {
         set -o xtrace
 
         ln -s ~{readFile}
-                
+
         FILE=$(basename ~{readFile})
         OUTPUT="$FILE.fai"
 

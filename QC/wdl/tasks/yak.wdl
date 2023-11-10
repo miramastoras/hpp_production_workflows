@@ -117,9 +117,9 @@ task yakCount {
         String sampleName
         Int bloomSize=37
         # runtime configurations
-        Int memSizeGB=128
-        Int threadCount=16
-        Int diskSizeGB=256
+        Int memSizeGB=512
+        Int threadCount=32
+        Int diskSizeGB=512
         String dockerImage="juklucas/hpp_yak:latest"
     }
     command <<<
