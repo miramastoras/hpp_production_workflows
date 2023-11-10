@@ -22,9 +22,9 @@ task applyPolish{
         String? HaplotypeLabel
 
         String dockerImage = "kishwars/pepper_deepvariant:r0.8"
-        Int memSizeGB = 128
-        Int threadCount = 64
-        Int diskSizeGB = 128
+        Int memSizeGB = 8
+        Int threadCount = 8
+        Int diskSizeGB = 8
     }
 
     command <<<
