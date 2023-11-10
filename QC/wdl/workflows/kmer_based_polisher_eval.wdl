@@ -10,7 +10,7 @@ workflow kmerPolishingEval {
     meta {
       author: "Mira Mastoras"
       email: "mmastora@ucsc.edu"
-      description: "Evaluate diploid assembly with kmer-based metrics (QV,switch error,hamming error)"
+      description: "Evaluate diploid assembly with kmer-based metrics (QV,switch error,hamming error). Assumes meryl dbs and yak files already made"
       }
 
     input {
@@ -26,9 +26,9 @@ workflow kmerPolishingEval {
       String mode="ref2asm"
 
       File ilmMerylDBTarGz
-      Array[File] maternalReadsILM
-      Array[File] paternalReadsILM
-      Array[File] sampleReadsILM
+      File sampleYak
+      File paternalYak
+      File maternalYak
       }
 
     # Align hap1 and hap2 to grch38, in paf format
@@ -122,28 +122,28 @@ workflow kmerPolishingEval {
     }
 
     # Run Yak QV whole genome, inside and outside conf
-    call yak_t.runYakAssemblyStats as yakQCWholeGenome {
+    call yak_t.yakAssemblyStats as yakQCWholeGenome {
         input:
-            maternalReadsILM=maternalReadsILM,
-            paternalReadsILM=paternalReadsILM,
-            sampleReadsILM=sampleReadsILM,
+            matYak=maternalYak,
+            patYak=paternalYak,
+            sampleYak=sampleYak,
             assemblyFastaPat=hap1Fasta,
             assemblyFastaMat=hap2Fasta
     }
 
-    call yak_t.runYakAssemblyStats as yakQCInsideConf {
+    call yak_t.yakAssemblyStats as yakQCInsideConf {
         input:
-            maternalReadsILM=maternalReadsILM,
-            paternalReadsILM=paternalReadsILM,
-            sampleReadsILM=sampleReadsILM,
+            matYak=maternalYak,
+            patYak=paternalYak,
+            sampleYak=sampleYak,
             assemblyFastaPat=subHap1InsideConf.subFasta,
             assemblyFastaMat=subHap2InsideConf.subFasta
     }
-    call yak_t.runYakAssemblyStats as yakQCOutsideConf {
+    call yak_t.yakAssemblyStats as yakQCOutsideConf {
         input:
-            maternalReadsILM=maternalReadsILM,
-            paternalReadsILM=paternalReadsILM,
-            sampleReadsILM=sampleReadsILM,
+            matYak=maternalYak,
+            patYak=paternalYak,
+            sampleYak=sampleYak,
             assemblyFastaPat=subHap1OutsideConf.subFasta,
             assemblyFastaMat=subHap2OutsideConf.subFasta
     }

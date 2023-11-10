@@ -21,7 +21,7 @@ task Meryl{
         File? hifiBam
         Int kmerSize = 21
 
-        String dockerImage = "juklucas/hpp_merqury:latest"
+        String dockerImage = "miramastoras/merqury:latest"
         Int memSizeGB = 128
         Int threadCount = 64
         Int diskSizeGB = 128
@@ -45,7 +45,7 @@ task Meryl{
           samtools fastq -@~{threadCount} ~{hifiBam} > output/${HIFI_ID}.fq
           meryl count threads=~{threadCount} k=~{kmerSize} output/${HIFI_ID}.fq output output/hifi.k~{kmerSize}.meryl
 
-          # remove low freq kmers to avoid overestimating QV 
+          # remove low freq kmers to avoid overestimating QV
           meryl greater-than 1 output/hifi.k~{kmerSize}.meryl output output/hifi.k~{kmerSize}.gt1.meryl
           meryl greater-than 1 output/ilm.k~{kmerSize}.meryl output output/ilm.k~{kmerSize}.gt1.meryl
           rm -rf output/hifi.k~{kmerSize}.meryl
