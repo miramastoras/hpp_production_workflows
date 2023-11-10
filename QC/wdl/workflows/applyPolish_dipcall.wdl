@@ -4,7 +4,7 @@ import "../tasks/applyPolish.wdl" as apply_polish_wf
 import "../tasks/dipcall.wdl" as dipcall_wf
 import "../workflows/dipcall_happy_eval.wdl" as dipcall_happy_wf
 
-workflow dipcall_happy {
+workflow applyPolish_dipcall {
 
     meta {
         author: "Mira Mastoras"
