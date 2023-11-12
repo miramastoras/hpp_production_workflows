@@ -157,7 +157,7 @@ workflow kmerPolishingEval {
         File yakTarBallOutsideConf=yakQCOutsideConf.outputTarball
         File hap1InsideConfFasta=subHap1InsideConf.subFasta
         File hap2InsideConfFasta=subHap2InsideConf.subFasta
-        File hap1OutsideConfFasta=subHap1OutsideConf.subFastaByBed
+        File hap1OutsideConfFasta=subHap1OutsideConf.subFasta
         File hap2OutsideConfFasta=subHap2OutsideConf.subFasta
     }
 }
