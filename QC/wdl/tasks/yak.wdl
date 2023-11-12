@@ -162,9 +162,9 @@ task yakAssemblyStats {
         String genomeSize = "3.2g"
         String minSequenceLength = "100k"
         # runtime configurations
-        Int memSizeGB = 128
+        Int memSizeGB = 256
         Int threadCount = 32
-        Int diskSizeGB = 256
+        Int diskSizeGB = 512
         String dockerImage = "juklucas/hpp_yak:latest"
     }
     command <<<
