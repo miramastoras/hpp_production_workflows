@@ -10,8 +10,6 @@ workflow runYakCount {
         Array[File] maternalReadsILM
         Array[File] paternalReadsILM
         Array[File] sampleReadsILM
-        File assemblyFastaPat
-        File assemblyFastaMat
         File? referenceFasta
         Int shardLinesPerFile = 256000000
         Int fileExtractionDiskSizeGB = 256
