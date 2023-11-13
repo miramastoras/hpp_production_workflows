@@ -1,8 +1,8 @@
 version 1.0
 
-import "extract_reads.wdl" as extractReads_t
-import "shard_reads.wdl" as shardReads_t
-import "arithmetic.wdl" as arithmetic_t
+import "../tasks/extract_reads.wdl" as extractReads_t
+import "../tasks/shard_reads.wdl" as shardReads_t
+import "../tasks/arithmetic.wdl" as arithmetic_t
 
 workflow runYakCount {
 
