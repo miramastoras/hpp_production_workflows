@@ -106,6 +106,7 @@ workflow runYakAssemblyStats {
 		File outputSummary = yakAssemblyStats.outputSummary
 		File maternalYak = yakCountMat.outputYak
 		File paternalYak = yakCountPat.outputYak
+    File sampleYak = yakCountSample.outputYak
 	}
 
 }
