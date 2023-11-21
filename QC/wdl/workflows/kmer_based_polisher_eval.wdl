@@ -128,7 +128,8 @@ workflow kmerPolishingEval {
             patYak=paternalYak,
             sampleYak=sampleYak,
             assemblyFastaPat=hap1Fasta,
-            assemblyFastaMat=hap2Fasta
+            assemblyFastaMat=hap2Fasta,
+            minSequenceLength="0"
     }
 
     call yak_t.yakAssemblyStats as yakQCInsideConf {
@@ -137,7 +138,8 @@ workflow kmerPolishingEval {
             patYak=paternalYak,
             sampleYak=sampleYak,
             assemblyFastaPat=subHap1InsideConf.subFasta,
-            assemblyFastaMat=subHap2InsideConf.subFasta
+            assemblyFastaMat=subHap2InsideConf.subFasta,
+            minSequenceLength="0"
     }
     call yak_t.yakAssemblyStats as yakQCOutsideConf {
         input:
@@ -145,7 +147,8 @@ workflow kmerPolishingEval {
             patYak=paternalYak,
             sampleYak=sampleYak,
             assemblyFastaPat=subHap1OutsideConf.subFasta,
-            assemblyFastaMat=subHap2OutsideConf.subFasta
+            assemblyFastaMat=subHap2OutsideConf.subFasta,
+            minSequenceLength="0"
     }
 
     output {
