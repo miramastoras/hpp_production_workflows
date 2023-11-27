@@ -130,18 +130,5 @@ workflow hprc_DeepPolisher {
         File finalPhasedDipBam=PHARAOH.finalPhasedDipBam
         File finalPhasedDipBai=PHARAOH.finalPhasedDipBai
         File DeepPolisherVcf=DeepPolisher.PolisherVcf
-        File allONTToMatBam=alignONTToMat.bamFile
-        File allONTToPatBam=alignONTToPat.bamFile
-        File allONTToMatBai=alignONTToMat.baiFile
-        File allONTToPatBai=alignONTToPat.baiFile
-        File asm2asmPaf=PHARAOH.asm2asmPaf
-        File allHomToPatBamMaxDiv=PHARAOH.allHomToPatBamMaxDiv
-        File allHomToMatBamMaxDiv=PHARAOH.allHomToMatBamMaxDiv
-        File secphaseVariantBlocks=PHARAOH.secphaseVariantBlocks
-        File deepVariantPatFilt=PHARAOH.deepVariantPatFilt
-        File deepVariantMatFilt=PHARAOH.deepVariantMatFilt
-        File phasedVcf=PHARAOH.phasedVcf
-        File homExtendedbed=PHARAOH.homExtendedbed
-        File homBed=PHARAOH.homBed
     }
 }
