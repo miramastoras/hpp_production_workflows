@@ -55,5 +55,7 @@ workflow applyPolish_dipcall {
         File dipCallVCF = dipcall_t.outputVCF
         File happyBed = intersectBeds.outputBED
         File dipCallTar = dipcall_t.outputTarball
+        File polishedHap1= applyPolishHap1.asmPolished
+        File polishedHap2= applyPolishHap2.asmPolished
     }
 }
