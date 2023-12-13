@@ -2,7 +2,7 @@ version 1.0
 
 workflow runMinigraphMap {
 
-    call minigraphMap 
+    call minigraphMap
 
     output {
         File outputPafGZ = minigraphMap.outputPafGZ
@@ -19,7 +19,7 @@ task minigraphMap {
         String sampleName
         String outputFileTag = "minigraph"
         String args = ""
-        
+
         Int threadCount = 8
         Int memSizeGB   = 64
         Int diskSizeGB  = 64
@@ -31,7 +31,7 @@ task minigraphMap {
     command <<<
 
         set -eux -o pipefail
-        
+
 
         inputFastaFN=$(basename -- "~{inputFasta}")
 
@@ -42,7 +42,7 @@ task minigraphMap {
             inputFastaFN="${inputFastaFN%.gz}"
         else
             ln -s ~{inputFasta}
-        fi 
+        fi
 
 
         ## Run minigraph
