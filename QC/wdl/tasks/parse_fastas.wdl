@@ -3,10 +3,10 @@ version 1.0
 workflow runParseFastas {
     call parseFastas
     output {
-      File hap1RawFasta = parseFastas.hap1RawFasta
-      File hap1RawFastaIndex = parseFastas.hap1RawFastaIndex
-      File hap2RawFasta = parseFastas.hap2RawFasta
-      File hap2RawFastaIndex = parseFastas.hap2RawFastaIndex
+      File Hap1RawFasta = parseFastas.hap1RawFasta
+      File Hap1RawFastaIndex = parseFastas.hap1RawFastaIndex
+      File Hap2RawFasta = parseFastas.hap2RawFasta
+      File Hap2RawFastaIndex = parseFastas.hap2RawFastaIndex
       File dipRawFastaGz = parseFastas.dipRawFastaGz
       File dipRawFastaGzIndex = parseFastas.dipRawFastaGzIndex
     }
@@ -65,6 +65,10 @@ task parseFastas {
         bgzip ~{sampleName}.diploid.fasta
 
         samtools faidx ~{sampleName}.diploid.fasta.gz
+
+        ls *
+        ls hap1_output/
+        ls hap2_output/
     >>>
 
     output {
