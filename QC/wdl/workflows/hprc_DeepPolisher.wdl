@@ -42,6 +42,8 @@ workflow hprc_DeepPolisher {
     }
 
     ## Align all hifi reads to diploid assembly
+    
+
     call long_read_aligner_scattered_t.longReadAlignmentScattered as alignHifiToDiploid {
         input:
           assembly=dipRawFastaGz,

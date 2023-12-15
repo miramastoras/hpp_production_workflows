@@ -37,30 +37,26 @@ task parseFastas {
         mkdir hap1_output
         mkdir hap2_output
 
-        cd hap1_output
         if [[ $HAP1_FILENAME =~ \.gz$ ]]; then
-            cp ~{hap1Fasta} ~{sampleName}.hap1.fasta.gz
-            gunzip -f ~{sampleName}.hap1.fasta.gz
+            cp ~{hap1Fasta} hap1_output/~{sampleName}.hap1.fasta.gz
+            gunzip -f hap1_output/~{sampleName}.hap1.fasta.gz
 
         else
-            ln -s ~{hap1Fasta} ~{sampleName}.hap1.fasta
+            ln -s ~{hap1Fasta} hap1_output/~{sampleName}.hap1.fasta
         fi
 
-        samtools faidx ~{sampleName}.hap1.fasta
-
-        cd ../hap2_output
+        samtools faidx hap1_output/~{sampleName}.hap1.fasta
 
         if [[ $HAP2_FILENAME =~ \.gz$ ]]; then
-            cp ~{hap2Fasta} ~{sampleName}.hap2.fasta.gz
-            gunzip -f ~{sampleName}.hap2.fasta.gz
+            cp ~{hap2Fasta} hap2_output/~{sampleName}.hap2.fasta.gz
+            gunzip -f hap2_output/~{sampleName}.hap2.fasta.gz
 
         else
-            ln -s ~{hap2Fasta} ~{sampleName}.hap2.fasta
+            ln -s ~{hap2Fasta} hap2_output/~{sampleName}.hap2.fasta
         fi
 
-        samtools faidx ~{sampleName}.hap2.fasta
+        samtools faidx hap2_output/~{sampleName}.hap2.fasta
 
-        cd ../
 
         cat hap1_output/~{sampleName}.hap1.fasta \
             hap2_output/~{sampleName}.hap2.fasta  \
