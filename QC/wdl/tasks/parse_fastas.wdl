@@ -1,4 +1,4 @@
-version 1.0
+  version 1.0
 
 workflow runParseFastas {
     call parseFastas
@@ -60,11 +60,11 @@ task parseFastas {
 
         cat hap1_output/~{sampleName}.hap1.fasta \
             hap2_output/~{sampleName}.hap2.fasta  \
-            > ~{sampleName}.diploid.fasta
+            > ./~{sampleName}.diploid.fasta
 
-        bgzip ~{sampleName}.diploid.fasta
+        bgzip ./~{sampleName}.diploid.fasta
 
-        samtools faidx ~{sampleName}.diploid.fasta.gz
+        samtools faidx ./~{sampleName}.diploid.fasta.gz
 
         ls *
         ls hap1_output/
