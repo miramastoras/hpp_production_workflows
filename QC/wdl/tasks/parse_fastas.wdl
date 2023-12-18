@@ -63,12 +63,12 @@ task parseFastas {
     >>>
 
     output {
-        File hap1RawFasta = "hap1.fasta"
-        File hap1RawFastaIndex = "hap1.fasta.fai"
-        File hap2RawFasta = "hap2.fasta"
-        File hap2RawFastaIndex = "hap2.fasta.fai"
-        File dipRawFastaGz = "diploid.fasta.gz"
-        File dipRawFastaGzIndex = "diploid.fasta.gz.fai"
+        File hap1RawFasta = "./hap1.fasta"
+        File hap1RawFastaIndex = "./hap1.fasta.fai"
+        File hap2RawFasta = "./hap2.fasta"
+        File hap2RawFastaIndex = "./hap2.fasta.fai"
+        File dipRawFastaGz = "./diploid.fasta.gz"
+        File dipRawFastaGzIndex = "./diploid.fasta.gz.fai"
     }
 
     runtime {
