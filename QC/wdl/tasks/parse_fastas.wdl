@@ -58,15 +58,15 @@ task parseFastas {
         samtools faidx hap2_output/~{sampleName}.hap2.fasta
 
 
-        cat hap1_output/~{sampleName}.hap1.fasta \
-            hap2_output/~{sampleName}.hap2.fasta  \
-            > ./~{sampleName}.diploid.fasta
+        cat hap1_output/~{sampleName}.hap1.fasta hap2_output/~{sampleName}.hap2.fasta > ./~{sampleName}.diploid.fasta
+
+        echo `ls -alh ./~{sampleName}.diploid.fasta`
 
         bgzip ./~{sampleName}.diploid.fasta
 
         samtools faidx ./~{sampleName}.diploid.fasta.gz
 
-        ls -alh ./~{sampleName}.diploid.fasta.gz
+        echo `ls -alh ./~{sampleName}.diploid.fasta.gz`
         ls hap1_output/
         ls hap2_output/
     >>>
