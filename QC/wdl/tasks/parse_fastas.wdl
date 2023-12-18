@@ -67,6 +67,7 @@ task parseFastas {
         samtools faidx ./~{sampleName}.diploid.fasta.gz
 
         echo `ls -alh ./~{sampleName}.diploid.fasta.gz`
+        echo `ls -alh ./~{sampleName}.diploid.fasta.gz.fai`
         ls hap1_output/
         ls hap2_output/
     >>>
