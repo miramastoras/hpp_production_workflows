@@ -40,15 +40,15 @@ task merqury {
         KMER_ID=$(basename ~{kmerTarball} | sed 's/.gz$//' | sed 's/.tar//' )
 
         if [[ -f "~{matKmerTarball}" && -f "~{patKmerTarball}" ]]; then
-            MAT_KMER_ID=$(basename ~{matkmerTarball} | sed 's/.gz$//' | sed 's/.tar//' )
-            PAT_KMER_ID=$(basename ~{patkmerTarball} | sed 's/.gz$//' | sed 's/.tar//' )
+            MAT_KMER_ID=$(basename ~{matKmerTarball} | sed 's/.gz$//' | sed 's/.tar//' )
+            PAT_KMER_ID=$(basename ~{patKmerTarball} | sed 's/.gz$//' | sed 's/.tar//' )
         fi
 
         # extract kmers
         tar xvf ~{kmerTarball} --no-same-owner -C . &
         if [[ -f "~{matKmerTarball}" && -f "~{patKmerTarball}" ]]; then
             tar xvf ~{matKmerTarball} --no-same-owner -C . &
-            tar xvf ~{patKmerTarball} --no-same-owner -C . 
+            tar xvf ~{patKmerTarball} --no-same-owner -C .
         fi
         wait
 
