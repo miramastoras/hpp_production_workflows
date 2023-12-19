@@ -31,46 +31,46 @@ task parseFastas {
         set -o xtrace
 
         HAP1_FILENAME=$(basename -- "~{hap1Fasta}")
-
         HAP2_FILENAME=$(basename -- "~{hap2Fasta}")
 
-        if [[ $HAP1_FILENAME =~ \.gz$ ]]; then
-            cp ~{hap1Fasta} hap1.fasta.gz
-            gunzip -f hap1.fasta.gz
+        mkdir hap1_output
+        mkdir hap2_output
 
+        if [[ $HAP1_FILENAME =~ \.gz$ ]]; then
+            cp ~{hap1Fasta} hap1_output/~{sampleName}.hap1.fasta.gz
+            gunzip -f hap1_output/~{sampleName}.hap1.fasta.gz
         else
-            cp ~{hap1Fasta} hap1.fasta
+            cp ~{hap1Fasta} hap1_output/~{sampleName}.hap1.fasta
         fi
 
-        samtools faidx hap1.fasta
+        samtools faidx hap1_output/~{sampleName}.hap1.fasta
 
         if [[ $HAP2_FILENAME =~ \.gz$ ]]; then
-            cp ~{hap2Fasta} hap2.fasta.gz
-            gunzip -f hap2.fasta.gz
-
+            cp ~{hap2Fasta} hap2_output/~{sampleName}.hap2.fasta.gz
+            gunzip -f hap2_output/~{sampleName}.hap2.fasta.gz
         else
-            cp ~{hap2Fasta} hap2.fasta
+            cp ~{hap2Fasta} hap2_output/~{sampleName}.hap2.fasta
         fi
 
-        samtools faidx hap2.fasta
+        samtools faidx hap2_output/~{sampleName}.hap2.fasta
 
-        cat hap1.fasta hap2.fasta > diploid.fasta
+        cat hap1_output/~{sampleName}.hap1.fasta \
+            hap2_output/~{sampleName}.hap2.fasta  \
+            > ~{sampleName}.diploid.fasta
 
-        bgzip diploid.fasta
+        bgzip ~{sampleName}.diploid.fasta
 
-        samtools faidx diploid.fasta.gz
-
-        echo `ls -alh *`
+        samtools faidx ~{sampleName}.diploid.fasta.gz
 
     >>>
 
     output {
-        File hap1RawFasta = "./hap1.fasta"
-        File hap1RawFastaIndex = "./hap1.fasta.fai"
-        File hap2RawFasta = "./hap2.fasta"
-        File hap2RawFastaIndex = "./hap2.fasta.fai"
-        File dipRawFastaGz = "./diploid.fasta.gz"
-        File dipRawFastaGzIndex = "./diploid.fasta.gz.fai"
+        File hap1RawFasta = glob("hap1_output/*hap1.fasta")[0]
+        File hap1RawFastaIndex = glob("hap1_output/*hap1.fasta.fai")[0]
+        File hap2RawFasta = glob("hap2_output/*hap2.fasta")[0]
+        File hap2RawFastaIndex = glob("hap2_output/*hap2.fasta.fai")[0]
+        File dipRawFastaGz = glob("*.diploid.fasta.gz")[0]
+        File dipRawFastaGzIndex = glob("*.diploid.fasta.gz.fai")[0]
     }
 
     runtime {
