@@ -101,7 +101,7 @@ workflow PHARAOH{
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
 
-    call long_read_aligner_scattered_t.longReadAlignmentScattered as alignAllToScattered{
+    call long_read_aligner_scattered_t.longReadAlignmentScattered as alignAllToHap2Scattered{
         input:
             readFiles=[subDipBamByHomozygous.subBam],
             assembly=Hap2Fasta,
@@ -124,7 +124,7 @@ workflow PHARAOH{
 
     }
 
-    call correct_bam_t.correctBam as correctBamMaxDivergence {
+    call correct_bam_t.correctBam as correctBamMaxDivergenceHap2 {
         input:
             Bam=alignAllToHap2Scattered.bamFile,
             options="--maxDiv 0.02",
@@ -143,7 +143,7 @@ workflow PHARAOH{
             sample=sampleName,
             modelType = "PACBIO"
     }
-    call deepvariant_t.DeepVariant as DeepVariant{
+    call deepvariant_t.DeepVariant as DeepVariantHap2{
         input:
             inputReads=correctBamMaxDivergenceHap2.correctedBam,
             inputReadsIdx=correctBamMaxDivergenceHap2.correctedBamIndex,
