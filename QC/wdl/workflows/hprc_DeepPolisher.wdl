@@ -105,7 +105,7 @@ workflow hprc_DeepPolisher {
           Hap1FastaIndex=parseFastaStep.Hap1RawFastaIndex,
           Hap2Fasta=parseFastaStep.Hap2RawFasta,
           Hap2FastaIndex=parseFastaStep.Hap2RawFastaIndex,
-          diploidFaGz=parseFastaStep.parseFastaStep.dipRawFastaGz,
+          diploidFaGz=parseFastaStep.dipRawFastaGz,
           allHifiToDiploidBam=alignHifiToDiploid.bamFile,
           allHifiToDiploidBai=alignHifiToDiploid.baiFile,
           allONTToHap2Bam=alignONTToHap2.bamFile,
@@ -126,7 +126,7 @@ workflow hprc_DeepPolisher {
         input:
           Bam=PHARAOH.finalPhasedDipBam,
           Bai=PHARAOH.finalPhasedDipBai,
-          Fasta=parseFastaStep.parseFastaStep.dipRawFastaGz,
+          Fasta=parseFastaStep.dipRawFastaGz,
           ModelFilesTarGZ=DeepPolisherModelFilesTarGZ,
           dockerImage=DeepPolisherDocker,
           sampleName=sampleName
