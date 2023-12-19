@@ -59,7 +59,7 @@ workflow hprc_DeepPolisher {
 
     call long_read_aligner_scattered_t.longReadAlignmentScattered as alignHifiToDiploid {
         input:
-          assembly=dipRawFastaGz,
+          assembly=parseFastaStep.dipRawFastaGz,
           readFiles=HifiReads,
           aligner=hifiAlignerToUse,
           preset=alignerHiFiPreset,
@@ -105,7 +105,7 @@ workflow hprc_DeepPolisher {
           Hap1FastaIndex=parseFastaStep.Hap1RawFastaIndex,
           Hap2Fasta=parseFastaStep.Hap2RawFasta,
           Hap2FastaIndex=parseFastaStep.Hap2RawFastaIndex,
-          diploidFaGz=parseFastaStep.dipRawFastaGz,
+          diploidFaGz=parseFastaStep.parseFastaStep.dipRawFastaGz,
           allHifiToDiploidBam=alignHifiToDiploid.bamFile,
           allHifiToDiploidBai=alignHifiToDiploid.baiFile,
           allONTToHap2Bam=alignONTToHap2.bamFile,
@@ -126,7 +126,7 @@ workflow hprc_DeepPolisher {
         input:
           Bam=PHARAOH.finalPhasedDipBam,
           Bai=PHARAOH.finalPhasedDipBai,
-          Fasta=parseFastaStep.dipRawFastaGz,
+          Fasta=parseFastaStep.parseFastaStep.dipRawFastaGz,
           ModelFilesTarGZ=DeepPolisherModelFilesTarGZ,
           dockerImage=DeepPolisherDocker,
           sampleName=sampleName
