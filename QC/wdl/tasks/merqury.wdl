@@ -37,6 +37,12 @@ task merqury {
 
         # get filename
         ASM_ID=$(basename ~{assemblyFasta} | sed 's/.gz$//' | sed 's/.fa\(sta\)*$//' | sed 's/[._][pm]at\(ernal\)*//')
+        KMER_ID=$(basename ~{kmerTarball} | sed 's/.gz$//' | sed 's/.tar//' )
+
+        if [[ -f "~{matKmerTarball}" && -f "~{patKmerTarball}" ]]; then
+            MAT_KMER_ID=$(basename ~{matkmerTarball} | sed 's/.gz$//' | sed 's/.tar//' )
+            PAT_KMER_ID=$(basename ~{patkmerTarball} | sed 's/.gz$//' | sed 's/.tar//' )
+        fi
 
         # extract kmers
         tar xvf ~{kmerTarball} --no-same-owner -C . &
@@ -45,6 +51,9 @@ task merqury {
             tar xvf ~{patKmerTarball} --no-same-owner -C . &
         fi
         wait
+
+        echo `ls directory`
+        echo `ls *`
 
         # initilize command
         cmd=( merqury.sh )
@@ -81,6 +90,7 @@ task merqury {
         # prep output
         cmd+=( $ASM_ID.merqury )
 
+        echo `$cmd`
         # run command
         ${cmd[@]}
 
