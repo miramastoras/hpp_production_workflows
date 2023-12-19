@@ -157,7 +157,7 @@ workflow PHARAOH{
     call pmdv_t.bcftoolsFilter as FilterDVHap1{
         input:
           inputVCF=DeepVariantHap1.vcfOut,
-          excludeExpr="'FOR/GQ<=10'",
+          excludeExpr="'FORMAT/GQ<=10'",
           applyFilters=""
     }
     call pmdv_t.bcftoolsFilter as FilterDVHap2{
