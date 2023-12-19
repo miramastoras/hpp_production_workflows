@@ -41,11 +41,11 @@ workflow hprc_DeepPolisher {
     }
 
     ## parse input fasta files to obtain necessary forHap2s
-    call parse_fastas_t.runParseFastas as parseFastaStep {
+    call parse_fastas_t.parseFastas as parseFastaStep {
         input:
-            parseFastas.hap1Fasta=Hap1RawFasta,
-            parseFastas.hap2Fasta=Hap2RawFasta,
-            parseFastas.sampleName=sampleName
+            hap1Fasta=Hap1RawFasta,
+            hap2Fasta=Hap2RawFasta,
+            sampleName=sampleName
     }
 
     ## extract ONT reads > 100kb
@@ -73,7 +73,7 @@ workflow hprc_DeepPolisher {
     ## Align all ONT UL reads to Hap1 haplotype
     call long_read_aligner_scattered_t.longReadAlignmentScattered as alignONTToHap1 {
         input:
-          assembly=parseFastaStep.Hap1RawFasta,
+          assembly=parseFastaStep.hap1RawFasta,
           readFiles=extractONTUL100kb.longReadFastqGzArray,
           aligner=ONTAlignerToUse,
           preset=alignerONTPreset,
@@ -87,7 +87,7 @@ workflow hprc_DeepPolisher {
     ## Align all ONT UL reads to Hap2 haplotype
     call long_read_aligner_scattered_t.longReadAlignmentScattered as alignONTToHap2 {
         input:
-          assembly=parseFastaStep.Hap2RawFasta,
+          assembly=parseFastaStep.hap2RawFasta,
           readFiles=extractONTUL100kb.longReadFastqGzArray,
           aligner=ONTAlignerToUse,
           preset=alignerONTPreset,
@@ -101,10 +101,10 @@ workflow hprc_DeepPolisher {
     ## Phase reads in homozygous regions with UL, secphase marker mode in non-homoyzgous regions
     call PHARAOH_t.PHARAOH as PHARAOH {
         input:
-          Hap1Fasta=parseFastaStep.Hap1RawFasta,
-          Hap1FastaIndex=parseFastaStep.Hap1RawFastaIndex,
-          Hap2Fasta=parseFastaStep.Hap2RawFasta,
-          Hap2FastaIndex=parseFastaStep.Hap2RawFastaIndex,
+          Hap1Fasta=parseFastaStep.hap1RawFasta,
+          Hap1FastaIndex=parseFastaStep.hap1RawFastaIndex,
+          Hap2Fasta=parseFastaStep.hap2RawFasta,
+          Hap2FastaIndex=parseFastaStep.hap2RawFastaIndex,
           diploidFaGz=parseFastaStep.dipRawFastaGz,
           allHifiToDiploidBam=alignHifiToDiploid.bamFile,
           allHifiToDiploidBai=alignHifiToDiploid.baiFile,
@@ -136,7 +136,7 @@ workflow hprc_DeepPolisher {
     call applyPolish_t.applyPolish as applyDPPolish_Hap1 {
         input:
           polishingVcf=DeepPolisher.PolisherVcf,
-          asmRaw=parseFastaStep.Hap1RawFasta,
+          asmRaw=parseFastaStep.hap1RawFasta,
           outPrefix=sampleName,
           HaplotypeLabel="Hap1"
     }
@@ -144,7 +144,7 @@ workflow hprc_DeepPolisher {
     call applyPolish_t.applyPolish as applyDPPolish_Hap2 {
         input:
           polishingVcf=DeepPolisher.PolisherVcf,
-          asmRaw=parseFastaStep.Hap2RawFasta,
+          asmRaw=parseFastaStep.hap2RawFasta,
           outPrefix=sampleName,
           HaplotypeLabel="Hap2"
     }
