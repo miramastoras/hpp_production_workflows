@@ -89,13 +89,14 @@ task merqury {
         # prep output
         cmd+=( $ASM_ID.merqury )
 
-        echo `printing cmd`
+        echo "printing cmd"
         echo `$cmd`
 
-        echo `printing directory`
-        echo `ls *`
-        echo `ls -alh * `
-        echo `ls -alh * `
+        echo "printing kmer id"
+        echo `$KMER_ID`
+        
+        echo "printing directory"
+        echo `ls .`
 
         # run command
         ${cmd[@]}
