@@ -9,30 +9,30 @@ workflow runGetMapQTable {
         description: "make table of mapq values for correctBam"
     }
     input {
-        File allHifiToMatBam
-        File allHifiToMatBai
-        File allHifiToPatBam
-        File allHifiToPatBai
+        File allHifiToHap2Bam
+        File allHifiToHap2Bai
+        File allHifiToHap1Bam
+        File allHifiToHap1Bai
         File secPhaseBed
     }
-    call subBamByBed_t.SubBamByBed as subBamPaternal {
+    call subBamByBed_t.SubBamByBed as subBamHap1 {
         input:
-            Bam=allHifiToPatBam,
-            Bai=allHifiToPatBai,
+            Bam=allHifiToHap1Bam,
+            Bai=allHifiToHap1Bai,
             Bed=secPhaseBed
     }
-    call subBamByBed_t.SubBamByBed as subBamMaternal {
+    call subBamByBed_t.SubBamByBed as subBamHap2 {
         input:
-            Bam=allHifiToMatBam,
-            Bai=allHifiToMatBai,
+            Bam=allHifiToHap2Bam,
+            Bai=allHifiToHap2Bai,
             Bed=secPhaseBed
     }
     call getMapQTable {
         input:
-            allHifiToMatBam=subBamMaternal.subBam,
-            allHifiToMatBai=subBamMaternal.subBai,
-            allHifiToPatBam=subBamPaternal.subBam,
-            allHifiToPatBai=subBamPaternal.subBai
+            allHifiToHap2Bam=subBamHap2.subBam,
+            allHifiToHap2Bai=subBamHap2.subBai,
+            allHifiToHap1Bam=subBamHap1.subBam,
+            allHifiToHap1Bai=subBamHap1.subBai
     }
 
     output {
@@ -42,10 +42,10 @@ workflow runGetMapQTable {
 
 task getMapQTable {
     input {
-        File allHifiToMatBam
-        File allHifiToMatBai
-        File allHifiToPatBam
-        File allHifiToPatBai
+        File allHifiToHap2Bam
+        File allHifiToHap2Bai
+        File allHifiToHap1Bam
+        File allHifiToHap1Bai
 
         String dockerImage = "kishwars/pepper_deepvariant:r0.8"
         Int threads = 32
@@ -60,16 +60,16 @@ task getMapQTable {
 
         # softlink bam and index so they are in same directory
 
-        ln -s ~{allHifiToMatBam} mat.bam
-        ln -s ~{allHifiToMatBai} mat.bai
+        ln -s ~{allHifiToHap2Bam} Hap2.bam
+        ln -s ~{allHifiToHap2Bai} Hap2.bai
 
-        ln -s ~{allHifiToPatBam} pat.bam
-        ln -s ~{allHifiToPatBai} pat.bai
+        ln -s ~{allHifiToHap1Bam} Hap1.bam
+        ln -s ~{allHifiToHap1Bai} Hap1.bai
 
         # Set param file based on input hifi or ont read alignments
-        samtools view pat.bam | awk '{print $1"\t"$3"\t"$4"\t"$5}' > mapq_table_pat.tsv
-        samtools view mat.bam | awk '{print $1"\t"$3"\t"$4"\t"$5}' > mapq_table_mat.tsv
-        cat mapq_table_pat.tsv mapq_table_mat.tsv > mapq_table_all.tsv
+        samtools view Hap1.bam | awk '{print $1"\t"$3"\t"$4"\t"$5}' > mapq_table_Hap1.tsv
+        samtools view Hap2.bam | awk '{print $1"\t"$3"\t"$4"\t"$5}' > mapq_table_Hap2.tsv
+        cat mapq_table_Hap1.tsv mapq_table_Hap2.tsv > mapq_table_all.tsv
 
     >>>
     output {
