@@ -31,14 +31,17 @@ task project_blocks{
             set -u
             set -o xtrace
 
-            pafBasename=$(basename ~{pafFile})
-            bedBasename=$(basename ~{bedFile})
+            pafBasename=$(basename ~{pafFile} | sed 's/.gz$//' | sed 's/.bed$//')
+            bedBasename=$(basename ~{bedFile} | sed 's/.gz$//' | sed 's/.bed$//')
+
+            bedtools merge -i ~{bedFile} > ${bedBasename}.mrg.bed
+            bedtools sort -i ${bedBasename}.mrg.bed > ${bedBasename}.mrg.srt.bed
 
             python3 /home/programs/src/project_blocks_multi_thread.py \
             --threads ~{threadCount} \
             --mode ~{mode} \
             --paf ~{pafFile} \
-            --blocks ~{bedFile} \
+            --blocks ${bedBasename}.mrg.srt.bed \
             --outputProjectable ${pafBasename}_${bedBasename}.projectable.bed \
             --outputProjection ${pafBasename}_${bedBasename}.projection.bed
     	>>>

@@ -90,11 +90,11 @@ task merqury {
         cmd+=( $ASM_ID.merqury )
 
         echo "printing cmd"
-        echo `$cmd`
+        echo $cmd
 
         echo "printing kmer id"
-        echo `$KMER_ID`
-        
+        echo $KMER_ID
+
         echo "printing directory"
         echo `ls .`
 
