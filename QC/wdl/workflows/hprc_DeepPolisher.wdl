@@ -41,7 +41,7 @@ workflow hprc_DeepPolisher {
     }
 
     ## parse input fasta files to obtain necessary forHap2s
-    call parse_fastas_t.parseFastas as parseFastaStep {
+    call parse_fastas_t.runParseFastas as parseFastaStep {
         input:
             hap1Fasta=Hap1RawFasta,
             hap2Fasta=Hap2RawFasta,
