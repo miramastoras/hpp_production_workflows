@@ -61,7 +61,7 @@ task merqury {
             gunzip $FILENAME
             mv ${FILENAME%\.gz} asm.fasta
         else
-            ln -s ~{assemblyFasta} asm.fasta
+            cp ~{assemblyFasta} asm.fasta
         fi
         cmd+=( asm.fasta )
 
@@ -73,7 +73,7 @@ task merqury {
                 gunzip $FILENAME
                 mv ${FILENAME%\.gz} altHap.fasta
             else
-                ln -s ~{altHapFasta} altHap.fasta
+                cp ~{altHapFasta} altHap.fasta
             fi
             cmd+=( altHap.fasta )
         fi
