@@ -39,7 +39,7 @@ task parseFastas {
             gunzip -f hap1.fasta.gz
 
         else
-            ln -s ~{hap1Fasta} hap1.fasta
+            cp ~{hap1Fasta} hap1.fasta
         fi
 
         samtools faidx hap1.fasta
@@ -49,7 +49,7 @@ task parseFastas {
             gunzip -f hap2.fasta.gz
 
         else
-            ln -s ~{hap2Fasta} hap2.fasta
+            cp ~{hap2Fasta} hap2.fasta
         fi
 
         samtools faidx hap2.fasta
@@ -59,6 +59,8 @@ task parseFastas {
         bgzip diploid.fasta
 
         samtools faidx diploid.fasta.gz
+
+        echo `ls -alh *`
 
     >>>
 
