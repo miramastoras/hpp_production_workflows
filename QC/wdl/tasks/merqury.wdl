@@ -48,7 +48,7 @@ task merqury {
         tar xvf ~{kmerTarball} --no-same-owner -C . &
         if [[ -f "~{matKmerTarball}" && -f "~{patKmerTarball}" ]]; then
             tar xvf ~{matKmerTarball} --no-same-owner -C . &
-            tar xvf ~{patKmerTarball} --no-same-owner -C . &
+            tar xvf ~{patKmerTarball} --no-same-owner -C . 
         fi
         wait
 
