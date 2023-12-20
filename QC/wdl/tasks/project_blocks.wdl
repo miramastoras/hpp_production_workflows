@@ -21,7 +21,7 @@ task project_blocks{
         String mode='ref2asm'
         Int memSizeGB = 12
         Int threadCount = 16
-        Int diskSizeGB = 256
+        Int diskSizeGB = 64
         String dockerImage = "mobinasri/flagger:latest"
       }
 
@@ -31,7 +31,7 @@ task project_blocks{
             set -u
             set -o xtrace
 
-            pafBasename=$(basename ~{pafFile} | sed 's/.gz$//' | sed 's/.bed$//')
+            pafBasename=$(basename ~{pafFile} | sed 's/.gz$//' | sed 's/.paf$//')
             bedBasename=$(basename ~{bedFile} | sed 's/.gz$//' | sed 's/.bed$//')
 
             bedtools merge -i ~{bedFile} > ${bedBasename}.mrg.bed

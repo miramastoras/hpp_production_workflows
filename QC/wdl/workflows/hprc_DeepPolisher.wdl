@@ -23,7 +23,7 @@ workflow hprc_DeepPolisher {
         Array[File] ONTReads
         Array[File] HifiReads
 
-        String DeepPolisherDocker
+        String DeepPolisherDocker="google/deepconsensus:polisher_v0.0.8_12122023"
         String sampleName
         Boolean useMargin=false
 

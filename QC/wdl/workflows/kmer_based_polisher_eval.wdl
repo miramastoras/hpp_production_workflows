@@ -23,7 +23,6 @@ workflow kmerPolishingEval {
 
       String sampleID
       String pafAligner="minimap2"
-      String mode="ref2asm"
 
       File ilmMerylDBTarGz
       File sampleYak
@@ -155,6 +154,7 @@ workflow kmerPolishingEval {
         File QV_whole_genome = merquryWholeGenome.QV
         File QV_inside_conf = merquryInsideConf.QV
         File QV_outside_conf = merquryOutsideConf.QV
+        File merquryFPkmers = merquryWholeGenome.FPkmers
         File yakTarBallWG=yakQCWholeGenome.outputTarball
         File yakTarBallInsideConf=yakQCInsideConf.outputTarball
         File yakTarBallOutsideConf=yakQCOutsideConf.outputTarball
