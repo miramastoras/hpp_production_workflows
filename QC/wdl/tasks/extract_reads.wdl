@@ -29,7 +29,7 @@ task extractReads {
         File? referenceFasta
         Int memSizeGB = 4
         Int threadCount = 8
-        Int diskSizeGB = 128
+        Int diskSizeGB = 512
         String dockerImage = "tpesout/hpp_base:latest"
     }
 
