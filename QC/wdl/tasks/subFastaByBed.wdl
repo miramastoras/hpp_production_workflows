@@ -36,7 +36,7 @@ task SubFastaByBed {
 
 	>>>
 	output {
-		  File subFasta = glob("*.bed.fasta")[0]
+		  File subFasta = glob("*subBed.fasta")[0]
 	}
     runtime {
         memory: memSizeGB + " GB"
