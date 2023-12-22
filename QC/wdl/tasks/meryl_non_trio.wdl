@@ -1,71 +1,172 @@
 version 1.0
 
-# This is a task level wdl workflow to run Meryl for generating either a hybrid hifi + illumina or just illumina readmer database
-# from reads extracted from a diploid bam file
+import "extract_reads.wdl" as extractReads_t
+import "shard_reads.wdl" as shardReads_t
+import "arithmetic.wdl" as arithmetic_t
 
 workflow runMeryl {
-    meta {
-        author: "Mira Mastoras"
-        email: "mmastora@ucsc.edu"
-        description: "Generate hybrid (hifi + illumina) or just illumina meryl database"
+
+    input {
+        Array[File] sampleReadsILM
+        File? referenceFasta
+        Int kmerSize = 21
+        Boolean compress = false
+        Int merylCountMemSizeGB = 42
+        Int merylCountThreadCount = 64
+        Int merylUnionSumMemSizeGB = 32
+        Int merylUnionSumThreadCount = 32
+        Int fileExtractionDiskSizeGB = 256
+        String dockerImage = "juklucas/hpp_merqury:latest"
+
+    # extract reads
+    scatter (readFile in sampleReadsILM) {
+        call extractReads_t.extractReads as sampleReadsExtracted {
+            input:
+                readFile=readFile,
+                referenceFasta=referenceFasta,
+                memSizeGB=4,
+                threadCount=4,
+                diskSizeGB=fileExtractionDiskSizeGB,
+                dockerImage=dockerImage
+        }
     }
-    call Meryl
-    output {
-        File merylDb = Meryl.merylDb
+
+    # get file size of results (for union sum)
+    call arithmetic_t.sum as sampleReadSize {
+        input:
+            integers=sampleReadsExtracted.fileSizeGB
+    }
+
+    # get max file size (for meryl count sum)
+    call arithmetic_t.max as sampleReadSizeMax {
+        input:
+            integers=sampleReadsExtracted.fileSizeGB
+    }
+
+    # do the meryl counting
+    scatter (readFile in sampleReadsExtracted.extractedRead) {
+        call merylCount as sampleMerylCount {
+            input:
+                readFile=readFile,
+                kmerSize=kmerSize,
+                compress=compress,
+                threadCount=merylCountThreadCount,
+                memSizeGB=merylCountMemSizeGB,
+                diskSizeGB=sampleReadSizeMax.value * 4,
+                dockerImage=dockerImage
+        }
+    }
+
+    # do the meryl merging
+    call merylUnionSum as sampleMerylUnionSum {
+        input:
+            merylCountFiles=sampleMerylCount.merylDb,
+            identifier="sample",
+            threadCount=merylUnionSumThreadCount,
+            memSizeGB=merylUnionSumMemSizeGB,
+            diskSizeGB=sampleReadSize.value * 4,
+            dockerImage=dockerImage
+    }
+
+	output {
+		File sampleMerylDB = sampleMerylUnionSum.merylDb
+	}
+}
+
+
+task merylCount {
+    input {
+        File readFile
+        Int kmerSize=21
+        Boolean compress = false
+        Int memSizeGB = 42
+        Int threadCount = 64
+        Int diskSizeGB = 64
+        String dockerImage = "juklucas/hpp_merqury:latest"
+    }
+
+    String compress_arg = if compress then "compress" else ""
+
+	command <<<
+        # Set the exit code of a pipeline to that of the rightmost command
+        # to exit with a non-zero status, or zero if all commands of the pipeline exit
+        set -o pipefail
+        # cause a bash script to exit immediately when a command fails
+        set -e
+        # cause the bash shell to treat unset variables as an error and exit immediately
+        set -u
+        # echo each line of the script to stdout so we can see what is happening
+        # to turn off echo do 'set +o xtrace'
+        set -o xtrace
+        OMP_NUM_THREADS=~{threadCount}
+
+        # generate meryl db for each read
+        ID=`basename ~{readFile} | sed 's/.gz$//' | sed 's/.f[aq]\(st[aq]\)*$//'`
+        meryl ~{compress_arg} k=~{kmerSize} threads=~{threadCount} memory=$((~{memSizeGB}-10)) count output $ID.meryl ~{readFile}
+
+        # package
+        tar cvf $ID.meryl.tar $ID.meryl
+
+        # cleanup
+        rm -rf $ID.meryl
+	>>>
+	output {
+		File merylDb = glob("*.meryl.tar")[0]
+	}
+    runtime {
+        memory: memSizeGB + " GB"
+        cpu: threadCount
+        disks: "local-disk " + diskSizeGB + " SSD"
+        docker: dockerImage
+        preemptible: 1
     }
 }
 
-task Meryl{
+
+task merylUnionSum {
     input {
-        File ilmBam
-        File? hifiBam
-        Int kmerSize = 21
-
-        String dockerImage = "miramastoras/merqury:latest"
-        Int memSizeGB = 128
-        Int threadCount = 64
-        Int diskSizeGB = 128
+        Array[File] merylCountFiles
+        String identifier
+        Int memSizeGB = 32
+        Int threadCount = 32
+        Int diskSizeGB = 64
+        String dockerImage = "juklucas/hpp_merqury:latest"
     }
-    command <<<
-        # exit when a command fails, fail with unset variables, print commands before execution
-        set -eux -o pipefail
+
+	command <<<
+        # Set the exit code of a pipeline to that of the rightmost command
+        # to exit with a non-zero status, or zero if all commands of the pipeline exit
+        set -o pipefail
+        # cause a bash script to exit immediately when a command fails
+        set -e
+        # cause the bash shell to treat unset variables as an error and exit immediately
+        set -u
+        # echo each line of the script to stdout so we can see what is happening
+        # to turn off echo do 'set +o xtrace'
         set -o xtrace
+        OMP_NUM_THREADS=~{threadCount}
 
-        mkdir output
-        ILM_ID=`basename ~{ilmBam} | sed 's/.bam$//'`
+        # extract meryl dbs
+        mkdir extracted/
+        cd extracted/
+        for m in ~{sep=" " merylCountFiles} ; do
+            tar xf $m &
+        done
+        wait
+        cd ../
 
-        # make illumina meryls
-        samtools fastq -@~{threadCount} ~{ilmBam} > output/${ILM_ID}.fq
-        meryl count threads=~{threadCount} k=~{kmerSize} output/${ILM_ID}.fq output output/ilm.k~{kmerSize}.meryl
+        # merge meryl dbs
+        meryl union-sum output ~{identifier}.meryl extracted/*
 
-        # make hybrid db if hifi supplied
-        if [[ ! -z "~{hifiBam}" ]]; then
+        # package
+        tar cvf ~{identifier}.meryl.tar ~{identifier}.meryl
 
-          HIFI_ID=`basename ~{hifiBam} | sed 's/.bam$//'`
-          samtools fastq -@~{threadCount} ~{hifiBam} > output/${HIFI_ID}.fq
-          meryl count threads=~{threadCount} k=~{kmerSize} output/${HIFI_ID}.fq output output/hifi.k~{kmerSize}.meryl
-
-          # remove low freq kmers to avoid overestimating QV
-          meryl greater-than 1 output/hifi.k~{kmerSize}.meryl output output/hifi.k~{kmerSize}.gt1.meryl
-          meryl greater-than 1 output/ilm.k~{kmerSize}.meryl output output/ilm.k~{kmerSize}.gt1.meryl
-          rm -rf output/hifi.k~{kmerSize}.meryl
-
-          # merge hifi and ilm
-          meryl union-max output/ilm.k~{kmerSize}.gt1.meryl output/hifi.k~{kmerSize}.gt1.meryl output hybrid.k~{kmerSize}.gt1.meryl
-
-          # tarball
-          tar -zcvf hybrid.k~{kmerSize}.gt1.meryl.tar.gz hybrid.k~{kmerSize}.gt1.meryl
-
-        else # if not hybrid, return just illumina meryl db
-          mv output/ilm.k~{kmerSize}.meryl ilm.k~{kmerSize}.meryl
-          tar -zcvf ilm.k~{kmerSize}.meryl.tar.gz ilm.k~{kmerSize}.meryl
-
-        fi
-    >>>
-    output {
-        File merylDb=glob("*.meryl.tar.gz")[0]
-
-    }
+        # cleanup
+        rm -rf extracted/
+	>>>
+	output {
+		File merylDb = identifier + ".meryl.tar"
+	}
     runtime {
         memory: memSizeGB + " GB"
         cpu: threadCount

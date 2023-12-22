@@ -154,7 +154,8 @@ workflow kmerPolishingEval {
         File QV_whole_genome = merquryWholeGenome.QV
         File QV_inside_conf = merquryInsideConf.QV
         File QV_outside_conf = merquryOutsideConf.QV
-        File merquryFPkmers = merquryWholeGenome.FPkmers
+        File merquryAsmFPkmers = merquryWholeGenome.asmFPkmers
+        File merquryAltHapFPkmers = merquryWholeGenome.altHapFPkmers
         File yakTarBallWG=yakQCWholeGenome.outputTarball
         File yakTarBallInsideConf=yakQCInsideConf.outputTarball
         File yakTarBallOutsideConf=yakQCOutsideConf.outputTarball

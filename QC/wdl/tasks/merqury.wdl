@@ -104,14 +104,12 @@ task merqury {
         # get qv output
         tar czvf $ASM_ID.merqury.tar.gz $ASM_ID.merqury*
 
-        # get FP kmers
-        tar czvf $ASM_ID.FPkmers.tar.gz *_only.*
-
 	>>>
 	output {
 		File QV = glob("*.merqury.qv")[0]
 		File outputTarball = glob("*.merqury.tar.gz")[0]
-    File FPkmers = glob("*.FPkmers.tar.gz")[0]
+    File altHapFPkmers = "altHap_only.bed"
+    File asmFPkmers = "asm_only.bed"
 	}
     runtime {
         memory: memSizeGB + " GB"
