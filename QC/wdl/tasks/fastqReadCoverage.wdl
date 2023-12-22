@@ -2,7 +2,7 @@ version 1.0
 
 workflow fastqReadCoverage {
 
-    call sumFastqReads 
+    call sumFastqReads
 
     output {
         File coverageFile = sumFastqReads.coverageFile
