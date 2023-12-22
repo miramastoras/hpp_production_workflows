@@ -38,7 +38,7 @@ workflow hprc_polishing_QC {
     }
 
     call kmer_based_polisher_eval_wf.kmerPolishingEval as kmerPolishingEvalRaw {
-        inputs:
+        input:
           hap1Fasta=rawHap1Fasta,
           hap2Fasta=rawHap2Fasta,
           grch38Fasta=grch38Fasta,
@@ -52,7 +52,7 @@ workflow hprc_polishing_QC {
     }
 
     call kmer_based_polisher_eval_wf.kmerPolishingEval as kmerPolishingEvalPolished {
-        inputs:
+        input:
           hap1Fasta=polishedHap1Fasta,
           hap2Fasta=polishedHap2Fasta,
           grch38Fasta=grch38Fasta,
