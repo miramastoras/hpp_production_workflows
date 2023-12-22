@@ -83,28 +83,28 @@ workflow kmerPolishingEval {
         input:
             Fasta=hap1Fasta,
             Bed=projectInsideConfHap1.projectionBedFile,
-            outLabel="hap1.insideConf",
+            outputLabel="hap1.insideConf",
             sampleID=sampleID
     }
     call subset_fasta_t.SubFastaByBed as subHap2InsideConf {
         input:
             Fasta=hap2Fasta,
             Bed=projectInsideConfHap2.projectionBedFile,
-            outLabel="hap2.insideConf",
+            outputLabel="hap2.insideConf",
             sampleID=sampleID
     }
     call subset_fasta_t.SubFastaByBed as subHap1OutsideConf {
         input:
             Fasta=hap1Fasta,
             Bed=projectOutsideConfHap1.projectionBedFile,
-            outLabel="hap1.outsideConf",
+            outputLabel="hap1.outsideConf",
             sampleID=sampleID
     }
     call subset_fasta_t.SubFastaByBed as subHap2OutsideConf {
         input:
             Fasta=hap2Fasta,
             Bed=projectOutsideConfHap2.projectionBedFile,
-            outLabel="hap2.outsideConf",
+            outputLabel="hap2.outsideConf",
             sampleID=sampleID
     }
 
