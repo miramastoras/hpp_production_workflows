@@ -16,6 +16,8 @@ task SubFastaByBed {
     input {
         File Fasta
         File Bed
+        String outputLabel
+        String sampleID
 
         Int memSizeGB = 128
         Int threadCount = 64
@@ -30,11 +32,11 @@ task SubFastaByBed {
       BEDID=`basename ~{Bed} | sed 's/.bed$//'`
       FASTAID=`basename ~{Fasta} | sed 's/.bed$//'`
 
-      bedtools getfasta -fi ~{Fasta} -bed ~{Bed} -fo ${FASTAID}_sub_${BEDID}.fasta
+      bedtools getfasta -fi ~{Fasta} -bed ~{Bed} -fo ~{sampleID}.~{outputLabel}.subBed.fasta
 
 	>>>
 	output {
-		  File subFasta = glob("*sub*.fasta")[0]
+		  File subFasta = glob("*.bed.fasta")[0]
 	}
     runtime {
         memory: memSizeGB + " GB"

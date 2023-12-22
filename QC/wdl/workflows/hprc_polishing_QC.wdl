@@ -30,7 +30,8 @@ workflow hprc_polishing_QC {
       File grch38InsideConfRegions
       File grch38OutsideConfRegions
 
-      String sampleID
+      String polSampleID
+      String rawSampleID
       String pafAligner="minimap2"
     }
     call meryl_t.runMeryl as makeMerylDB {
@@ -45,7 +46,7 @@ workflow hprc_polishing_QC {
           grch38Fasta=grch38Fasta,
           grch38InsideConfRegions=grch38InsideConfRegions,
           grch38OutsideConfRegions=grch38OutsideConfRegions,
-          sampleID=sampleID,
+          sampleID=rawSampleID,
           ilmMerylDBTarGz=makeMerylDB.sampleMerylDB,
           sampleYak=sampleYak,
           paternalYak=paternalYak,
@@ -59,7 +60,7 @@ workflow hprc_polishing_QC {
           grch38Fasta=grch38Fasta,
           grch38InsideConfRegions=grch38InsideConfRegions,
           grch38OutsideConfRegions=grch38OutsideConfRegions,
-          sampleID=sampleID,
+          sampleID=polSampleID,
           ilmMerylDBTarGz=makeMerylDB.sampleMerylDB,
           sampleYak=sampleYak,
           paternalYak=paternalYak,
