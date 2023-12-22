@@ -17,7 +17,7 @@ workflow runMeryl {
         Int merylUnionSumThreadCount = 32
         Int fileExtractionDiskSizeGB = 256
         String dockerImage = "juklucas/hpp_merqury:latest"
-
+    }
     # extract reads
     scatter (readFile in sampleReadsILM) {
         call extractReads_t.extractReads as sampleReadsExtracted {
