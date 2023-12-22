@@ -31,6 +31,7 @@ workflow hprc_polishing_QC {
       File grch38OutsideConfRegions
 
       String sampleID
+      String pafAligner="minimap2"
     }
     call meryl_t.runMeryl as makeMerylDB {
         input:
