@@ -116,6 +116,10 @@ workflow hprc_polishing_QC {
 
     output {
       File editsIntersectingFPKmersTxt=countEditsOverlappingFPKmers.countsFile
+      File totalEditsTxt=countEditsOverlappingFPKmers.totalEdits
+      
+      File hap1FPKmersProjectedBed=projectFPKmersToRawHap1.projectionBedFile
+      File hap2FPKmersProjectedBed=projectFPKmersToRawHap2.projectionBedFile
 
       File wholeGenomeQVRawMerq=kmerPolishingEvalRaw.QV_whole_genome
       File insideConfQVRawMerq=kmerPolishingEvalRaw.QV_inside_conf
@@ -154,10 +158,12 @@ task countEditsOverlappingFPKmers {
 
         cat ~{hap1FPKmersProjectedBed} ~{hap2FPKmersProjectedBed} > dip.FPkmers.projected
         bedtools intersect -a ~{polishingVcf} -b dip.FPkmers.projected | sort | uniq | wc -l > edits_intersecting_FPkmers.txt
+        gunzip ~{polishingVcf} | grep -v "^#" | sort | uniq | wc -l > total_edits.txt
   >>>
 
   output {
       File countsFile = "edits_intersecting_FPkmers.txt"
+      File totalEdits="total_edits.txt"
   }
 
   runtime{
@@ -202,7 +208,7 @@ task collateResults {
         set -u
         set -o xtrace
 
-        echo "done" > ~{sampleID}.polishing.QC.tsv
+        echo "sampleID,edits_overlapFPkmers,total_edits,WholeGenomeQV_Merqury_Hap1,WholeGenomeQV_," > ~{sampleID}.polishing.QC.tsv
   >>>
 
   output {
