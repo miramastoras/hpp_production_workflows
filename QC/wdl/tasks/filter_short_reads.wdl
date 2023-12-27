@@ -18,7 +18,7 @@ workflow FilterShortReads {
                 memSizeGB=4,
                 threadCount=4,
                 diskSizeGB=ceil(3 * size(readFile, "GB")) + 64,
-                dockerImage="tpesout/hpp_base:latest"
+                dockerImage="mobinasri/bio_base:v0.2"
         }
         call filterShortReads{
             input:
