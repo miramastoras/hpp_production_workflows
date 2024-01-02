@@ -29,10 +29,16 @@ task SubFastaByBed {
       set -eux -o pipefail
       set -o xtrace
 
-      BEDID=`basename ~{Bed} | sed 's/.bed$//'`
-      FASTAID=`basename ~{Fasta} | sed 's/.bed$//'`
+      FASTA_FILENAME=$(basename -- "~{Fasta}")
 
-      bedtools getfasta -fi ~{Fasta} -bed ~{Bed} -fo ~{sampleID}.~{outputLabel}.subBed.fasta
+      if [[ $FASTA_FILENAME =~ \.gz$ ]]; then
+          cp ~{Fasta} file.fasta.gz
+          gunzip -f file.fasta.gz
+      else
+          cp ~{Fasta} file.fasta
+      fi
+
+      bedtools getfasta -fi file.fasta -bed ~{Bed} -fo ~{sampleID}.~{outputLabel}.subBed.fasta
 
 	>>>
 	output {

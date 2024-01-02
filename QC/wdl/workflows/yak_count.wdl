@@ -25,7 +25,7 @@ workflow runYakCount {
                 memSizeGB=4,
                 threadCount=4,
                 diskSizeGB=fileExtractionDiskSizeGB,
-                dockerImage=dockerImage
+                dockerImage="mobinasri/bio_base:v0.2"
         }
     }
     scatter (readFile in paternalReadsILM) {
@@ -36,7 +36,7 @@ workflow runYakCount {
                 memSizeGB=4,
                 threadCount=4,
                 diskSizeGB=fileExtractionDiskSizeGB,
-                dockerImage=dockerImage
+                dockerImage="mobinasri/bio_base:v0.2"
         }
     }
     scatter (readFile in sampleReadsILM) {
@@ -47,7 +47,7 @@ workflow runYakCount {
                 memSizeGB=4,
                 threadCount=4,
                 diskSizeGB=fileExtractionDiskSizeGB,
-                dockerImage=dockerImage
+                dockerImage="mobinasri/bio_base:v0.2"
         }
     }
 
