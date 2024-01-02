@@ -194,7 +194,7 @@ task countEditsOverlappingFPKmers {
 
   output {
       File countsFile = "edits_intersecting_FPkmers.txt"
-      File totalEdits="total_edits.txt"
+      File totalEdits="dip.FPkmers.projected"
   }
 
   runtime{
