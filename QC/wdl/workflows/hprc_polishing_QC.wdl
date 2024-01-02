@@ -33,6 +33,8 @@ workflow hprc_polishing_QC {
       String polSampleID
       String rawSampleID
       String pafAligner="minimap2"
+
+      File toilRunLog
     }
     call meryl_t.runMeryl as makeMerylDB {
         input:
@@ -117,7 +119,7 @@ workflow hprc_polishing_QC {
     output {
       File editsIntersectingFPKmersTxt=countEditsOverlappingFPKmers.countsFile
       File totalEditsTxt=countEditsOverlappingFPKmers.totalEdits
-      
+
       File hap1FPKmersProjectedBed=projectFPKmersToRawHap1.projectionBedFile
       File hap2FPKmersProjectedBed=projectFPKmersToRawHap2.projectionBedFile
 
@@ -158,7 +160,7 @@ task countEditsOverlappingFPKmers {
 
         cat ~{hap1FPKmersProjectedBed} ~{hap2FPKmersProjectedBed} > dip.FPkmers.projected
         bedtools intersect -a ~{polishingVcf} -b dip.FPkmers.projected | sort | uniq | wc -l > edits_intersecting_FPkmers.txt
-        gunzip ~{polishingVcf} | grep -v "^#" | sort | uniq | wc -l > total_edits.txt
+        gunzip -c ~{polishingVcf} | grep -v "^#" | sort | uniq | wc -l > total_edits.txt
   >>>
 
   output {
@@ -177,6 +179,7 @@ task countEditsOverlappingFPKmers {
 task collateResults {
   input {
       File editsIntersectingFPKmersTxt
+      File totalEditsTxt
 
       File wholeGenomeQVRawMerq
       File insideConfQVRawMerq
@@ -194,6 +197,8 @@ task collateResults {
       File yakTarBallInsideConfPol
       File yakTarBallOutsideConfPol
 
+      File toilRunLog
+
       String sampleID
 
       Int memSizeGB = 12
@@ -208,7 +213,21 @@ task collateResults {
         set -u
         set -o xtrace
 
-        echo "sampleID,edits_overlapFPkmers,total_edits,WholeGenomeQV_Merqury_Hap1,WholeGenomeQV_," > ~{sampleID}.polishing.QC.tsv
+        # define header
+        echo "sampleID,Runtime,total_edits,edits_overlapping_FPkmers,WholeGenomeQV_Merqury_Hap1,WholeGenomeQV_Merqury_Hap2,WholeGenomeQV_Merqury_Dip,WholeGenomeQV_Yak_Hap1,WholeGenomeQV_Yak_Hap2,WholeGenomeQV_Yak_Dip,InsideConfQV_Merqury_Hap1,InsideConfQV_Merqury_Hap2,InsideConfQV_Merqury_Dip,InsideConfQV_Yak_Hap1,InsideConfQV_Yak_Hap2,InsideConfQV_Yak_Dip,OutsideConfQV_Merqury_Hap1,OutsideConfQV_Merqury_Hap2,OutsideConfQV_Merqury_Dip,OutsideConfQV_Yak_Hap1,OutsideConfQV_Yak_Hap2,OutsideConfQV_Yak_Dip" > header.csv
+
+        # add sample ID
+        echo ~{sampleID} >> sample.csv
+
+        # add total edits and total edits overlapping FP kmers
+        paste -d "," sample.csv ~{totalEditsTxt} ~{editsIntersectingFPKmersTxt} > tmp ; mv tmp sample.csv
+
+        # add runtime
+        
+
+        # combine results with header
+        cat header.csv sample.csv > ~{sampleID}.polishing.QC.csv
+
   >>>
 
   output {
