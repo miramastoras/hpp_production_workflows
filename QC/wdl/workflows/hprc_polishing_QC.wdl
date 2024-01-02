@@ -184,9 +184,11 @@ task countEditsOverlappingFPKmers {
         set -u
         set -o xtrace
 
+        gunzip -c ~{polishingVcf} > polisher_output.vcf
+
         cat ~{hap1FPKmersProjectedBed} ~{hap2FPKmersProjectedBed} > dip.FPkmers.projected
-        bedtools intersect -a ~{polishingVcf} -b dip.FPkmers.projected | sort | uniq | wc -l > edits_intersecting_FPkmers.txt
-        gunzip -c ~{polishingVcf} | grep -v "^#" | sort | uniq | wc -l > total_edits.txt
+        bedtools intersect -a polisher_output.vcf -b dip.FPkmers.projected | sort | uniq | wc -l > edits_intersecting_FPkmers.txt
+        grep -v "^#" polisher_output.vcf | sort | uniq | wc -l > total_edits.txt
   >>>
 
   output {
