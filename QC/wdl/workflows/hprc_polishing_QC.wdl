@@ -175,7 +175,7 @@ task countEditsOverlappingFPKmers {
       Int memSizeGB = 12
       Int threadCount = 4
       Int diskSizeGB = 64
-      String dockerImage = "pegi3s/bedtools"
+      String dockerImage = "mobinasri/flagger:latest"
   }
 
   command <<<
@@ -186,7 +186,7 @@ task countEditsOverlappingFPKmers {
 
         gunzip -c ~{polishingVcf} > polisher_output.vcf
 
-        cat ~{hap1FPKmersProjectedBed} ~{hap2FPKmersProjectedBed} > dip.FPkmers.projected
+        cat ~{hap1FPKmersProjectedBed} ~{hap2FPKmersProjectedBed} | sed 's/[\t]*$//' > dip.FPkmers.projected
         bedtools intersect -a polisher_output.vcf -b dip.FPkmers.projected | sort | uniq | wc -l > edits_intersecting_FPkmers.txt
         grep -v "^#" polisher_output.vcf | sort | uniq | wc -l > total_edits.txt
   >>>
@@ -232,7 +232,7 @@ task collateResults {
       Int memSizeGB = 12
       Int threadCount = 4
       Int diskSizeGB = 64
-      String dockerImage = "pegi3s/bedtools"
+      String dockerImage = "mobinasri/flagger:latest"
   }
 
   command <<<
