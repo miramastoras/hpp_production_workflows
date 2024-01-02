@@ -116,6 +116,32 @@ workflow hprc_polishing_QC {
             hap2FPKmersProjectedBed=projectFPKmersToRawHap2.projectionBedFile
     }
 
+    call collateResults {
+        input:
+            editsIntersectingFPKmersTxt=countEditsOverlappingFPKmers.countsFile
+            totalEditsTxt=countEditsOverlappingFPKmers.totalEdits
+
+            hap1FPKmersProjectedBed=projectFPKmersToRawHap1.projectionBedFile
+            hap2FPKmersProjectedBed=projectFPKmersToRawHap2.projectionBedFile
+
+            wholeGenomeQVRawMerq=kmerPolishingEvalRaw.QV_whole_genome
+            insideConfQVRawMerq=kmerPolishingEvalRaw.QV_inside_conf
+            outsideConfRawMerq=kmerPolishingEvalRaw.QV_outside_conf
+
+            wholeGenomeQVPolMerq=kmerPolishingEvalPolished.QV_whole_genome
+            insideConfQVPolMerq=kmerPolishingEvalPolished.QV_inside_conf
+            outsideConfPolMerq=kmerPolishingEvalPolished.QV_outside_conf
+
+            yakTarBallWGRaw=kmerPolishingEvalRaw.yakTarBallWG
+            yakTarBallInsideConfRaw=kmerPolishingEvalRaw.yakTarBallInsideConf
+            yakTarBallOutsideConfRaw=kmerPolishingEvalRaw.yakTarBallOutsideConf
+
+            yakTarBallWGPol=kmerPolishingEvalPolished.yakTarBallWG
+            yakTarBallInsideConfPol=kmerPolishingEvalPolished.yakTarBallInsideConf
+            yakTarBallOutsideConfPol=kmerPolishingEvalPolished.yakTarBallOutsideConf
+
+    }
+
     output {
       File editsIntersectingFPKmersTxt=countEditsOverlappingFPKmers.countsFile
       File totalEditsTxt=countEditsOverlappingFPKmers.totalEdits
@@ -138,6 +164,8 @@ workflow hprc_polishing_QC {
       File yakTarBallWGPol=kmerPolishingEvalPolished.yakTarBallWG
       File yakTarBallInsideConfPol=kmerPolishingEvalPolished.yakTarBallInsideConf
       File yakTarBallOutsideConfPol=kmerPolishingEvalPolished.yakTarBallOutsideConf
+
+      File collatedQCResults=collateResults.QC_stats
     }
 }
 
