@@ -183,11 +183,11 @@ task collateResults {
 
       File wholeGenomeQVRawMerq
       File insideConfQVRawMerq
-      File outsideConfRawMerq
+      File outsideConfQVRawMerq
 
       File wholeGenomeQVPolMerq
       File insideConfQVPolMerq
-      File outsideConfPolMerq
+      File outsideConfQVPolMerq
 
       File yakTarBallWGRaw
       File yakTarBallInsideConfRaw
@@ -214,20 +214,152 @@ task collateResults {
         set -o xtrace
 
         # define header
-        echo "sampleID,Runtime,total_edits,edits_overlapping_FPkmers,WholeGenomeQV_Merqury_Hap1,WholeGenomeQV_Merqury_Hap2,WholeGenomeQV_Merqury_Dip,WholeGenomeQV_Yak_Hap1,WholeGenomeQV_Yak_Hap2,WholeGenomeQV_Yak_Dip,InsideConfQV_Merqury_Hap1,InsideConfQV_Merqury_Hap2,InsideConfQV_Merqury_Dip,InsideConfQV_Yak_Hap1,InsideConfQV_Yak_Hap2,InsideConfQV_Yak_Dip,OutsideConfQV_Merqury_Hap1,OutsideConfQV_Merqury_Hap2,OutsideConfQV_Merqury_Dip,OutsideConfQV_Yak_Hap1,OutsideConfQV_Yak_Hap2,OutsideConfQV_Yak_Dip" > header.csv
+        echo "sampleID,Assembly,Runtime,total_edits,edits_overlapping_FPkmers,WholeGenomeQV_Merqury_Hap1,WholeGenomeQV_Merqury_Hap2,WholeGenomeQV_Merqury_Dip,WholeGenomeQV_Yak_Hap1,WholeGenomeQV_Yak_Hap2,WholeGenomeQV_Yak_Dip,InsideConfQV_Merqury_Hap1,InsideConfQV_Merqury_Hap2,InsideConfQV_Merqury_Dip,InsideConfQV_Yak_Hap1,InsideConfQV_Yak_Hap2,InsideConfQV_Yak_Dip,OutsideConfQV_Merqury_Hap1,OutsideConfQV_Merqury_Hap2,OutsideConfQV_Merqury_Dip,OutsideConfQV_Yak_Hap1,OutsideConfQV_Yak_Hap2,OutsideConfQV_Yak_Dip,YakSwitchError,YakHammingError" > header.csv
 
         # add sample ID
-        echo ~{sampleID} >> sample.csv
+        echo ~{sampleID},"polished" >> polished.sample.csv
+        echo ~{sampleID},"raw","NA","NA","NA" >> raw.sample.csv
 
-        # add total edits and total edits overlapping FP kmers
-        paste -d "," sample.csv ~{totalEditsTxt} ~{editsIntersectingFPKmersTxt} > tmp ; mv tmp sample.csv
+        ### Collate polished assembly results ###
 
-        # add runtime
-        
+        # get runtime
+        grep "real" ~{toilRunLog} | cut -f2 > runtime.txt
+
+        # get merqury WG results
+        grep "asm" ~{wholeGenomeQVPolMerq} | cut -f4 > wholeGenomeQVPolMerq.Hap1.txt
+        grep "altHap" ~{wholeGenomeQVPolMerq} | cut -f4 > wholeGenomeQVPolMerq.Hap2.txt
+        grep "Both" ~{wholeGenomeQVPolMerq} | cut -f4 > wholeGenomeQVPolMerq.dip.txt
+
+        # get Yak WG results
+        mkdir yak_WG_polished
+        tar -C yak_WG_polished -zxvf ~{yakTarBallWGPol}
+        head -n 5 yak_WG_polished/*.summary.txt | tail -n 1 | cut -f 3 > yak_WG_pol.hap2.txt
+        head -n 10 yak_WG_polished/*.summary.txt | tail -n 1 | cut -f 3 > yak_WG_pol.hap1.txt
+        head -n 15 yak_WG_polished/*.summary.txt | tail -n 1 | cut -f 3 > yak_WG_pol.dip.txt
+
+        # Get Merqury inside confidence regions results
+        grep "asm" ~{insideConfQVPolMerq} | cut -f4 > insideConfQVPolMerq.Hap1.txt
+        grep "altHap" ~{insideConfQVPolMerq} | cut -f4 > insideConfQVPolMerq.Hap2.txt
+        grep "Both" ~{insideConfQVPolMerq} | cut -f4 > insideConfQVPolMerq.dip.txt
+
+        # Get Yak inside confidence regions results
+        mkdir yak_inside_polished
+        tar -C yak_inside_polished -zxvf ~{yakTarBallInsideConfPol}
+        head -n 5 yak_inside_polished/*.summary.txt | tail -n 1 | cut -f 3 > yak_inside_pol.hap2.txt
+        head -n 10 yak_inside_polished/*.summary.txt | tail -n 1 | cut -f 3 > yak_inside_pol.hap1.txt
+        head -n 15 yak_inside_polished/*.summary.txt | tail -n 1 | cut -f 3 > yak_inside_pol.dip.txt
+
+        # Get Merqury outside confidence regions results
+        grep "asm" ~{outsideConfQVPolMerq} | cut -f4 > outsideConfQVPolMerq.Hap1.txt
+        grep "altHap" ~{outsideConfQVPolMerq} | cut -f4 > outsideConfQVPolMerq.Hap2.txt
+        grep "Both" ~{outsideConfQVPolMerq} | cut -f4 > outsideConfQVPolMerq.dip.txt
+
+        # Get Yak outside confidence regions results
+        mkdir yak_outside_polished
+        tar -C yak_outside_polished -zxvf ~{yakTarBallOutsideConfPol}
+        head -n 5 yak_outside_polished/*.summary.txt | tail -n 1 | cut -f 3 > yak_outside_pol.hap2.txt
+        head -n 10 yak_outside_polished/*.summary.txt | tail -n 1 | cut -f 3 > yak_outside_pol.hap1.txt
+        head -n 15 yak_outside_polished/*.summary.txt | tail -n 1 | cut -f 3 > yak_outside_pol.dip.txt
+
+        # Get Yak Switch / Hamming
+        tail -n 3 yak_WG_polished/*.summary.txt | head -n 1 | cut -f3 > yak_switch.txt
+        tail -n 2 yak_WG_polished/*.summary.txt | head -n 1 | cut -f3 > yak_hamming.txt
+
+        # Paste polished results into one row
+        paste -d "," polished.sample.csv \
+        ~{totalEditsTxt} \
+        ~{editsIntersectingFPKmersTxt} \
+        runtime.txt \
+        wholeGenomeQVPolMerq.Hap1.txt \
+        wholeGenomeQVPolMerq.Hap2.txt \
+        wholeGenomeQVPolMerq.dip.txt \
+        yak_WG_pol.hap1.txt \
+        yak_WG_pol.hap2.txt \
+        yak_WG_pol.dip.txt \
+        insideConfQVPolMerq.Hap1.txt \
+        insideConfQVPolMerq.Hap2.txt \
+        insideConfQVPolMerq.dip.txt \
+        yak_inside_pol.hap1.txt \
+        yak_inside_pol.hap2.txt \
+        yak_inside_pol.dip.txt \
+        outsideConfQVPolMerq.Hap1.txt \
+        outsideConfQVPolMerq.Hap2.txt \
+        outsideConfQVPolMerq.dip.txt \
+        yak_outside_pol.hap1.txt \
+        yak_outside_pol.hap2.txt \
+        yak_outside_pol.dip.txt \
+        yak_switch.txt \
+        yak_hamming.txt \
+        > tmp ; mv tmp polished.sample.csv
+
+        ### Collate raw assembly results ###
+        # get merqury WG results
+        grep "asm" ~{wholeGenomeQVRawMerq} | cut -f4 > wholeGenomeQVRawMerq.Hap1.txt
+        grep "altHap" ~{wholeGenomeQVRawMerq} | cut -f4 > wholeGenomeQVRawMerq.Hap2.txt
+        grep "Both" ~{wholeGenomeQVRawMerq} | cut -f4 > wholeGenomeQVRawMerq.dip.txt
+
+        # get Yak WG results
+        mkdir yak_WG_Raw
+        tar -C yak_WG_Raw -zxvf ~{yakTarBallWGRaw}
+        head -n 5 yak_WG_Raw/*.summary.txt | tail -n 1 | cut -f 3 > yak_WG_Raw.hap2.txt
+        head -n 10 yak_WG_Raw/*.summary.txt | tail -n 1 | cut -f 3 > yak_WG_Raw.hap1.txt
+        head -n 15 yak_WG_Raw/*.summary.txt | tail -n 1 | cut -f 3 > yak_WG_Raw.dip.txt
+
+        # Get Merqury inside confidence regions results
+        grep "asm" ~{insideConfQVRawMerq} | cut -f4 > insideConfQVRawMerq.Hap1.txt
+        grep "altHap" ~{insideConfQVRawMerq} | cut -f4 > insideConfQVRawMerq.Hap2.txt
+        grep "Both" ~{insideConfQVRawMerq} | cut -f4 > insideConfQVRawMerq.dip.txt
+
+        # Get Yak inside confidence regions results
+        mkdir yak_inside_Raw
+        tar -C yak_inside_Raw -zxvf ~{yakTarBallInsideConfRaw}
+        head -n 5 yak_inside_Raw/*.summary.txt | tail -n 1 | cut -f 3 > yak_inside_Raw.hap2.txt
+        head -n 10 yak_inside_Raw/*.summary.txt | tail -n 1 | cut -f 3 > yak_inside_Raw.hap1.txt
+        head -n 15 yak_inside_Raw/*.summary.txt | tail -n 1 | cut -f 3 > yak_inside_Raw.dip.txt
+
+        # Get Merqury outside confidence regions results
+        grep "asm" ~{outsideConfQVRawMerq} | cut -f4 > outsideConfQVRawMerq.Hap1.txt
+        grep "altHap" ~{outsideConfQVRawMerq} | cut -f4 > outsideConfQVRawMerq.Hap2.txt
+        grep "Both" ~{outsideConfQVRawMerq} | cut -f4 > outsideConfQVRawMerq.dip.txt
+
+        # Get Yak outside confidence regions results
+        mkdir yak_outside_Raw
+        tar -C yak_outside_Raw -zxvf ~{yakTarBallOutsideConfRaw}
+        head -n 5 yak_outside_Raw/*.summary.txt | tail -n 1 | cut -f 3 > yak_outside_Raw.hap2.txt
+        head -n 10 yak_outside_Raw/*.summary.txt | tail -n 1 | cut -f 3 > yak_outside_Raw.hap1.txt
+        head -n 15 yak_outside_Raw/*.summary.txt | tail -n 1 | cut -f 3 > yak_outside_Raw.dip.txt
+
+        # Get Yak Switch / Hamming
+        tail -n 3 yak_WG_Raw/*.summary.txt | head -n 1 | cut -f3 > yak_switch.txt
+        tail -n 2 yak_WG_Raw/*.summary.txt | head -n 1 | cut -f3 > yak_hamming.txt
+
+        # Paste raw results into one row
+
+        paste -d "," raw.sample.csv \
+        wholeGenomeQVRawMerq.Hap1.txt \
+        wholeGenomeQVRawMerq.Hap2.txt \
+        wholeGenomeQVRawMerq.dip.txt \
+        yak_WG_Raw.hap1.txt \
+        yak_WG_Raw.hap2.txt \
+        yak_WG_Raw.dip.txt \
+        insideConfQVRawMerq.Hap1.txt \
+        insideConfQVRawMerq.Hap2.txt \
+        insideConfQVRawMerq.dip.txt \
+        yak_inside_Raw.hap1.txt \
+        yak_inside_Raw.hap2.txt \
+        yak_inside_Raw.dip.txt \
+        outsideConfQVRawMerq.Hap1.txt \
+        outsideConfQVRawMerq.Hap2.txt \
+        outsideConfQVRawMerq.dip.txt \
+        yak_outside_Raw.hap1.txt \
+        yak_outside_Raw.hap2.txt \
+        yak_outside_Raw.dip.txt \
+        yak_switch.txt \
+        yak_hamming.txt \
+        > tmp ; mv tmp raw.sample.csv
 
         # combine results with header
-        cat header.csv sample.csv > ~{sampleID}.polishing.QC.csv
-
+        cat header.csv raw.sample.csv polished.sample.csv > ~{sampleID}.polishing.QC.csv
   >>>
 
   output {
