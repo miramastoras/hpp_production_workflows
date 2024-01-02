@@ -30,8 +30,7 @@ workflow hprc_polishing_QC {
       File grch38InsideConfRegions
       File grch38OutsideConfRegions
 
-      String polSampleID
-      String rawSampleID
+      String sampleID
       String pafAligner="minimap2"
 
       File toilRunLog
@@ -48,7 +47,7 @@ workflow hprc_polishing_QC {
           grch38Fasta=grch38Fasta,
           grch38InsideConfRegions=grch38InsideConfRegions,
           grch38OutsideConfRegions=grch38OutsideConfRegions,
-          sampleID=rawSampleID,
+          sampleID=sampleID,
           ilmMerylDBTarGz=makeMerylDB.sampleMerylDB,
           sampleYak=sampleYak,
           paternalYak=paternalYak,
@@ -62,7 +61,7 @@ workflow hprc_polishing_QC {
           grch38Fasta=grch38Fasta,
           grch38InsideConfRegions=grch38InsideConfRegions,
           grch38OutsideConfRegions=grch38OutsideConfRegions,
-          sampleID=polSampleID,
+          sampleID=sampleID,
           ilmMerylDBTarGz=makeMerylDB.sampleMerylDB,
           sampleYak=sampleYak,
           paternalYak=paternalYak,
@@ -135,8 +134,10 @@ workflow hprc_polishing_QC {
 
             yakTarBallWGPol=kmerPolishingEvalPolished.yakTarBallWG,
             yakTarBallInsideConfPol=kmerPolishingEvalPolished.yakTarBallInsideConf,
-            yakTarBallOutsideConfPol=kmerPolishingEvalPolished.yakTarBallOutsideConf
+            yakTarBallOutsideConfPol=kmerPolishingEvalPolished.yakTarBallOutsideConf,
 
+            toilRunLog=toilRunLog,
+            sampleID=sampleID
     }
 
     output {
