@@ -118,26 +118,26 @@ workflow hprc_polishing_QC {
 
     call collateResults {
         input:
-            editsIntersectingFPKmersTxt=countEditsOverlappingFPKmers.countsFile
-            totalEditsTxt=countEditsOverlappingFPKmers.totalEdits
+            editsIntersectingFPKmersTxt=countEditsOverlappingFPKmers.countsFile,
+            totalEditsTxt=countEditsOverlappingFPKmers.totalEdits,
 
-            hap1FPKmersProjectedBed=projectFPKmersToRawHap1.projectionBedFile
-            hap2FPKmersProjectedBed=projectFPKmersToRawHap2.projectionBedFile
+            hap1FPKmersProjectedBed=projectFPKmersToRawHap1.projectionBedFile,
+            hap2FPKmersProjectedBed=projectFPKmersToRawHap2.projectionBedFile,
 
-            wholeGenomeQVRawMerq=kmerPolishingEvalRaw.QV_whole_genome
-            insideConfQVRawMerq=kmerPolishingEvalRaw.QV_inside_conf
-            outsideConfRawMerq=kmerPolishingEvalRaw.QV_outside_conf
+            wholeGenomeQVRawMerq=kmerPolishingEvalRaw.QV_whole_genome,
+            insideConfQVRawMerq=kmerPolishingEvalRaw.QV_inside_conf,
+            outsideConfRawMerq=kmerPolishingEvalRaw.QV_outside_conf,
 
-            wholeGenomeQVPolMerq=kmerPolishingEvalPolished.QV_whole_genome
-            insideConfQVPolMerq=kmerPolishingEvalPolished.QV_inside_conf
-            outsideConfPolMerq=kmerPolishingEvalPolished.QV_outside_conf
+            wholeGenomeQVPolMerq=kmerPolishingEvalPolished.QV_whole_genome,
+            insideConfQVPolMerq=kmerPolishingEvalPolished.QV_inside_conf,
+            outsideConfPolMerq=kmerPolishingEvalPolished.QV_outside_conf,
 
-            yakTarBallWGRaw=kmerPolishingEvalRaw.yakTarBallWG
-            yakTarBallInsideConfRaw=kmerPolishingEvalRaw.yakTarBallInsideConf
-            yakTarBallOutsideConfRaw=kmerPolishingEvalRaw.yakTarBallOutsideConf
+            yakTarBallWGRaw=kmerPolishingEvalRaw.yakTarBallWG,
+            yakTarBallInsideConfRaw=kmerPolishingEvalRaw.yakTarBallInsideConf,
+            yakTarBallOutsideConfRaw=kmerPolishingEvalRaw.yakTarBallOutsideConf,
 
-            yakTarBallWGPol=kmerPolishingEvalPolished.yakTarBallWG
-            yakTarBallInsideConfPol=kmerPolishingEvalPolished.yakTarBallInsideConf
+            yakTarBallWGPol=kmerPolishingEvalPolished.yakTarBallWG,
+            yakTarBallInsideConfPol=kmerPolishingEvalPolished.yakTarBallInsideConf,
             yakTarBallOutsideConfPol=kmerPolishingEvalPolished.yakTarBallOutsideConf
 
     }
