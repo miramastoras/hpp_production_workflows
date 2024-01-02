@@ -121,16 +121,13 @@ workflow hprc_polishing_QC {
             editsIntersectingFPKmersTxt=countEditsOverlappingFPKmers.countsFile,
             totalEditsTxt=countEditsOverlappingFPKmers.totalEdits,
 
-            hap1FPKmersProjectedBed=projectFPKmersToRawHap1.projectionBedFile,
-            hap2FPKmersProjectedBed=projectFPKmersToRawHap2.projectionBedFile,
-
             wholeGenomeQVRawMerq=kmerPolishingEvalRaw.QV_whole_genome,
             insideConfQVRawMerq=kmerPolishingEvalRaw.QV_inside_conf,
-            outsideConfRawMerq=kmerPolishingEvalRaw.QV_outside_conf,
+            outsideConfQVRawMerq=kmerPolishingEvalRaw.QV_outside_conf,
 
             wholeGenomeQVPolMerq=kmerPolishingEvalPolished.QV_whole_genome,
             insideConfQVPolMerq=kmerPolishingEvalPolished.QV_inside_conf,
-            outsideConfPolMerq=kmerPolishingEvalPolished.QV_outside_conf,
+            outsideConfQVPolMerq=kmerPolishingEvalPolished.QV_outside_conf,
 
             yakTarBallWGRaw=kmerPolishingEvalRaw.yakTarBallWG,
             yakTarBallInsideConfRaw=kmerPolishingEvalRaw.yakTarBallInsideConf,
@@ -151,11 +148,11 @@ workflow hprc_polishing_QC {
 
       File wholeGenomeQVRawMerq=kmerPolishingEvalRaw.QV_whole_genome
       File insideConfQVRawMerq=kmerPolishingEvalRaw.QV_inside_conf
-      File outsideConfRawMerq=kmerPolishingEvalRaw.QV_outside_conf
+      File outsideConfQVRawMerq=kmerPolishingEvalRaw.QV_outside_conf
 
       File wholeGenomeQVPolMerq=kmerPolishingEvalPolished.QV_whole_genome
       File insideConfQVPolMerq=kmerPolishingEvalPolished.QV_inside_conf
-      File outsideConfPolMerq=kmerPolishingEvalPolished.QV_outside_conf
+      File outsideConfQVPolMerq=kmerPolishingEvalPolished.QV_outside_conf
 
       File yakTarBallWGRaw=kmerPolishingEvalRaw.yakTarBallWG
       File yakTarBallInsideConfRaw=kmerPolishingEvalRaw.yakTarBallInsideConf
