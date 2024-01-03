@@ -358,8 +358,8 @@ task collateResults {
         head -n 15 yak_outside_Raw/*.summary.txt | tail -n 1 | cut -f 3 > yak_outside_Raw.dip.txt
 
         # Get Yak Switch / Hamming
-        tail -n 3 yak_WG_Raw/*.summary.txt | head -n 1 | cut -f3 > yak_switch.txt
-        tail -n 2 yak_WG_Raw/*.summary.txt | head -n 1 | cut -f3 > yak_hamming.txt
+        tail -n 3 yak_WG_Raw/*.summary.txt | head -n 1 | cut -f4 > yak_switch.txt
+        tail -n 2 yak_WG_Raw/*.summary.txt | head -n 1 | cut -f4 > yak_hamming.txt
 
         # Paste raw results into one row
 
