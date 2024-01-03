@@ -290,8 +290,8 @@ task collateResults {
         head -n 15 yak_outside_polished/*.summary.txt | tail -n 1 | cut -f 3 > yak_outside_pol.dip.txt
 
         # Get Yak Switch / Hamming
-        tail -n 3 yak_WG_polished/*.summary.txt | head -n 1 | cut -f3 > yak_switch.txt
-        tail -n 2 yak_WG_polished/*.summary.txt | head -n 1 | cut -f3 > yak_hamming.txt
+        tail -n 3 yak_WG_polished/*.summary.txt | head -n 1 | cut -f4 > yak_switch.txt
+        tail -n 2 yak_WG_polished/*.summary.txt | head -n 1 | cut -f4 > yak_hamming.txt
 
         # Paste polished results into one row
         paste -d "," polished.sample.csv \
