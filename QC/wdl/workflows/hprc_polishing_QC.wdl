@@ -391,7 +391,7 @@ task collateResults {
   >>>
 
   output {
-      File QC_stats = glob("*polishing.QC.tsv")[0]
+      File QC_stats = glob("*polishing.QC.csv")[0]
   }
 
   runtime{
