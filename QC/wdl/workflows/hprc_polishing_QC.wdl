@@ -24,7 +24,7 @@ workflow hprc_polishing_QC {
       File maternalYak
       File paternalYak
 
-      Array[File] sampleIlm
+      Array[File] sampleReadsIlm
 
       File grch38Fasta
       File grch38InsideConfRegions
@@ -38,7 +38,7 @@ workflow hprc_polishing_QC {
 
     call meryl_t.runMeryl as makeMerylDB {
         input:
-          sampleReadsILM=sampleIlm
+          sampleReadsILM=sampleReadsIlm
     }
 
     call kmer_based_polisher_eval_wf.kmerPolishingEval as kmerPolishingEvalRaw {
@@ -296,9 +296,9 @@ task collateResults {
 
         # Paste polished results into one row
         paste -d "," polished.sample.csv \
+        runtime.txt \
         ~{totalEditsTxt} \
         ~{editsIntersectingFPKmersTxt} \
-        runtime.txt \
         wholeGenomeQVPolMerq.Hap1.txt \
         wholeGenomeQVPolMerq.Hap2.txt \
         wholeGenomeQVPolMerq.dip.txt \
