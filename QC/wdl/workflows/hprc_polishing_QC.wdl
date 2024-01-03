@@ -24,7 +24,7 @@ workflow hprc_polishing_QC {
       File maternalYak
       File paternalYak
 
-      Array[File] sampleIlmFastq
+      Array[File] sampleIlm
 
       File grch38Fasta
       File grch38InsideConfRegions
@@ -35,9 +35,10 @@ workflow hprc_polishing_QC {
 
       File toilRunLog
     }
+
     call meryl_t.runMeryl as makeMerylDB {
         input:
-          sampleReadsILM=sampleIlmFastq
+          sampleReadsILM=sampleIlm
     }
 
     call kmer_based_polisher_eval_wf.kmerPolishingEval as kmerPolishingEvalRaw {
