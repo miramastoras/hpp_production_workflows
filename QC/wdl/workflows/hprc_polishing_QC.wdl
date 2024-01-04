@@ -38,7 +38,9 @@ workflow hprc_polishing_QC {
 
     call meryl_t.runMeryl as makeMerylDB {
         input:
-          sampleReadsILM=sampleReadsIlm
+          sampleReadsILM=sampleReadsIlm,
+          merylCountMemSizeGB=138,
+          merylUnionSumMemSizeGB=138
     }
 
     call kmer_based_polisher_eval_wf.kmerPolishingEval as kmerPolishingEvalRaw {
