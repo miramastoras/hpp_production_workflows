@@ -46,7 +46,7 @@ task DeepPolisher{
         String dockerImage
         Int memSizeGB = 128
         Int threadCount = 64
-        Int diskSizeGB = 128
+        Int diskSizeGB = 256
     }
     command <<<
         # exit when a command fails, fail with unset variables, print commands before execution
