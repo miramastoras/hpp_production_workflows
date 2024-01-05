@@ -40,7 +40,8 @@ workflow hprc_polishing_QC {
         input:
           sampleReadsILM=sampleReadsIlm,
           merylCountMemSizeGB=138,
-          merylUnionSumMemSizeGB=138
+          merylUnionSumMemSizeGB=138,
+          fileExtractionDiskSizeGB=300
     }
 
     call kmer_based_polisher_eval_wf.kmerPolishingEval as kmerPolishingEvalRaw {
