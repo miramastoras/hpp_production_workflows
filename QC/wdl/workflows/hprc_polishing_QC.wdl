@@ -91,7 +91,7 @@ workflow hprc_polishing_QC {
             preset="asm5",
             options="-L --eqx --cs -c",
             readFastq_or_queryAssembly=polishedHap2Fasta,
-            refAssembly=rawHap1Fasta,
+            refAssembly=rawHap2Fasta,
             suffix="hap2PolToRaw",
             diskSize=512,
             threadCount=64,
