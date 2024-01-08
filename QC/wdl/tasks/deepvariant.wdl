@@ -46,20 +46,20 @@ task DeepVariant{
         set -eux -o pipefail
         set -o xtrace
 
-        ## Soft link fasta and index so they are in the same directory
+        ## copy fasta and index so they are in the same directory
         REF=$(basename ~{assembly})
         REF_IDX=$(basename ~{assemblyIndex})
 
-        ln -s ~{assembly} ./$REF
-        ln -s ~{assemblyIndex} ./$REF_IDX
+        cp ~{assembly} ./$REF
+        cp ~{assemblyIndex} ./$REF_IDX
 
 
-        ## Soft link reads and index so they are in the same directory
+        ## copy reads and index so they are in the same directory
         READS=$(basename ~{inputReads})
         READS_IDX=$(basename ~{inputReadsIdx})
 
-        ln -s ~{inputReads} ./$READS
-        ln -s ~{inputReadsIdx} ./$READS_IDX
+        cp ~{inputReads} ./$READS
+        cp ~{inputReadsIdx} ./$READS_IDX
 
 
         ## Pass regions argument if callRegions is set, if not just pass empty string

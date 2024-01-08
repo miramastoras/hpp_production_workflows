@@ -40,6 +40,8 @@ task correctBam {
         FILENAME=$(basename ~{Bam})
         PREFIX=${FILENAME%.bam}
 
+        cp ~{BAM} ./Bam
+
         mkdir output
         OPTIONS="~{options}"
 
@@ -57,12 +59,12 @@ task correctBam {
 
         if [ -n "~{true="REMOVE" false="" flagRemoveMultiplePrimary}" ]
         then
-            samtools view -F 0x904 ~{Bam} | cut -f 1 | sort | uniq -c | awk '$1 > 1' | cut -f2 > ${PREFIX}.excluded_read_ids.txt
+            samtools view -F 0x904 ./Bam | cut -f 1 | sort | uniq -c | awk '$1 > 1' | cut -f2 > ${PREFIX}.excluded_read_ids.txt
         fi
 
         if [ -n "~{true="REMOVE" false="" flagRemoveSupplementary}" ]
         then
-            samtools view -f 0x800 ~{Bam} | cut -f 1 | sort -u >> ${PREFIX}.excluded_read_ids.txt
+            samtools view -f 0x800 ./Bam | cut -f 1 | sort -u >> ${PREFIX}.excluded_read_ids.txt
         fi
 
         if [ -n "~{true="REMOVE" false="" flagRemoveSupplementary || flagRemoveMultiplePrimary}" ]
@@ -70,7 +72,7 @@ task correctBam {
             OPTIONS="${OPTIONS} --exclude ${PREFIX}.excluded_read_ids.txt"
         fi
 
-        correct_bam ${OPTIONS} -i ~{Bam} -o output/$PREFIX.~{suffix}.bam -n~{threadCount}
+        correct_bam ${OPTIONS} -i ./BAM -o output/$PREFIX.~{suffix}.bam -n~{threadCount}
         samtools index -@~{threadCount} output/$PREFIX.~{suffix}.bam
     >>>
     runtime {

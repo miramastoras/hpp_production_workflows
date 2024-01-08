@@ -33,7 +33,9 @@ task merge{
         # to turn off echo do 'set +o xtrace'
         set -o xtrace
 
-        samtools merge -@ ~{threadCount} ~{sampleName}.~{sampleSuffix}.bam ~{sep=" " sortedBamFiles}
+        mkdir sortedBamFolder
+        echo ~{sep=" " sortedBamFiles} | while read $line ; do FILENAME=$(basename $line) ; cp $line sortedBamFolder/$FILENAME ; done
+        samtools merge -@ ~{threadCount} ~{sampleName}.~{sampleSuffix}.bam sortedBamFolder/*.bam
         samtools index -@ ~{threadCount} ~{sampleName}.~{sampleSuffix}.bam
     >>>
     runtime {

@@ -50,9 +50,9 @@ task secphase {
         String options = "--hifi"
         String prefix = "secphase"
         # runtime configurations
-        Int memSize=32
-        Int threadCount=8
-        Int diskSize=128
+        Int memSize=128
+        Int threadCount=64
+        Int diskSize=512
         String dockerImage="mobinasri/secphase:v0.4.3"
         Int preemptible=2
         String zones="us-west2-a"
@@ -72,7 +72,7 @@ task secphase {
         BAM_FILENAME=$(basename ~{bam})
         BAM_PREFIX=${BAM_FILENAME%.bam}
 
-        ln -s ~{bam} ${BAM_PREFIX}.bam
+        cp ~{bam} ${BAM_PREFIX}.bam
 
         ln -s ~{diploidAssemblyFastaGz} asm.fa.gz
         gunzip -c asm.fa.gz > asm.fa
@@ -140,9 +140,9 @@ task sortByName {
         cat readnames.txt | awk '$1 > 1' | tr -s ' ' | cut -d ' ' -f3 > selected_readnames.txt
         extract_reads -i ~{bamFile} -o output/${BAM_PREFIX}.bam -r selected_readnames.txt
         else
-        ln -s ~{bamFile} output/${BAM_PREFIX}.bam
+        cp ~{bamFile} output/${BAM_PREFIX}.bam
         fi
-        samtools sort -n -@8 output/${BAM_PREFIX}.bam > output/${BAM_PREFIX}.sorted_by_qname.bam
+        samtools sort -n -@~{threadCount} output/${BAM_PREFIX}.bam > output/${BAM_PREFIX}.sorted_by_qname.bam
     >>>
     runtime {
         docker: dockerImage

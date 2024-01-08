@@ -60,8 +60,10 @@ task DeepPolisher{
         BAMFILE=$(basename ~{Bam})
         BAIFILE=$(basename ~{Bai})
 
-        ln -s ~{Bam} ./${BAMFILE}
-        ln -s ~{Bai} ./${BAIFILE}
+        cp ~{Bam} ./${BAMFILE}
+        cp ~{Bai} ./${BAIFILE}
+
+        cp ~{FASTA} ./Fasta
 
         # untar model files
         # they need to be tar'd in a folder called "checkpoint" and the name of the tar file needs to match
@@ -77,10 +79,10 @@ task DeepPolisher{
         tar xvf ~{ModelFilesTarGZ} --no-same-owner
 
         # Make images
-        time polisher make_images --bam ${BAMFILE} --fasta ~{Fasta} --output images/images --cpus ~{threadCount}
+        time polisher make_images --bam ${BAMFILE} --fasta ./Fasta --output images/images --cpus ~{threadCount}
 
         # Inference on images to generate VCFs
-        time polisher inference --input_dir images --out_dir vcf/ --checkpoint checkpoint/${CHECKPOINT} --reference_file ~{Fasta} --sample_name ~{sampleName} --cpus ~{threadCount}
+        time polisher inference --input_dir images --out_dir vcf/ --checkpoint checkpoint/${CHECKPOINT} --reference_file ./Fasta --sample_name ~{sampleName} --cpus ~{threadCount}
 
         tar -zcvf vcf.tar.gz vcf/
 

@@ -93,9 +93,11 @@ task alignmentBam{
         # to turn off echo do 'set +o xtrace'
         set -o xtrace
 
+        cp ~{refAssembly} ./refAssembly
+        cp ~{readFastq_or_queryAssembly} ./readFastq_or_queryAssembly
 
         if [[ ~{aligner} == "winnowmap" ]]; then
-            meryl count k=~{kmerSize} output merylDB ~{refAssembly}
+            meryl count k=~{kmerSize} output merylDB ./refAssembly
             meryl print greater-than distinct=0.9998 merylDB > repetitive_k~{kmerSize}.txt
             ALIGNER_CMD="winnowmap -W repetitive_k~{kmerSize}.txt"
         elif [[ ~{aligner} == "minimap2" ]] ; then
@@ -106,9 +108,9 @@ task alignmentBam{
         fi
 
         fileBasename=$(basename ~{readFastq_or_queryAssembly})
-        echo '${ALIGNER_CMD} -a -x ~{preset} ~{options} -t~{threadCount} ~{refAssembly} ~{readFastq_or_queryAssembly} | samtools view -h -b > ${fileBasename%.*.*}.bam'
+        echo '${ALIGNER_CMD} -a -x ~{preset} ~{options} -t~{threadCount} ./refAssembly ./readFastq_or_queryAssembly | samtools view -h -b > ${fileBasename%.*.*}.bam'
 
-        ${ALIGNER_CMD} -a -x ~{preset} ~{options} -t~{threadCount} ~{refAssembly} ~{readFastq_or_queryAssembly} | samtools view -h -b > ${fileBasename%.*.*}.bam
+        ${ALIGNER_CMD} -a -x ~{preset} ~{options} -t~{threadCount} ./refAssembly ./readFastq_or_queryAssembly | samtools view -h -b > ${fileBasename%.*.*}.bam
 
         if [ -z ~{suffix} ]; then
             OUTPUT_FILE=${fileBasename%.*.*}.sorted.bam

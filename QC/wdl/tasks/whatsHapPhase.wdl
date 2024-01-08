@@ -1,12 +1,10 @@
 version 1.0
 
-# This is a task level wdl workflow to apply a set of variants to an assembly for polishing using bcftools consensus
-
 workflow runWhatsHapPhase {
     meta {
         author: "Mira Mastoras"
         email: "mmastora@ucsc.edu"
-        description: "Phase variants in a vcf using a bamfile"
+        description: "Phase variants in a vcf using a bamfile with whatshap"
     }
     call WhatsHapPhase
     output {
@@ -38,20 +36,20 @@ task WhatsHapPhase {
         REF=$(basename ~{refFile})
         REF_IDX=$(basename ~{refFileIdx})
 
-        ln -s ~{refFile} ./$REF
-        ln -s ~{refFileIdx} ./$REF_IDX
+        cp ~{refFile} ./$REF
+        cp ~{refFileIdx} ./$REF_IDX
 
         VCF=$(basename ~{vcfFile})
         VCF_IDX=$(basename ~{vcfFileIdx})
 
-        ln -s ~{vcfFile} ./$VCF
-        ln -s ~{vcfFileIdx} ./$VCF_IDX
+        cp ~{vcfFile} ./$VCF
+        cp ~{vcfFileIdx} ./$VCF_IDX
 
         BAM=$(basename ~{bamFile})
         BAM_IDX=$(basename ~{bamFileIdx})
 
-        ln -s ~{bamFile} ./$BAM
-        ln -s ~{bamFileIdx} ./$BAM_IDX
+        cp ~{bamFile} ./$BAM
+        cp ~{bamFileIdx} ./$BAM_IDX
 
         whatshap phase -o ~{outPrefix}.vcf.gz --indels -r $REF $VCF $BAM --ignore-read-groups
     >>>
