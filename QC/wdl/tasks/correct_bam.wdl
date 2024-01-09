@@ -40,7 +40,7 @@ task correctBam {
         FILENAME=$(basename ~{Bam})
         PREFIX=${FILENAME%.bam}
 
-        cp ~{BAM} ./Bam
+        cp ~{Bam} ./Bam
 
         mkdir output
         OPTIONS="~{options}"
