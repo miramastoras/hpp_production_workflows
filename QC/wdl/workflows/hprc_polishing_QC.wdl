@@ -168,6 +168,11 @@ workflow hprc_polishing_QC {
       File yakTarBallOutsideConfPol=kmerPolishingEvalPolished.yakTarBallOutsideConf
 
       File collatedQCResults=collateResults.QC_stats
+
+      File hap1ToRawPaf=alignHap1ToRaw.pafFile
+      File hap2ToRawPaf=alignHap2ToRaw.pafFile
+      File FPkmersHap1=kmerPolishingEvalPolished.merquryAsmFPkmers
+      File FPkmersHap2=kmerPolishingEvalPolished.merquryAltHapFPkmers
     }
 }
 
