@@ -41,7 +41,7 @@ workflow hprc_polishing_QC {
           sampleReadsILM=sampleReadsIlm,
           merylCountMemSizeGB=138,
           merylUnionSumMemSizeGB=138,
-          fileExtractionDiskSizeGB=300
+          fileExtractionDiskSizeGB=512
     }
 
     call kmer_based_polisher_eval_wf.kmerPolishingEval as kmerPolishingEvalRaw {
@@ -51,7 +51,7 @@ workflow hprc_polishing_QC {
           grch38Fasta=grch38Fasta,
           grch38InsideConfRegions=grch38InsideConfRegions,
           grch38OutsideConfRegions=grch38OutsideConfRegions,
-          sampleID=sampleID,
+          sampleID="Raw",
           ilmMerylDBTarGz=makeMerylDB.sampleMerylDB,
           sampleYak=sampleYak,
           paternalYak=paternalYak,
@@ -65,7 +65,7 @@ workflow hprc_polishing_QC {
           grch38Fasta=grch38Fasta,
           grch38InsideConfRegions=grch38InsideConfRegions,
           grch38OutsideConfRegions=grch38OutsideConfRegions,
-          sampleID=sampleID,
+          sampleID="Polished",
           ilmMerylDBTarGz=makeMerylDB.sampleMerylDB,
           sampleYak=sampleYak,
           paternalYak=paternalYak,
