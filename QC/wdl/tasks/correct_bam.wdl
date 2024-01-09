@@ -19,8 +19,8 @@ task correctBam {
         Boolean flagRemoveMultiplePrimary = false
         Boolean flagRemoveSupplementary = false
         # runtime configurations
-        Int memSize=8
-        Int threadCount=8
+        Int memSize=128
+        Int threadCount=64
         Int diskSize=512
         String dockerImage="quay.io/masri2019/hpp_coverage:latest"
         Int preemptible=2
