@@ -34,7 +34,12 @@ task merge{
         set -o xtrace
 
         mkdir sortedBamFolder
-        echo ~{sep=" " sortedBamFiles} | while read $line ; do FILENAME=$(basename $line) ; cp $line sortedBamFolder/$FILENAME ; done
+
+        for bam in ~{sep=" " sortedBamFiles} ; do
+            FILENAME=$(basename $bam)
+            cp $bam sortedBamFolder/$FILENAME
+        done
+
         samtools merge -@ ~{threadCount} ~{sampleName}.~{sampleSuffix}.bam sortedBamFolder/*.bam
         samtools index -@ ~{threadCount} ~{sampleName}.~{sampleSuffix}.bam
     >>>
