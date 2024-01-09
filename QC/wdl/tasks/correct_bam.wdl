@@ -72,7 +72,7 @@ task correctBam {
             OPTIONS="${OPTIONS} --exclude ${PREFIX}.excluded_read_ids.txt"
         fi
 
-        correct_bam ${OPTIONS} -i ./BAM -o output/$PREFIX.~{suffix}.bam -n~{threadCount}
+        correct_bam ${OPTIONS} -i ./Bam -o output/$PREFIX.~{suffix}.bam -n~{threadCount}
         samtools index -@~{threadCount} output/$PREFIX.~{suffix}.bam
     >>>
     runtime {
