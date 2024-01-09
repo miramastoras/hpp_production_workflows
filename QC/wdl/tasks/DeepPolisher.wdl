@@ -63,7 +63,7 @@ task DeepPolisher{
         cp ~{Bam} ./${BAMFILE}
         cp ~{Bai} ./${BAIFILE}
 
-        cp ~{FASTA} ./Fasta
+        cp ~{Fasta} ./Fasta
 
         # untar model files
         # they need to be tar'd in a folder called "checkpoint" and the name of the tar file needs to match
