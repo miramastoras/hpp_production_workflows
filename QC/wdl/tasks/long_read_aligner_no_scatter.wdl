@@ -54,7 +54,7 @@ task alignmentBam{
         String options=""
         Array[File] readFastq_or_queryAssembly
         File refAssembly
-        Int kmerSize=15
+        Int kmerSize=19
         # runtime configurations
         Int memSize=512
         Int threadCount=128
