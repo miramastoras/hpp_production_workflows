@@ -34,7 +34,7 @@ workflow longReadAlignmentNoScatter {
             preset = preset,
             refAssembly=assembly,
             readFastq_or_queryAssembly = extractReads.extractedRead,
-            diskSize = extractReads.fileSizeGB * 3,
+            diskSize = 512,
             preemptible = preemptible,
             zones = zones
    }
