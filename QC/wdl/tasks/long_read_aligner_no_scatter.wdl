@@ -39,8 +39,8 @@ workflow longReadAlignmentNoScatter {
             zones = zones
    }
     output {
-        File sortedBamFile = mergeBams.mergedBam
-        File baiFile = mergeBams.mergedBai
+        File sortedBamFile = alignment.sortedBamFile
+        File baiFile = alignment.sortedBamFileBai
     }
 
 }
@@ -99,6 +99,8 @@ task alignmentBam{
         fi
         samtools sort -@~{threadCount} -o ${OUTPUT_FILE} ${fileBasename%.*.*}.bam
         du -s -BG ${OUTPUT_FILE} | sed 's/G.*//' > outputsize.txt
+
+        samtools index ${OUTPUT_FILE}
     >>>
     runtime {
         docker: dockerImage
@@ -110,6 +112,7 @@ task alignmentBam{
     }
     output {
         File sortedBamFile = glob("*.sorted.bam")[0]
+        File sortedBamFileBai = glob("*.sorted.bam.bai")[0]
         Int fileSizeGB = read_int("outputsize.txt")
     }
 }
