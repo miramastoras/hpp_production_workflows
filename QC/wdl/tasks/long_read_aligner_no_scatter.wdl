@@ -13,7 +13,7 @@ workflow longReadAlignmentNoScatter {
         File? referenceFasta
         Int preemptible=2
         Int extractReadsDiskSize=256
-        String zones
+        String zones="us-west2-a"
     }
 
     scatter (readFile in readFiles) {
