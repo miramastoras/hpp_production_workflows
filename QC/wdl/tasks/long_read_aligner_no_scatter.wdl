@@ -1,5 +1,7 @@
 version 1.0
 
+import "extract_reads.wdl" as extractReads_t
+
 workflow longReadAlignmentNoScatter {
     input {
         String aligner
