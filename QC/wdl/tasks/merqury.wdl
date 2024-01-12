@@ -37,7 +37,7 @@ task merqury {
         OMP_NUM_THREADS=~{threadCount}
 
         # get filename
-        ASM_ID=$(basename ~{assemblyFasta} | sed 's/.gz$//' | sed 's/.fa\(sta\)*$//' | sed 's/[._][pm]at\(ernal\)*//' | sed 's/Hap1//' | sed 's/Hap2//' | sed 's/hap1//' | sed 's/hap2//')
+        ASM_ID=$(basename ~{assemblyFasta} | sed 's/.gz$//' | sed 's/.fa\(sta\)*$//' | sed 's/[._][pm]at\(ernal\)*//')
         KMER_ID=$(basename ~{kmerTarball} | sed 's/.gz$//' | sed 's/.tar//' )
 
         echo `printing kmer ID `
