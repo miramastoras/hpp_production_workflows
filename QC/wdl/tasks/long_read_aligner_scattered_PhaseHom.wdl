@@ -70,7 +70,7 @@ workflow longReadAlignmentScattered {
                  preset = preset,
                  refAssembly=assembly,
                  readFastq_or_queryAssembly = readFastqAndSize.left,
-                 diskSize = 64 + floor(readFastqAndSize.right) * 6,
+                 diskSize = 1024,
                  preemptible = preemptible,
                  zones = zones,
                  options = options,
