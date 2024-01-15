@@ -181,7 +181,7 @@ task yakAssemblyStats {
         set -o xtrace
 
         # name
-        PREFIX=$(basename ~{assemblyFastaPat} | sed 's/.gz$//' | sed 's/.fa\(sta\)*$//' | sed 's/[._][pm]at\(ernal\)*//' )
+        PREFIX=$(basename ~{assemblyFastaPat} | sed 's/.gz$//' | sed 's/.fa\(sta\)*$//' | sed 's/[._][pm]at\(ernal\)*//' | sed 's/Hap1//' | sed 's/Hap2//' | sed 's/hap1//' | sed 's/hap2//' )
 
         # combine mat and pat assembly
         cat ~{assemblyFastaPat} ~{assemblyFastaMat} > diploid.fasta
