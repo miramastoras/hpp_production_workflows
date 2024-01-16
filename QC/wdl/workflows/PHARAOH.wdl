@@ -50,7 +50,7 @@ workflow PHARAOH{
         # default is minimap2
 
         String PharaohAligner="minimap2"
-        String PharaohKmerSize=1915
+        String PharaohKmerSize=19
         String PharaohHiFiPreset="map-hifi"
         String pafAligner="minimap2"
     }
