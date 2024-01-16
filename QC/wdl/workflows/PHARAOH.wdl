@@ -49,9 +49,9 @@ workflow PHARAOH{
         # for winnowmap, use k=15 for preset "map-pb" and "map-ont"
         # default is minimap2
 
-        String PharaohAligner="winnowmap"
-        String PharaohKmerSize=15
-        String PharaohHiFiPreset="map-pb"
+        String PharaohAligner="minimap2"
+        String PharaohKmerSize=1915
+        String PharaohHiFiPreset="map-hifi"
         String pafAligner="minimap2"
     }
 
