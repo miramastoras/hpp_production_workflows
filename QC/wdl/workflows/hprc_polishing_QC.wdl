@@ -103,13 +103,15 @@ workflow hprc_polishing_QC {
     call project_blocks_t.project_blocks as projectFPKmersToRawHap1 {
         input:
             pafFile=alignHap1ToRaw.pafFile,
-            bedFile=kmerPolishingEvalPolished.merquryAsmFPkmers
+            bedFile=kmerPolishingEvalPolished.merquryAsmFPkmers,
+            mode='asm2ref'
     }
 
     call project_blocks_t.project_blocks as projectFPKmersToRawHap2 {
         input:
             pafFile=alignHap2ToRaw.pafFile,
-            bedFile=kmerPolishingEvalPolished.merquryAltHapFPkmers
+            bedFile=kmerPolishingEvalPolished.merquryAltHapFPkmers,
+            mode='asm2ref'
     }
 
     call countEditsOverlappingFPKmers {
