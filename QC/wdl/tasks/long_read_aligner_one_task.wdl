@@ -52,7 +52,7 @@ task alignmentBam{
             SUFFIX="${FILENAME##*.}"
 
             if [[ "$SUFFIX" == "bam" ]] ; then
-                samtools fastq -@~{threadCount} ~{readFile} > output/${PREFIX}.fq
+                samtools fastq -@~{threadCount} ${file} > output/${PREFIX}.fq
             elif [[ "$SUFFIX" == "cram" ]] ; then
                 if [[ ! -f "~{cramExtractionFasta}" ]] ; then
                     echo "Could not extract $FILENAME, reference file not supplied"
@@ -108,7 +108,7 @@ task alignmentBam{
         else
             OUTPUT_FILE=${fileBasename%.*.*}.~{suffix}.sorted.bam
         fi
-        
+
         samtools sort -@~{threadCount} -o ${OUTPUT_FILE} ${fileBasename%.*.*}.bam
         samtools index ${OUTPUT_FILE}
     >>>
