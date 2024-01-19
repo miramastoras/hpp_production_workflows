@@ -62,6 +62,7 @@ task alignmentBam{
                 samtools fastq -@~{threadCount} --reference `basename ~{cramExtractionFasta}` ${file} > output/${PREFIX}.fq
             elif [[ "$SUFFIX" == "gz" ]] ; then
                 gunzip -c ${file} > output/${PREFIX}
+                ls output
             elif [[ "$SUFFIX" == "fastq" ]] || [[ "$SUFFIX" == "fq" ]] ; then
                 ln -s ${file} output/${PREFIX}.fq .
             elif [[ "$SUFFIX" != "fastq" ]] && [[ "$SUFFIX" != "fq" ]] && [[ "$SUFFIX" != "fasta" ]] && [[ "$SUFFIX" != "fa" ]] ; then
@@ -69,7 +70,7 @@ task alignmentBam{
                 exit 1
             fi
         done
-
+        echo "Here"
         ## Filter short reads if param specified
         if minReadLength > 0:
           mkdir output_filtered
@@ -84,7 +85,7 @@ task alignmentBam{
               # filter reads shorter than minReadLength
               awk 'NR%4==1{a=$0} NR%4==2{b=$0} NR%4==3{c=$0} NR%4==0&&length(b)>~{minReadLength}{print a"\n"b"\n"c"\n"$0;}' ${fastq} > output_filtered/${PREFIX}.gt_${minLenKb}kb.fastq
           done
-
+        echo "Here 2"
         ## Run alignment
 
         if [[ ~{aligner} == "winnowmap" ]]; then
