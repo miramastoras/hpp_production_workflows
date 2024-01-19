@@ -124,6 +124,5 @@ task alignmentBam{
     output {
         File sortedBamFile = glob("*.sorted.bam")[0]
         File sortedBamFileBai = glob("*.sorted.bam.bai")[0]
-        Int fileSizeGB = read_int("outputsize.txt")
     }
 }
