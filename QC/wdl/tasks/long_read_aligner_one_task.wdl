@@ -61,7 +61,7 @@ task alignmentBam{
                 ln -s ~{cramExtractionFasta}
                 samtools fastq -@~{threadCount} --reference `basename ~{cramExtractionFasta}` ${file} > output/${PREFIX}.fq
             elif [[ "$SUFFIX" == "gz" ]] ; then
-                gunzip -k -c ${file} > output/${PREFIX}
+                gunzip -c ${file} > output/${PREFIX}
             elif [[ "$SUFFIX" == "fastq" ]] || [[ "$SUFFIX" == "fq" ]] ; then
                 ln -s ${file} output/${PREFIX}.fq .
             elif [[ "$SUFFIX" != "fastq" ]] && [[ "$SUFFIX" != "fq" ]] && [[ "$SUFFIX" != "fasta" ]] && [[ "$SUFFIX" != "fa" ]] ; then
