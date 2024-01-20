@@ -64,7 +64,7 @@ task alignmentBam{
                 gunzip -c ${file} > output/${PREFIX}
                 ls output
             elif [[ "$SUFFIX" == "fastq" ]] || [[ "$SUFFIX" == "fq" ]] ; then
-                ln -s ${file} output/${PREFIX}.fq .
+                ln -s ${file} output/${PREFIX}.fq
             elif [[ "$SUFFIX" != "fastq" ]] && [[ "$SUFFIX" != "fq" ]] && [[ "$SUFFIX" != "fasta" ]] && [[ "$SUFFIX" != "fa" ]] ; then
                 echo "Unsupported file type: ${SUFFIX}"
                 exit 1
@@ -100,9 +100,9 @@ task alignmentBam{
         fi
 
         fileBasename=~{sampleID}
-        echo '${ALIGNER_CMD} -a -x ~{preset} ~{options} -t~{threadCount} ~{fastaForAlignment} ${FASTQ_FOLDER}/*.fastq | samtools view -h -b > ${fileBasename%.*.*}.bam'
+        echo '${ALIGNER_CMD} -a -x ~{preset} ~{options} -t~{threadCount} ~{fastaForAlignment} ${FASTQ_FOLDER}/*q | samtools view -h -b > ${fileBasename%.*.*}.bam'
 
-        ${ALIGNER_CMD} -a -x ~{preset} ~{options} -t~{threadCount} ~{fastaForAlignment} ${FASTQ_FOLDER}/*.fastq | samtools view -h -b > ${fileBasename%.*.*}.bam
+        ${ALIGNER_CMD} -a -x ~{preset} ~{options} -t~{threadCount} ~{fastaForAlignment} ${FASTQ_FOLDER}/*q | samtools view -h -b > ${fileBasename%.*.*}.bam
 
         if [ -z ~{suffix} ]; then
             OUTPUT_FILE=${fileBasename%.*.*}.sorted.bam
