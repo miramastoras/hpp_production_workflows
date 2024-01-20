@@ -72,7 +72,7 @@ task alignmentBam{
         done
         echo "Here"
         ## Filter short reads if param specified
-        if ~{minReadLength} > 0; then
+        if [[ "~{minReadLength}" -gt 0 ]]; then
           mkdir output_filtered
           FASTQ_FOLDER="output_filtered"
           minLenKb=$(echo ~{minReadLength} | awk '{printf "%.0f",$1/1e3}')
