@@ -117,7 +117,7 @@ workflow PHARAOH{
     ## remove reads with de > 0.02
     call correct_bam_t.correctBam as correctBamMaxDivergenceHap1 {
         input:
-            Bam=alignAllToHap1Scattered.bamFile,
+            Bam=alignAllToHap1Scattered.sortedBamFile,
             options="--maxDiv 0.02",
             suffix="maxDiv.02",
             dockerImage="mobinasri/secphase:dev-v0.2.0-hom"
@@ -126,7 +126,7 @@ workflow PHARAOH{
 
     call correct_bam_t.correctBam as correctBamMaxDivergenceHap2 {
         input:
-            Bam=alignAllToHap2Scattered.bamFile,
+            Bam=alignAllToHap2Scattered.sortedBamFile,
             options="--maxDiv 0.02",
             suffix="maxDiv.02",
             dockerImage="mobinasri/secphase:dev-v0.2.0-hom"
