@@ -45,6 +45,8 @@ task alignmentBam{
         mkdir output
         FASTQ_FOLDER="output"
 
+        echo "Looping through fastq files unzip"
+        date
         for file in ~{sep=' ' readFiles}
         do
             FILENAME=$(basename -- $file)
@@ -70,7 +72,10 @@ task alignmentBam{
                 exit 1
             fi
         done
-        echo "Here"
+
+        echo "Done extracting reads. Checking if minReadLength is set"
+        date
+
         ## Filter short reads if param specified
         if [[ "~{minReadLength}" -gt 0 ]]; then
           mkdir output_filtered
@@ -87,6 +92,9 @@ task alignmentBam{
           done
         fi
         ## Run alignment
+
+        echo "Beginning alignment"
+        date
 
         if [[ ~{aligner} == "winnowmap" ]]; then
             meryl count k=~{kmerSize} output merylDB ~{fastaForAlignment}
@@ -110,6 +118,9 @@ task alignmentBam{
             OUTPUT_FILE=${fileBasename%.*.*}.~{suffix}.sorted.bam
         fi
 
+        echo "sorting and indexing bam file"
+        date
+        
         samtools sort -@~{threadCount} -o ${OUTPUT_FILE} ${fileBasename%.*.*}.bam
         samtools index ${OUTPUT_FILE}
     >>>
