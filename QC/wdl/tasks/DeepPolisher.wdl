@@ -45,7 +45,7 @@ task DeepPolisher{
 
         String dockerImage
         Int memSizeGB = 128
-        Int threadCount = 128
+        Int threadCount = 32
         Int diskSizeGB = 256
     }
     command <<<

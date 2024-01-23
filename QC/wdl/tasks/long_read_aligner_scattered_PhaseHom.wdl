@@ -19,7 +19,7 @@ workflow longReadAlignmentScattered {
         String sampleName
         String sampleSuffix
         Array[File] readFiles
-        Int splitNumber = 8
+        Int splitNumber = 4
         File assembly
         File? referenceFasta
         # options:

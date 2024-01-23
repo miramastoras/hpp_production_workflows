@@ -23,7 +23,7 @@ task DeepVariant{
         File? callRegions
 
         Int memSizeGB = 128
-        Int threadCount = 64
+        Int threadCount = 32
         Int diskSizeGB = 128
         String dockerImage = "google/deepvariant@sha256:440074e9cf854e20e3e05eab0a4fbbc32652c1f0d71b2aacbbd35da47f84faae" # 1.2.0
 
