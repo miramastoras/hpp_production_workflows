@@ -15,6 +15,7 @@ workflow runDeepPolisher {
         File ModelFilesTarGZ
         String sampleName
         String dockerImage
+        Int threadCount=32
     }
     call DeepPolisher {
         input:
@@ -23,7 +24,8 @@ workflow runDeepPolisher {
             Fasta=Fasta,
             ModelFilesTarGZ=ModelFilesTarGZ,
             sampleName=sampleName,
-            dockerImage=dockerImage
+            dockerImage=dockerImage,
+            threadCount=threadCount
     }
     call DPPostProcess {
         input:
