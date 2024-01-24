@@ -26,7 +26,7 @@ task WhatsHapPhase {
 
         String dockerImage = "tpesout/whatshap:latest"
         Int memSizeGB = 128
-        Int threadCount = 64
+        Int threadCount =16
         Int diskSizeGB = 256
     }
     command <<<

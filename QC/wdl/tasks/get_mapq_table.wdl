@@ -48,7 +48,7 @@ task getMapQTable {
         File allHifiToHap1Bai
 
         String dockerImage = "kishwars/pepper_deepvariant:r0.8"
-        Int threads = 32
+        Int threads = 8
         Int memSizeGb = 128
         Int diskSizeGb = 256
     }
