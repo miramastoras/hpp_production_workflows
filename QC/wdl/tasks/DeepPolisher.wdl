@@ -103,7 +103,7 @@ task DPPostProcess{
 
         String dockerImage = "miramastoras/polishing:latest"
         Int memSizeGB = 128
-        Int threadCount = 64
+        Int threadCount = 8
         Int diskSizeGB = 128
     }
     command <<<
