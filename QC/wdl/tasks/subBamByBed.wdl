@@ -20,7 +20,7 @@ task SubBamByBed {
         File Bed
 
         Int memSizeGB = 128
-        Int threadCount = 64
+        Int threadCount = 32
         Int diskSizeGB = 512
         String dockerImage = "mobinasri/flagger:latest"
     }
