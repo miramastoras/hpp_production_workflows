@@ -88,7 +88,7 @@ workflow PHARAOH{
     }
 
     ## Align all homozygous reads to both haplotypes separately
-    call long_read_aligner_one_task_t.alignmentBam as alignAllToHap1Scattered{
+    call long_read_aligner_one_task_t.alignmentBam as alignAllToHap1{
         input:
             readFiles=[subDipBamByHomozygous.subBam],
             fastaForAlignment=Hap1Fasta,
@@ -101,7 +101,7 @@ workflow PHARAOH{
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
 
-    call long_read_aligner_one_task_t.alignmentBam as alignAllToHap2Scattered{
+    call long_read_aligner_one_task_t.alignmentBam as alignAllToHap2{
         input:
             readFiles=[subDipBamByHomozygous.subBam],
             fastaForAlignment=Hap2Fasta,
@@ -117,7 +117,7 @@ workflow PHARAOH{
     ## remove reads with de > 0.02
     call correct_bam_t.correctBam as correctBamMaxDivergenceHap1 {
         input:
-            Bam=alignAllToHap1Scattered.sortedBamFile,
+            Bam=alignAllToHap1.sortedBamFile,
             options="--maxDiv 0.02",
             suffix="maxDiv.02",
             dockerImage="mobinasri/secphase:dev-v0.2.0-hom"
@@ -126,7 +126,7 @@ workflow PHARAOH{
 
     call correct_bam_t.correctBam as correctBamMaxDivergenceHap2 {
         input:
-            Bam=alignAllToHap2Scattered.sortedBamFile,
+            Bam=alignAllToHap2.sortedBamFile,
             options="--maxDiv 0.02",
             suffix="maxDiv.02",
             dockerImage="mobinasri/secphase:dev-v0.2.0-hom"
@@ -262,8 +262,8 @@ workflow PHARAOH{
 
         File dipBamHomozygous=subDipBamByHomozygous.subBam
 
-        File allHomToHap1Bam=alignAllToHap1Scattered.bamFile
-        File allHomToHap2Bam=alignAllToHap2Scattered.bamFile
+        File allHomToHap1Bam=alignAllToHap1.sortedBamFile
+        File allHomToHap2Bam=alignAllToHap2.sortedBamFile
 
         File allHomToHap1BamMaxDiv=correctBamMaxDivergenceHap1.correctedBam
         File allHomToHap2BamMaxDiv=correctBamMaxDivergenceHap2.correctedBam
