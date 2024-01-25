@@ -65,7 +65,7 @@ workflow PHARAOH{
             refAssembly=Hap1Fasta,
             suffix="hap2_to_hap1",
             diskSize=512,
-            threadCount=64,
+            threadCount=32,
             kmerSize=19,
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }

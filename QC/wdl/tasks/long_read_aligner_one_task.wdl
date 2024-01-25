@@ -29,7 +29,7 @@ task alignmentBam{
         Int kmerSize
         # runtime configurations
         Int memSize=512
-        Int threadCount=128
+        Int threadCount=32
         Int diskSize=1024
         String dockerImage="mobinasri/long_read_aligner:v0.3.3"
         Int preemptible=2
