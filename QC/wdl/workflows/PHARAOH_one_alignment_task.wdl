@@ -96,7 +96,7 @@ workflow PHARAOH{
             preset=PharaohHiFiPreset,
             sampleID=sampleName,
             kmerSize=PharaohKmerSize,
-            sampleSuffix="all2hap1",
+            suffix="all2hap1",
             options="--cs --eqx -Y -L",
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
@@ -109,7 +109,7 @@ workflow PHARAOH{
             preset=PharaohHiFiPreset,
             kmerSize=PharaohKmerSize,
             sampleID=sampleName,
-            sampleSuffix="all2hap2",
+            suffix="all2hap2",
             options="--cs --eqx -Y -L",
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
