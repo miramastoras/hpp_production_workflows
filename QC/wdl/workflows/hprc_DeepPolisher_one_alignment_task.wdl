@@ -61,7 +61,7 @@ workflow hprc_DeepPolisher {
           sampleID=sampleName,
           options="--cs --eqx -L -Y -I8g",
           dockerImage="mobinasri/long_read_aligner:v0.3.3",
-          sampleSuffix="hifi.to.diploid.asm"
+          suffix="hifi.to.diploid.asm"
     }
 
     ## Align all ONT UL reads to Hap1 haplotype
@@ -75,7 +75,7 @@ workflow hprc_DeepPolisher {
           sampleID=sampleName,
           options="--cs --eqx -L -Y",
           dockerImage="mobinasri/long_read_aligner:v0.3.3",
-          sampleSuffix="ONT.to.Hap1.asm",
+          suffix="ONT.to.Hap1.asm",
           minReadLength=100000
     }
 
@@ -90,7 +90,7 @@ workflow hprc_DeepPolisher {
           sampleID=sampleName,
           options="--cs --eqx -L -Y",
           dockerImage="mobinasri/long_read_aligner:v0.3.3",
-          sampleSuffix="ONT.to.Hap2.asm",
+          suffix="ONT.to.Hap2.asm",
           minReadLength=100000
     }
 
