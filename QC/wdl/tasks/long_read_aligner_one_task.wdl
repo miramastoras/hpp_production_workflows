@@ -120,7 +120,7 @@ task alignmentBam{
 
         echo "sorting and indexing bam file"
         date
-        
+
         samtools sort -@~{threadCount} -o ${OUTPUT_FILE} ${fileBasename%.*.*}.bam
         samtools index ${OUTPUT_FILE}
     >>>
