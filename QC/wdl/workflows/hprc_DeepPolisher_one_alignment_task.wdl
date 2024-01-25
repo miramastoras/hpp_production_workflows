@@ -102,7 +102,7 @@ workflow hprc_DeepPolisher {
           Hap2Fasta=parseFastaStep.hap2RawFasta,
           Hap2FastaIndex=parseFastaStep.hap2RawFastaIndex,
           diploidFaGz=parseFastaStep.dipRawFastaGz,
-          allHifiToDiploidBam=alignHifiToDiploid.ortedBamFile,
+          allHifiToDiploidBam=alignHifiToDiploid.sortedBamFile,
           allHifiToDiploidBai=alignHifiToDiploid.sortedBamFileBai,
           allONTToHap2Bam=alignONTToHap2.sortedBamFile,
           allONTToHap1Bam=alignONTToHap1.sortedBamFile,
