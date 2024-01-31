@@ -73,7 +73,6 @@ workflow hprc_polishing_QC {
             dockerImage="juklucas/hpp_merqury:latest"
         }
 
-    }
     call yak_count_t.yakCount as yakCountSample {
         input:
             readFiles=sampleReadsExtracted.extractedRead,
