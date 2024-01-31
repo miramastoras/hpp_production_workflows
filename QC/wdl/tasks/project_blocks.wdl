@@ -34,7 +34,7 @@ task project_blocks{
             pafBasename=$(basename ~{pafFile} | sed 's/.gz$//' | sed 's/.paf$//')
             bedBasename=$(basename ~{bedFile} | sed 's/.gz$//' | sed 's/.bed$//')
 
-            bedtools merge -i ~{bedFile} > ${bedBasename}.mrg.bed
+            bedtools merge -c 1 -o count -i ~{bedFile} > ${bedBasename}.mrg.bed
             bedtools sort -i ${bedBasename}.mrg.bed > ${bedBasename}.mrg.srt.bed
 
             python3 /home/programs/src/project_blocks_multi_thread.py \

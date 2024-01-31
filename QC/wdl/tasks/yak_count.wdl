@@ -12,6 +12,7 @@ workflow runYakCount {
         Int shardLinesPerFile = 256000000
         Int fileExtractionDiskSizeGB = 256
         String dockerImage = "juklucas/hpp_yak:latest"
+        Int kmerSize=31
     }
 
     # extract reads
@@ -51,6 +52,7 @@ task yakCount {
     input{
         Array[File] readFiles
         String sampleName
+        Int kmerSize=31
         Int bloomSize=37
         # runtime configurations
         Int memSizeGB=512
@@ -71,7 +73,7 @@ task yakCount {
         set -o xtrace
 
         # Kmer counting with https://github.com/lh3/yak.
-        yak count -t~{threadCount} -b~{bloomSize} -o ~{sampleName}.yak <(cat ~{sep=" " readFiles}) <(cat ~{sep=" " readFiles})
+        yak count -k~{kmerSize} -t~{threadCount} -b~{bloomSize} -o ~{sampleName}.yak <(cat ~{sep=" " readFiles}) <(cat ~{sep=" " readFiles})
     >>>
 
     runtime {
