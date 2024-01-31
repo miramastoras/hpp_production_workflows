@@ -65,7 +65,7 @@ workflow hprc_polishing_QC {
     # do the meryl counting
     call meryl_t.merylCount as sampleMerylCount {
         input:
-            readFile=sampleReadsExtracted.extractedRead,
+            readFiles=sampleReadsExtracted.extractedRead,
             kmerSize=yakMerylKmerSize,
             threadCount=32,
             memSizeGB=128,
