@@ -50,7 +50,7 @@ workflow hprc_polishing_QC {
                 memSizeGB=4,
                 threadCount=4,
                 diskSizeGB=256,
-                dockerImage=mobinasri/bio_base:v0.2
+                dockerImage="mobinasri/bio_base:v0.2"
         }
     }
     call arithmetic_t.sum as sampleReadSize {
