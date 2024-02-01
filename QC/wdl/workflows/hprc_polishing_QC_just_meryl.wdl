@@ -2,15 +2,15 @@ version 1.0
 
 import "./kmer_based_polisher_eval.wdl" as kmer_based_polisher_eval_wf
 import "../tasks/project_blocks.wdl" as project_blocks_t
+import "../tasks/meryl_non_trio.wdl" as meryl_t
 import "../tasks/long_read_aligner.wdl" as long_read_aligner_t
-import "../tasks/yak_meryl_count.wdl" as yak_meryl_count_t
 
 workflow hprc_polishing_QC {
 
     meta {
       author: "Mira Mastoras"
       email: "mmastora@ucsc.edu"
-      description: "Runs kmer based QC for hprc assemblies, before and after polishing. Performs yak and meryl counting for the sample"
+      description: "Runs kmer based QC for hprc assemblies, before and after polishing"
       }
 
     input {
@@ -20,6 +20,7 @@ workflow hprc_polishing_QC {
       File polishedHap2Fasta
       File polishingVcf
 
+      File sampleYak
       File maternalYak
       File paternalYak
 
@@ -33,18 +34,14 @@ workflow hprc_polishing_QC {
       String pafAligner="minimap2"
 
       File toilRunLog
-
-      File? referenceFasta
-      Int yakMerylKmerSize=21
     }
 
-    call yak_meryl_count_t.runYakMerylCount as countYakMerylKmers {
+    call meryl_t.runMeryl as makeMerylDB {
         input:
-            sampleReadsIlm=sampleReadsIlm,
-            referenceFasta=referenceFasta,
-            kmerSize=yakMerylKmerSize,
-            threadCount=32,
-            sampleID=sampleID
+          sampleReadsILM=sampleReadsIlm,
+          merylCountMemSizeGB=138,
+          merylUnionSumMemSizeGB=138,
+          fileExtractionDiskSizeGB=512
     }
 
     call kmer_based_polisher_eval_wf.kmerPolishingEval as kmerPolishingEvalRaw {
@@ -55,8 +52,8 @@ workflow hprc_polishing_QC {
           grch38InsideConfRegions=grch38InsideConfRegions,
           grch38OutsideConfRegions=grch38OutsideConfRegions,
           sampleID="Raw",
-          ilmMerylDBTarGz=countYakMerylKmers.merylDbTarGz,
-          sampleYak=countYakMerylKmers.sampleYak,
+          ilmMerylDBTarGz=makeMerylDB.sampleMerylDB,
+          sampleYak=sampleYak,
           paternalYak=paternalYak,
           maternalYak=maternalYak
     }
@@ -69,8 +66,8 @@ workflow hprc_polishing_QC {
           grch38InsideConfRegions=grch38InsideConfRegions,
           grch38OutsideConfRegions=grch38OutsideConfRegions,
           sampleID="Polished",
-          ilmMerylDBTarGz=countYakMerylKmers.merylDbTarGz,
-          sampleYak=countYakMerylKmers.sampleYak,
+          ilmMerylDBTarGz=makeMerylDB.sampleMerylDB,
+          sampleYak=sampleYak,
           paternalYak=paternalYak,
           maternalYak=maternalYak
     }
@@ -85,7 +82,7 @@ workflow hprc_polishing_QC {
             refAssembly=rawHap1Fasta,
             suffix="hap1PolToRaw",
             diskSize=512,
-            threadCount=32,
+            threadCount=64,
             kmerSize=19,
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
@@ -98,7 +95,7 @@ workflow hprc_polishing_QC {
             refAssembly=rawHap2Fasta,
             suffix="hap2PolToRaw",
             diskSize=512,
-            threadCount=32,
+            threadCount=64,
             kmerSize=19,
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
@@ -176,23 +173,8 @@ workflow hprc_polishing_QC {
 
       File hap1ToRawPaf=alignHap1ToRaw.pafFile
       File hap2ToRawPaf=alignHap2ToRaw.pafFile
-      File PolishedFPkmersHap1=kmerPolishingEvalPolished.merquryAsmFPkmers
-      File PolishedFPkmersHap2=kmerPolishingEvalPolished.merquryAltHapFPkmers
-      File RawFPkmersHap1=kmerPolishingEvalRaw.merquryAsmFPkmers
-      File RawFPkmersHap2=kmerPolishingEvalRaw.merquryAltHapFPkmers
-
-      File insideConfPolishedHap1Fasta=kmerPolishingEvalPolished.hap1InsideConfFasta
-      File insideConfPolishedHap2Fasta=kmerPolishingEvalPolished.hap2InsideConfFasta
-      File insideConfRawHap1Fasta=kmerPolishingEvalRaw.hap1InsideConfFasta
-      File insideConfRawHap2Fasta=kmerPolishingEvalRaw.hap2InsideConfFasta
-
-      File outsideConfPolishedHap1Fasta=kmerPolishingEvalPolished.hap1OutsideConfFasta
-      File outsideConfPolishedHap2Fasta=kmerPolishingEvalPolished.hap2OutsideConfFasta
-      File outsideConfRawHap1Fasta=kmerPolishingEvalRaw.hap1OutsideConfFasta
-      File outsideConfRawHap2Fasta=kmerPolishingEvalRaw.hap2OutsideConfFasta
-
-      File outputYak=countYakMerylKmers.sampleYak
-      File merylDB=countYakMerylKmers.merylDbTarGz
+      File FPkmersHap1=kmerPolishingEvalPolished.merquryAsmFPkmers
+      File FPkmersHap2=kmerPolishingEvalPolished.merquryAltHapFPkmers
     }
 }
 
