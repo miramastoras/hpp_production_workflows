@@ -42,7 +42,8 @@ workflow runYakMerylCount {
             readFiles=sampleReadsExtracted.extractedRead,
             kmerSize=kmerSize,
             threadCount=threadCount,
-            diskSizeGB=sampleReadSizeMax.value * 4
+            diskSizeGB=sampleReadSizeMax.value * 4,
+            sampleID=sampleID
         }
 
     call yak_count_t.yakCount as yakCountSample {
