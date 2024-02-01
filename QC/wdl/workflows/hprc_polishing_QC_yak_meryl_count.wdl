@@ -2,12 +2,8 @@ version 1.0
 
 import "./kmer_based_polisher_eval.wdl" as kmer_based_polisher_eval_wf
 import "../tasks/project_blocks.wdl" as project_blocks_t
-import "../tasks/meryl_non_trio.wdl" as meryl_t
 import "../tasks/long_read_aligner.wdl" as long_read_aligner_t
-import "../tasks/yak_count.wdl" as yak_count_t
-import "../tasks/extract_reads.wdl" as extractReads_t
-import "../tasks/shard_reads.wdl" as shardReads_t
-import "../tasks/arithmetic.wdl" as arithmetic_t
+
 
 workflow hprc_polishing_QC {
 
@@ -42,44 +38,7 @@ workflow hprc_polishing_QC {
       Int yakMerylKmerSize=21
     }
 
-    scatter (readFile in sampleReadsIlm) {
-        call extractReads_t.extractReads as sampleReadsExtracted {
-            input:
-                readFile=readFile,
-                referenceFasta=referenceFasta,
-                memSizeGB=4,
-                threadCount=4,
-                diskSizeGB=256,
-                dockerImage="mobinasri/bio_base:v0.2"
-        }
-    }
-    call arithmetic_t.sum as sampleReadSize {
-        input:
-            integers=sampleReadsExtracted.fileSizeGB
-    }
-
-    call arithmetic_t.max as sampleReadSizeMax {
-        input:
-            integers=sampleReadsExtracted.fileSizeGB
-    }
-    # do the meryl counting
-    call meryl_t.merylCount as sampleMerylCount {
-        input:
-            readFiles=sampleReadsExtracted.extractedRead,
-            kmerSize=yakMerylKmerSize,
-            threadCount=32,
-            memSizeGB=128,
-            diskSizeGB=sampleReadSizeMax.value * 4,
-            dockerImage="juklucas/hpp_merqury:latest"
-        }
-
-    call yak_count_t.yakCount as yakCountSample {
-        input:
-            readFiles=sampleReadsExtracted.extractedRead,
-            sampleName="sample",
-            diskSizeGB=sampleReadSize.value * 2,
-            kmerSize=yakMerylKmerSize
-    }
+    
 
     call kmer_based_polisher_eval_wf.kmerPolishingEval as kmerPolishingEvalRaw {
         input:

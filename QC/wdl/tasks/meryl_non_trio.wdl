@@ -76,7 +76,7 @@ workflow runMeryl {
 
 task merylCount {
     input {
-        Array[File] readFiles
+        File readFile
         Int kmerSize=21
         Boolean compress = false
         Int memSizeGB = 42
@@ -102,7 +102,7 @@ task merylCount {
 
         # generate meryl db for each read
         ID=`basename ~{readFile} | sed 's/.gz$//' | sed 's/.f[aq]\(st[aq]\)*$//'`
-        meryl ~{compress_arg} k=~{kmerSize} threads=~{threadCount} memory=$((~{memSizeGB}-10)) count output $ID.meryl ~{sep=" " readFiles}
+        meryl ~{compress_arg} k=~{kmerSize} threads=~{threadCount} memory=$((~{memSizeGB}-10)) count output $ID.meryl ~{readFile}
 
         # package
         tar cvf $ID.meryl.tar $ID.meryl
