@@ -114,15 +114,13 @@ workflow kmerPolishingEval {
         input:
             assemblyFasta=hap1Fasta,
             altHapFasta=hap2Fasta,
-            kmerTarball=ilmMerylDBTarGz,
-            sampleID=sampleID
+            kmerTarball=ilmMerylDBTarGz
     }
     call merqury_t.merqury as merquryInsideConf {
         input:
             assemblyFasta=subHap1InsideConf.subFasta,
             altHapFasta=subHap2InsideConf.subFasta,
-            kmerTarball=ilmMerylDBTarGz,
-            sampleID=sampleID
+            kmerTarball=ilmMerylDBTarGz
     }
     call merqury_t.merqury as merquryOutsideConf {
         input:
