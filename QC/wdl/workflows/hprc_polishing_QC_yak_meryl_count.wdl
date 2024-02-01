@@ -3,7 +3,7 @@ version 1.0
 import "./kmer_based_polisher_eval.wdl" as kmer_based_polisher_eval_wf
 import "../tasks/project_blocks.wdl" as project_blocks_t
 import "../tasks/long_read_aligner.wdl" as long_read_aligner_t
-
+import "../tasks/yak_meryl_count.wdl" as yak_meryl_count_t
 
 workflow hprc_polishing_QC {
 
@@ -38,7 +38,14 @@ workflow hprc_polishing_QC {
       Int yakMerylKmerSize=21
     }
 
-    
+    call yak_meryl_count_t.runYakMerylCount as countYakMerylKmers {
+        input:
+            sampleReadsIlm=sampleReadsIlm,
+            referenceFasta=referenceFasta,
+            kmerSize=yakMerylKmerSize,
+            threadCount=32,
+            sampleID=sampleID
+    }
 
     call kmer_based_polisher_eval_wf.kmerPolishingEval as kmerPolishingEvalRaw {
         input:

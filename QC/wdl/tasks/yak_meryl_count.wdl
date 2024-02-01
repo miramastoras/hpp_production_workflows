@@ -5,12 +5,12 @@ import "../tasks/extract_reads.wdl" as extractReads_t
 import "../tasks/arithmetic.wdl" as arithmetic_t
 
 
-workflow yakMerylCount {
+workflow runYakMerylCount {
 
     input {
         Array[File] sampleReadsIlm
         File? referenceFasta
-        Int kmerSize
+        Int kmerSize=21
         Int threadCount=32
         String sampleID
     }
@@ -52,6 +52,11 @@ workflow yakMerylCount {
             diskSizeGB=sampleReadSize.value * 2,
             kmerSize=kmerSize
     }
+    output:
+        File merylDbTarGz=sampleMerylCount.merylDb
+        File sampleYak=yakCountSample.outputYak
+
+
 }
 
 task merylCount {
