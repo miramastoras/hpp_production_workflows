@@ -28,6 +28,7 @@ workflow kmerPolishingEval {
       File sampleYak
       File paternalYak
       File maternalYak
+
       }
 
     # Align hap1 and hap2 to grch38, in paf format
@@ -40,7 +41,7 @@ workflow kmerPolishingEval {
             refAssembly=grch38Fasta,
             suffix="asmToRef",
             diskSize=512,
-            threadCount=64,
+            threadCount=32,
             kmerSize=19,
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
@@ -53,7 +54,7 @@ workflow kmerPolishingEval {
             refAssembly=grch38Fasta,
             suffix="asmToRef",
             diskSize=512,
-            threadCount=64,
+            threadCount=32,
             kmerSize=19,
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
