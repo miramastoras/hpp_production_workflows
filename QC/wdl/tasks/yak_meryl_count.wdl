@@ -1,9 +1,12 @@
+version 1.0
+
 import "../tasks/yak_count.wdl" as yak_count_t
 import "../tasks/extract_reads.wdl" as extractReads_t
 import "../tasks/arithmetic.wdl" as arithmetic_t
 
 
 workflow yakMerylCount {
+
     input {
         Array[File] sampleReadsIlm
         File? referenceFasta
