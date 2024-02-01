@@ -156,13 +156,14 @@ workflow hprc_polishing_QC {
       File hap1FPKmersProjectedBed=projectFPKmersToRawHap1.projectionBedFile
       File hap2FPKmersProjectedBed=projectFPKmersToRawHap2.projectionBedFile
 
-      File wholeGenomeQVRawMerq=kmerPolishingEvalRaw.QV_whole_genome
-      File insideConfQVRawMerq=kmerPolishingEvalRaw.QV_inside_conf
-      File outsideConfQVRawMerq=kmerPolishingEvalRaw.QV_outside_conf
+      File PolishedWGMerquryTarBall=kmerPolishingEvalPolished.merquryWGTarBall
+      File RawWGMerquryTarBall=kmerPolishingEvalRaw.merquryWGTarBall
 
-      File wholeGenomeQVPolMerq=kmerPolishingEvalPolished.QV_whole_genome
-      File insideConfQVPolMerq=kmerPolishingEvalPolished.QV_inside_conf
-      File outsideConfQVPolMerq=kmerPolishingEvalPolished.QV_outside_conf
+      File PolishedInsideConfMerquryTarBall=kmerPolishingEvalPolished.merquryInsideConfTarBall
+      File RawInsideConfMerquryTarBall=kmerPolishingEvalRaw.merquryInsideConfTarBall
+
+      File PolishedOutsideConfMerquryTarBall=kmerPolishingEvalPolished.merquryOutsideConfTarBall
+      File RawOutsideConfMerquryTarBall=kmerPolishingEvalRaw.merquryOutsideConfTarBall
 
       File yakTarBallWGRaw=kmerPolishingEvalRaw.yakTarBallWG
       File yakTarBallInsideConfRaw=kmerPolishingEvalRaw.yakTarBallInsideConf
@@ -176,10 +177,6 @@ workflow hprc_polishing_QC {
 
       File hap1ToRawPaf=alignHap1ToRaw.pafFile
       File hap2ToRawPaf=alignHap2ToRaw.pafFile
-      File PolishedFPkmersHap1=kmerPolishingEvalPolished.merquryAsmFPkmers
-      File PolishedFPkmersHap2=kmerPolishingEvalPolished.merquryAltHapFPkmers
-      File RawFPkmersHap1=kmerPolishingEvalRaw.merquryAsmFPkmers
-      File RawFPkmersHap2=kmerPolishingEvalRaw.merquryAltHapFPkmers
 
       File insideConfPolishedHap1Fasta=kmerPolishingEvalPolished.hap1InsideConfFasta
       File insideConfPolishedHap2Fasta=kmerPolishingEvalPolished.hap2InsideConfFasta

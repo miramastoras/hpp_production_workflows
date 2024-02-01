@@ -165,6 +165,9 @@ workflow kmerPolishingEval {
         File QV_outside_conf = merquryOutsideConf.QV
         File merquryAsmFPkmers = merquryWholeGenome.asmFPkmers
         File merquryAltHapFPkmers = merquryWholeGenome.altHapFPkmers
+        File merquryWGTarBall=merquryWholeGenome.outputTarball
+        File merquryInsideConfTarBall=merquryInsideConf.outputTarball
+        File merquryOutsideConfTarBall=merquryOutsideConf.outputTarball
         File yakTarBallWG=yakQCWholeGenome.outputTarball
         File yakTarBallInsideConf=yakQCInsideConf.outputTarball
         File yakTarBallOutsideConf=yakQCOutsideConf.outputTarball
