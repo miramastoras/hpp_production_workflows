@@ -52,10 +52,10 @@ workflow runYakMerylCount {
             diskSizeGB=sampleReadSize.value * 2,
             kmerSize=kmerSize
     }
-    output:
+    output {
         File merylDbTarGz=sampleMerylCount.merylDb
         File sampleYak=yakCountSample.outputYak
-
+    }
 
 }
 
