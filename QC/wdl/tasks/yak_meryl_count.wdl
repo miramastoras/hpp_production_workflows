@@ -82,7 +82,7 @@ task merylCount {
         OMP_NUM_THREADS=~{threadCount}
 
         # generate meryl db for each read
-        meryl ~{compress_arg} k=~{kmerSize} threads=~{threadCount} memory=$((~{memSizeGB}-10)) count output ~{sampleID}.meryl ~{sep=" " readFile}
+        meryl ~{compress_arg} k=~{kmerSize} threads=~{threadCount} memory=$((~{memSizeGB}-10)) count output ~{sampleID}.meryl ~{sep=" " readFiles}
 
         # package
         tar cvf ~{sampleID}.meryl.tar ~{sampleID}.meryl
