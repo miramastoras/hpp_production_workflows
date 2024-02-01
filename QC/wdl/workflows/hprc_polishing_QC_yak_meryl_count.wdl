@@ -55,8 +55,8 @@ workflow hprc_polishing_QC {
           grch38InsideConfRegions=grch38InsideConfRegions,
           grch38OutsideConfRegions=grch38OutsideConfRegions,
           sampleID="Raw",
-          ilmMerylDBTarGz=sampleMerylUnionSum.merylDb,
-          sampleYak=yakCountSample.outputYak,
+          ilmMerylDBTarGz=countYakMerylKmers.merylDbTarGz,
+          sampleYak=countYakMerylKmers.sampleYak,
           paternalYak=paternalYak,
           maternalYak=maternalYak
     }
@@ -69,8 +69,8 @@ workflow hprc_polishing_QC {
           grch38InsideConfRegions=grch38InsideConfRegions,
           grch38OutsideConfRegions=grch38OutsideConfRegions,
           sampleID="Polished",
-          ilmMerylDBTarGz=sampleMerylUnionSum.merylDb,
-          sampleYak=yakCountSample.outputYak,
+          ilmMerylDBTarGz=countYakMerylKmers.merylDbTarGz,
+          sampleYak=countYakMerylKmers.sampleYak,
           paternalYak=paternalYak,
           maternalYak=maternalYak
     }
@@ -190,6 +190,9 @@ workflow hprc_polishing_QC {
       File outsideConfPolishedHap2Fasta=kmerPolishingEvalPolished.hap2OutsideConfFasta
       File outsideConfRawHap1Fasta=kmerPolishingEvalRaw.hap1OutsideConfFasta
       File outsideConfRawHap2Fasta=kmerPolishingEvalRaw.hap2OutsideConfFasta
+
+      File outputYak=countYakMerylKmers.sampleYak
+      File merylDB=countYakMerylKmers.merylDbTarGz
     }
 }
 
