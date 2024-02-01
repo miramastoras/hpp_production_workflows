@@ -166,6 +166,19 @@ workflow hprc_polishing_QC {
       File hap2ToRawPaf=alignHap2ToRaw.pafFile
       File FPkmersHap1=kmerPolishingEvalPolished.merquryAsmFPkmers
       File FPkmersHap2=kmerPolishingEvalPolished.merquryAltHapFPkmers
+
+      File insideConfPolishedHap1Fasta=kmerPolishingEvalPolished.hap1InsideConfFasta
+      File insideConfPolishedHap2Fasta=kmerPolishingEvalPolished.hap2InsideConfFasta
+      File insideConfRawHap1Fasta=kmerPolishingEvalRaw.hap1InsideConfFasta
+      File insideConfRawHap2Fasta=kmerPolishingEvalRaw.hap2InsideConfFasta
+
+      File outsideConfPolishedHap1Fasta=kmerPolishingEvalPolished.hap1OutsideConfFasta
+      File outsideConfPolishedHap2Fasta=kmerPolishingEvalPolished.hap2OutsideConfFasta
+      File outsideConfRawHap1Fasta=kmerPolishingEvalRaw.hap1OutsideConfFasta
+      File outsideConfRawHap2Fasta=kmerPolishingEvalRaw.hap2OutsideConfFasta
+
+      File outputYak=countYakMerylKmers.sampleYak
+      File merylDB=countYakMerylKmers.merylDbTarGz
     }
 }
 
