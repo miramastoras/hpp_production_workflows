@@ -176,9 +176,6 @@ workflow hprc_polishing_QC {
       File outsideConfPolishedHap2Fasta=kmerPolishingEvalPolished.hap2OutsideConfFasta
       File outsideConfRawHap1Fasta=kmerPolishingEvalRaw.hap1OutsideConfFasta
       File outsideConfRawHap2Fasta=kmerPolishingEvalRaw.hap2OutsideConfFasta
-
-      File outputYak=countYakMerylKmers.sampleYak
-      File merylDB=countYakMerylKmers.merylDbTarGz
     }
 }
 
