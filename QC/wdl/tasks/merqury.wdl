@@ -102,6 +102,11 @@ task merqury {
         # run command
         ${cmd[@]}
 
+        mkdir output
+
+        cp altHap_only.bed $ASM_ID.merqury.altHap_only.bed
+        cp asm_only.bed $ASM_ID.merqury.asm_only.bed
+        
         # get qv output
         tar czvf $ASM_ID.merqury.tar.gz $ASM_ID.merqury*
 
