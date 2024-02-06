@@ -144,13 +144,14 @@ workflow hprc_polishing_QC {
       File hap1FPKmersProjectedBed=projectFPKmersToRawHap1.projectionBedFile
       File hap2FPKmersProjectedBed=projectFPKmersToRawHap2.projectionBedFile
 
-      File wholeGenomeQVRawMerq=kmerPolishingEvalRaw.QV_whole_genome
-      File insideConfQVRawMerq=kmerPolishingEvalRaw.QV_inside_conf
-      File outsideConfQVRawMerq=kmerPolishingEvalRaw.QV_outside_conf
+      File PolishedWGMerquryTarBall=kmerPolishingEvalPolished.merquryWGTarBall
+      File RawWGMerquryTarBall=kmerPolishingEvalRaw.merquryWGTarBall
 
-      File wholeGenomeQVPolMerq=kmerPolishingEvalPolished.QV_whole_genome
-      File insideConfQVPolMerq=kmerPolishingEvalPolished.QV_inside_conf
-      File outsideConfQVPolMerq=kmerPolishingEvalPolished.QV_outside_conf
+      File PolishedInsideConfMerquryTarBall=kmerPolishingEvalPolished.merquryInsideConfTarBall
+      File RawInsideConfMerquryTarBall=kmerPolishingEvalRaw.merquryInsideConfTarBall
+
+      File PolishedOutsideConfMerquryTarBall=kmerPolishingEvalPolished.merquryOutsideConfTarBall
+      File RawOutsideConfMerquryTarBall=kmerPolishingEvalRaw.merquryOutsideConfTarBall
 
       File yakTarBallWGRaw=kmerPolishingEvalRaw.yakTarBallWG
       File yakTarBallInsideConfRaw=kmerPolishingEvalRaw.yakTarBallInsideConf
@@ -164,8 +165,6 @@ workflow hprc_polishing_QC {
 
       File hap1ToRawPaf=alignHap1ToRaw.pafFile
       File hap2ToRawPaf=alignHap2ToRaw.pafFile
-      File FPkmersHap1=kmerPolishingEvalPolished.merquryAsmFPkmers
-      File FPkmersHap2=kmerPolishingEvalPolished.merquryAltHapFPkmers
 
       File insideConfPolishedHap1Fasta=kmerPolishingEvalPolished.hap1InsideConfFasta
       File insideConfPolishedHap2Fasta=kmerPolishingEvalPolished.hap2InsideConfFasta
@@ -176,6 +175,9 @@ workflow hprc_polishing_QC {
       File outsideConfPolishedHap2Fasta=kmerPolishingEvalPolished.hap2OutsideConfFasta
       File outsideConfRawHap1Fasta=kmerPolishingEvalRaw.hap1OutsideConfFasta
       File outsideConfRawHap2Fasta=kmerPolishingEvalRaw.hap2OutsideConfFasta
+
+      File outputYak=countYakMerylKmers.sampleYak
+      File merylDB=countYakMerylKmers.merylDbTarGz
     }
 }
 
