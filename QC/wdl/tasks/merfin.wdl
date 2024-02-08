@@ -83,7 +83,7 @@ task MerylHist {
         String dockerImage = "juklucas/hpp_merqury:latest"
         Int memSizeGB = 128
         Int threadCount = 16
-        Int diskSizeGB = 128
+        Int diskSizeGB = 256
     }
     command <<<
         # exit when a command fails, fail with unset variables, print commands before execution
@@ -116,7 +116,7 @@ task GenomeScope{
         String dockerImage = "dmolik/genomescope2:latest"
         Int memSizeGB = 128
         Int threadCount = 32
-        Int diskSizeGB = 128
+        Int diskSizeGB = 256
     }
     command <<<
         # exit when a command fails, fail with unset variables, print commands before execution
@@ -154,7 +154,7 @@ task Merfin{
         String dockerImage = "miramastoras/merfin:latest"
         Int memSizeGB = 128
         Int threadCount = 32
-        Int diskSizeGB = 128
+        Int diskSizeGB = 256
     }
 
     command <<<
