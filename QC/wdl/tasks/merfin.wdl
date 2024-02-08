@@ -41,7 +41,7 @@ task CombineVCF {
 
         String dockerImage = "biocontainers/bcftools:latest"
         Int memSizeGB = 128
-        Int threadCount = 64
+        Int threadCount = 8
         Int diskSizeGB = 128
     }
     command <<<
@@ -82,7 +82,7 @@ task MerylHist {
 
         String dockerImage = "juklucas/hpp_merqury:latest"
         Int memSizeGB = 128
-        Int threadCount = 64
+        Int threadCount = 16
         Int diskSizeGB = 128
     }
     command <<<
@@ -115,7 +115,7 @@ task GenomeScope{
 
         String dockerImage = "dmolik/genomescope2:latest"
         Int memSizeGB = 128
-        Int threadCount = 64
+        Int threadCount = 32
         Int diskSizeGB = 128
     }
     command <<<
@@ -153,7 +153,7 @@ task Merfin{
 
         String dockerImage = "miramastoras/merfin:latest"
         Int memSizeGB = 128
-        Int threadCount = 64
+        Int threadCount = 32
         Int diskSizeGB = 128
     }
 
