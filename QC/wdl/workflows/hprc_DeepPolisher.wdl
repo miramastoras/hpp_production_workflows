@@ -155,5 +155,7 @@ workflow hprc_DeepPolisher {
         File finalPhasedDipBam=PHARAOH.finalPhasedDipBam
         File finalPhasedDipBai=PHARAOH.finalPhasedDipBai
         File DeepPolisherVcf=DeepPolisher.PolisherVcf
+        File variantBlocksBed=PHARAOH.variantBlocksBed
+        File modifiedReadBlocksVariantsBed=PHARAOH.modifiedReadBlocksVariantsBed
     }
 }

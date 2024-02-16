@@ -275,9 +275,12 @@ workflow PHARAOH{
         File deepVariantHap2Filt=FilterDVHap2.vcfOut
 
         File secphaseOutLog=runSecPhase.outLog
-        File secphaseVariantBlocks=runSecPhase.variantBlocksBed
+        File variantBlocksBed=runSecPhase.variantBlocksBed
+        File modifiedReadBlocksVariantsBed=runSecPhase.modifiedReadBlocksVariantsBed
 
         File finalPhasedDipBam=correctBamSecPhase.correctedBam
         File finalPhasedDipBai=correctBamSecPhase.correctedBamIndex
+
+
     }
 }
