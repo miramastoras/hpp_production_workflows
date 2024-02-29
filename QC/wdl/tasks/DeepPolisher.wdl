@@ -32,6 +32,7 @@ workflow runDeepPolisher {
     output {
         File PolisherVcf = DPPostProcess.vcfFile
         File PolisherVcfTbi = DPPostProcess.vcfFileTbi
+        File PolisherVcfNoFilter=DPPostProcess.noFiltersPolisherVcf
     }
 }
 

@@ -157,5 +157,6 @@ workflow hprc_DeepPolisher {
         File DeepPolisherVcf=DeepPolisher.PolisherVcf
         File variantBlocksBed=PHARAOH.variantBlocksBed
         File modifiedReadBlocksVariantsBed=PHARAOH.modifiedReadBlocksVariantsBed
+        File DeepPolisherNoFiltersVcf=DeepPolisher.PolisherVcfNoFilter
     }
 }
