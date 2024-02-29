@@ -159,8 +159,10 @@ task DPPostProcess{
                 bcftools concat -a -Oz polisher_output.GQ20_INS1.vcf.gz \
                 polisher_output.GQ12_DEL1.vcf.gz \
                 polisher_output.GQ5.notINS1orDEL1.vcf.gz \
-                > polisher_vcf_output/polisher_output.GQ_filtered.vcf.gz
+                > ./polisher_vcf_output/polisher_output.GQ_filtered.vcf.gz
                 tabix -p vcf polisher_vcf_output/polisher_output.vcf.gz
+
+                echo `zcat polisher_output.GQ20_INS1.vcf.gz | grep -v "^#" | wc -l`
 
             else # don't use GQ filter
                 cp polisher_output.vcf.gz polisher_vcf_output/
@@ -174,6 +176,9 @@ task DPPostProcess{
 
         # vcfFile=polisher_vcf_output/polisher_output.vcf.gz contains whatever filtered were passed in
         # noFiltersPolisherVcf is the original polishing output without filters
+
+        echo `zcat polisher_vcf_output/polisher_output.vcf.gz | grep -v "^#" | wc -l`
+        echo `zcat polisher_vcf_output/polisher_output.no_filters.vcf.gz | grep -v "^#" | wc -l`
         >>>
 
         output {
