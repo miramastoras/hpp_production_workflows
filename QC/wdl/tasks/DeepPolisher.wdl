@@ -146,6 +146,7 @@ task DPPostProcess{
         then
             if ["~{useOptimalGQFilter}" == "true"]; # use optimal GQ filter for HPRC samples
             then
+                echo "filtering with optimal GQ filter"
                 bcftools view -Oz -i 'FORMAT/GQ>20 && (ILEN = 1)' polisher_output.vcf.gz > polisher_output.GQ20_INS1.vcf.gz
                 tabix -p vcf polisher_output.GQ20_INS1.vcf.gz
 
@@ -162,8 +163,8 @@ task DPPostProcess{
                 tabix -p vcf polisher_vcf_output/polisher_output.vcf.gz
 
             else # don't use GQ filter
-              cp polisher_output.vcf.gz polisher_vcf_output/
-              cp polisher_output.vcf.gz.tbi polisher_vcf_output/
+                cp polisher_output.vcf.gz polisher_vcf_output/
+                cp polisher_output.vcf.gz.tbi polisher_vcf_output/
             fi
         # use single GQ filter passed in
         else
