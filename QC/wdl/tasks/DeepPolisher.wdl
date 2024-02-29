@@ -101,6 +101,8 @@ task DPPostProcess{
     input{
         File VCFsTarGz
 
+        String? customGQFilter
+        Boolean useOptimalGQFilter=true
         String dockerImage = "miramastoras/polishing:latest"
         Int memSizeGB = 128
         Int threadCount = 8
@@ -134,11 +136,46 @@ task DPPostProcess{
         bgzip polisher_output.vcf
         tabix -p vcf polisher_output.vcf.gz
 
+        mkdir polisher_vcf_output
+
+        cp polisher_output.vcf.gz polisher_vcf_output/polisher_output.no_filters.vcf.gz
+
+        # if GQ filter not passed in, check if use useOptimalGQFilter is true
+        if [ -z "~{customGQFilter}" ]
+        then
+            if ["~{useOptimalGQFilter}" == "true"]; # use optimal GQ filter for HPRC samples
+            then
+                bcftools view -Oz -i 'FORMAT/GQ>20 && (ILEN = 1)' polisher_output.vcf.gz > polisher_output.GQ20_INS1.vcf.gz
+                tabix -p vcf polisher_output.GQ20_INS1.vcf.gz
+
+                bcftools view -Oz -i 'FORMAT/GQ>12 && (ILEN = -1)' polisher_output.vcf.gz > polisher_output.GQ12_DEL1.vcf.gz
+                tabix -p vcf polisher_output.GQ12_DEL1.vcf.gz
+
+                bcftools view -Oz -e 'FORMAT/GQ<=5 || (ILEN = 1) || (ILEN = -1)' polisher_output.vcf.gz > polisher_output.GQ5.notINS1orDEL1.vcf.gz
+                tabix -p vcf polisher_output.GQ5.notINS1orDEL1.vcf.gz
+
+                bcftools concat -a -Oz polisher_output.GQ20_INS1.vcf.gz \
+                polisher_output.GQ12_DEL1.vcf.gz \
+                polisher_output.GQ5.notINS1orDEL1.vcf.gz \
+                > polisher_vcf_output/polisher_output.GQ_filtered.vcf.gz
+                tabix -p vcf polisher_vcf_output/polisher_output.vcf.gz
+
+            else # don't use GQ filter
+              cp polisher_output.vcf.gz polisher_vcf_output/
+              cp polisher_output.vcf.gz.tbi polisher_vcf_output/
+            fi
+        # use single GQ filter passed in
+        else
+            bcftools view -Oz ~{customGQFilter} polisher_output.vcf.gz > polisher_vcf_output/polisher_output.vcf.gz
+            tabix -p vcf polisher_vcf_output/polisher_output.vcf.gz
+        fi
+
         >>>
 
         output {
-            File vcfFile="polisher_output.vcf.gz"
-            File vcfFileTbi="polisher_output.vcf.gz.tbi"
+            File vcfFile="polisher_vcf_output/polisher_output.vcf.gz"
+            File vcfFileTbi="polisher_vcf_output/polisher_output.vcf.gz.tbi"
+            File noFiltersPolisherVcf="polisher_vcf_output/polisher_output.no_filters.vcf.gz"
         }
         runtime {
             memory: memSizeGB + " GB"
