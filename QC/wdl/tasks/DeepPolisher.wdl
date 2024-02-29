@@ -171,6 +171,8 @@ task DPPostProcess{
             tabix -p vcf polisher_vcf_output/polisher_output.vcf.gz
         fi
 
+        # vcfFile=polisher_vcf_output/polisher_output.vcf.gz contains whatever filtered were passed in
+        # noFiltersPolisherVcf is the original polishing output without filters
         >>>
 
         output {
