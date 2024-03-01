@@ -140,7 +140,9 @@ task DPPostProcess{
         mkdir polisher_vcf_output
 
         cp polisher_output.vcf.gz polisher_vcf_output/polisher_output.no_filters.vcf.gz
-
+        echo "~{customGQFilter}" "custom GQ filter"
+        echo "~{useOptimalGQFilter}" "useOptimalGQFilter"
+        
         # if GQ filter not passed in, check if use useOptimalGQFilter is true
         if [ -z "~{customGQFilter}" ]
             echo "customGQ filter not set"
