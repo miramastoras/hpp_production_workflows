@@ -145,7 +145,7 @@ task DPPostProcess{
         if [ -z "~{customGQFilter}" ]
             echo "customGQ filter not set"
         then
-            if ["~{useOptimalGQFilter}" == "true"]; # use optimal GQ filter for HPRC samples
+            if [[~{useOptimalGQFilter} == true]]; # use optimal GQ filter for HPRC samples
             echo "customGQ filter not set, useOptimalGQFilter is true"
             then
                 echo "filtering with optimal GQ filter"
@@ -162,7 +162,7 @@ task DPPostProcess{
                 polisher_output.GQ12_DEL1.vcf.gz \
                 polisher_output.GQ5.notINS1orDEL1.vcf.gz \
                 > ./polisher_vcf_output/polisher_output.GQ_filtered.vcf.gz
-                tabix -p vcf polisher_vcf_output/polisher_output.vcf.gz
+                tabix -p vcf ./polisher_vcf_output/polisher_output.vcf.gz
 
                 echo `zcat polisher_output.GQ20_INS1.vcf.gz | grep -v "^#" | wc -l`
 
