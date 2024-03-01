@@ -158,10 +158,7 @@ task DPPostProcess{
                 bcftools view -Oz -e 'FORMAT/GQ<=5 || (ILEN = 1) || (ILEN = -1)' polisher_output.vcf.gz > polisher_output.GQ5.notINS1orDEL1.vcf.gz
                 tabix -p vcf polisher_output.GQ5.notINS1orDEL1.vcf.gz
 
-                bcftools concat -a -Oz polisher_output.GQ20_INS1.vcf.gz \
-                polisher_output.GQ12_DEL1.vcf.gz \
-                polisher_output.GQ5.notINS1orDEL1.vcf.gz \
-                > ./polisher_vcf_output/polisher_output.GQ_filtered.vcf.gz
+                bcftools concat -a -Oz polisher_output.GQ20_INS1.vcf.gz polisher_output.GQ12_DEL1.vcf.gz polisher_output.GQ5.notINS1orDEL1.vcf.gz > ./polisher_vcf_output/polisher_output.vcf.gz
                 tabix -p vcf ./polisher_vcf_output/polisher_output.vcf.gz
 
                 echo `zcat polisher_output.GQ20_INS1.vcf.gz | grep -v "^#" | wc -l`
