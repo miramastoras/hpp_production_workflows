@@ -142,14 +142,10 @@ task DPPostProcess{
         cp polisher_output.vcf.gz polisher_vcf_output/polisher_output.no_filters.vcf.gz
         echo "~{customGQFilter}" "custom GQ filter"
         echo "~{useOptimalGQFilter}" "useOptimalGQFilter"
-        
         # if GQ filter not passed in, check if use useOptimalGQFilter is true
-        if [ -z "~{customGQFilter}" ]
+        if [ -z "~{customGQFilter}" ]; then
             echo "customGQ filter not set"
-        then
-            if [[~{useOptimalGQFilter} == true]]; # use optimal GQ filter for HPRC samples
-            echo "customGQ filter not set, useOptimalGQFilter is true"
-            then
+            if [[~{useOptimalGQFilter} == true]]; then
                 echo "filtering with optimal GQ filter"
                 bcftools view -Oz -i 'FORMAT/GQ>20 && (ILEN = 1)' polisher_output.vcf.gz > polisher_output.GQ20_INS1.vcf.gz
                 tabix -p vcf polisher_output.GQ20_INS1.vcf.gz
