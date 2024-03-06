@@ -8,7 +8,7 @@ workflow runMeryl {
         Array[File] sampleReadsILM
         Array[File] sampleReadsHiFi
         File? referenceFasta
-        String sampleID
+        String identifier
         Int kmerSize = 21
 
         String dockerImage = "juklucas/hpp_merqury:latest"
@@ -44,7 +44,8 @@ workflow runMeryl {
             ilmReads=ilmReadsExtracted.extractedRead,
             hifiReads=hifiReadsExtracted.extractedRead,
             threadCount=threadCount,
-            kmerSize=kmerSize
+            kmerSize=kmerSize,
+            identifier=identifier
     }
 
 	output {
@@ -58,6 +59,7 @@ task merylHybrid {
         Array[File] ilmReads
         Array[File] hifiReads
 
+        String identifier
         Int memSizeGB = 256
         Int threadCount = 32
         Int diskSizeGB = 256
@@ -77,11 +79,12 @@ task merylHybrid {
         meryl greater-than 1 threads=~{threadCount} ilm.meryl output ilm.gt1.meryl
         meryl greater-than 1 threads=~{threadCount} hifi.meryl output hifi.gt1.meryl
 
-        meryl union-sum threads=~{threadCount} ilm.gt1.meryl hifi.gt1.meryl output hybrid.meryl
+        meryl union-sum threads=~{threadCount} ilm.gt1.meryl hifi.gt1.meryl output ~{identifier}.hybrid.meryl
 
+        tar cvf ~{identifier}.hybrid.meryl.tar ~{identifier}.hybrid.meryl
 	>>>
 	output {
-		File merylDb="hybrid.meryl"
+		File merylDb= identifier + "hybrid.meryl.tar"
 	}
     runtime {
         memory: memSizeGB + " GB"
