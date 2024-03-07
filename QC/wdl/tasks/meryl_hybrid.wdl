@@ -84,7 +84,7 @@ task merylHybrid {
         tar cvf ~{identifier}.hybrid.meryl.tar ~{identifier}.hybrid.meryl
 	>>>
 	output {
-		File merylDb= identifier + "hybrid.meryl.tar"
+		File merylDb= identifier + ".hybrid.meryl.tar"
 	}
     runtime {
         memory: memSizeGB + " GB"
