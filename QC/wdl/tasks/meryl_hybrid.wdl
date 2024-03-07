@@ -12,7 +12,7 @@ workflow runMeryl {
         Int kmerSize = 21
 
         String dockerImage = "juklucas/hpp_merqury:latest"
-        String threadCount=32
+        Int threadCount = 32
     }
 
     # extract reads
