@@ -81,10 +81,10 @@ task merylHybrid {
 
         meryl union-sum threads=~{threadCount} ilm.gt1.meryl hifi.gt1.meryl output ~{identifier}.hybrid.meryl
 
-        tar cvf ~{identifier}.hybrid.meryl.tar ~{identifier}.hybrid.meryl
+        tar zcvf ~{identifier}.hybrid.meryl.tar.gz ~{identifier}.hybrid.meryl
 	>>>
 	output {
-		File merylDb= identifier + ".hybrid.meryl.tar"
+		File merylDb= identifier + ".hybrid.meryl.tar.gz"
 	}
     runtime {
         memory: memSizeGB + " GB"
