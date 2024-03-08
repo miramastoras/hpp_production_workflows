@@ -159,13 +159,13 @@ task merylUnionSum {
         meryl union-sum output ~{identifier}.meryl extracted/*
 
         # package
-        tar cvf ~{identifier}.meryl.tar ~{identifier}.meryl
+        tar zcvf ~{identifier}.meryl.tar.gz ~{identifier}.meryl
 
         # cleanup
         rm -rf extracted/
 	>>>
 	output {
-		File merylDb = identifier + ".meryl.tar"
+		File merylDb = identifier + ".meryl.tar.gz"
 	}
     runtime {
         memory: memSizeGB + " GB"
