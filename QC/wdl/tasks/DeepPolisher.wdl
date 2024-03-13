@@ -15,6 +15,8 @@ workflow runDeepPolisher {
         File ModelFilesTarGZ
         String sampleName
         String dockerImage
+        Boolean useOptimalGQFilter=true
+        String? customGQFilter
     }
     call DeepPolisher {
         input:
@@ -27,7 +29,9 @@ workflow runDeepPolisher {
     }
     call DPPostProcess {
         input:
-            VCFsTarGz=DeepPolisher.VCFsTarGz
+            VCFsTarGz=DeepPolisher.VCFsTarGz,
+            useOptimalGQFilter=useOptimalGQFilter,
+            customGQFilter=customGQFilter
     }
     output {
         File PolisherVcf = DPPostProcess.vcfFile
