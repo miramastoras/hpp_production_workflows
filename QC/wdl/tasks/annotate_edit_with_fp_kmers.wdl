@@ -111,9 +111,9 @@ task annotateVCFwithFPKmers {
         File inducedFPKmerBed = glob("*.induced_fp_kmer_blocks.bed")[0]
         File fixedFPKmerBed = glob("*.fixed_fp_kmer_blocks.bed")[0]
         File unchangedFPKmerBed = glob("*.unchanged_fp_kmer_blocks.bed")[0]
-        File editsAnnotatedInducedFPKmerVcf = glob("*_fixed_fp_kmers.vcf")[0]
-        File editsAnnotatedFixedFPKmerVcf = glob("*_induced_fp_kmers.vcf")[0]
+        File editsAnnotatedInducedFPKmerVcf = glob("*_induced_fp_kmers.vcf")[0]
+        File editsAnnotatedFixedFPKmerVcf = glob("*_fixed_fp_kmers.vcf")[0]
         File editsAnnotatedUnchangedFPKmerVcf = glob("*_unchanged_fp_kmers.vcf")[0]
-        File editsAnnotatedNeutralVcf = glob("*_unchanged_fp_kmers.vcf")[0]
+        File editsAnnotatedNeutralVcf = glob("*_neutral_fp_kmers.vcf")[0]
     }
 }
