@@ -98,7 +98,7 @@ task annotateVCFwithFPKmers {
                    -header \
                    -a ~{deeppolisherVcfGz} \
                    -b ~{sample}.all_fp_kmers.bed \
-                   > ~{sample}.deeppolisher.annotated_neutral.vcf
+                   > ~{sample}.deeppolisher.annotated_neutral_fp_kmers.vcf
     >>>
     runtime {
         docker: dockerImage
