@@ -71,7 +71,7 @@ task annotateVCFwithFPKmers {
 
         # get FP kmer blocks unchanged by polishing
         bedtools intersect -a raw_merged_fp_blocks_with_counts.bed \
-                          -b polished_merged_fp_blocks_with_counts.projection_to_raw.sorted.bed -A > ~{sample}.unchanged_fp_kmer_blocks.bed
+                          -b polished_merged_fp_blocks_with_counts.projection_to_raw.sorted.bed > ~{sample}.unchanged_fp_kmer_blocks.bed
 
         # get all FP kmer regions, in polished and raw assembly
         cat raw_merged_fp_blocks_with_counts.bed \
