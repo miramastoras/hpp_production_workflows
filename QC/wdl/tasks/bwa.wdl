@@ -8,7 +8,7 @@ workflow bwaAlignment{
     input {
         String sampleName
         String suffix
-        File readFile
+        Array[File] readFiles
         File assembly
         File? referenceFasta
     }
@@ -18,13 +18,15 @@ workflow bwaAlignment{
         input:
             assembly = assembly
     }
-    call extractReads_t.extractReads as extractReads {
-        input:
-            readFile=readFile,
-            referenceFasta=referenceFasta,
-            memSizeGB=4,
-            threadCount=4,
-            diskSizeGB=ceil(size(readFile, "GB") * 3) + 64
+    scatter (readFile in readFiles) {
+        call extractReads_t.extractReads as extractReads {
+            input:
+              readFile=readFile,
+              referenceFasta=referenceFasta,
+              memSizeGB=4,
+              threadCount=4,
+              diskSizeGB=ceil(size(readFile, "GB") * 3) + 64
+        }
     }
     call BwaAlignment{
         input:
@@ -93,7 +95,7 @@ task buildBwaIndex{
 
 task BwaAlignment{
     input{
-        File readFastq
+        Array[File] readFastq
         File indexTar
         String outputName
         File? referenceFasta
@@ -121,7 +123,7 @@ task BwaAlignment{
         tar -xf ~{indexTar} --strip-components 1
 
         # bwa alignment
-        bwa mem ~{bwaParams} -t~{threadCount} asm.fa ~{readFastq} | samtools view -b -h > ~{outputName}.bam
+        bwa mem ~{bwaParams} -t~{threadCount} asm.fa ~{sep=" " readFastq} | samtools view -b -h > ~{outputName}.bam
         samtools sort -@~{threadCount} -o ~{outputName}.sorted.bam ~{outputName}.bam
         samtools index ~{outputName}.sorted.bam
     >>>
