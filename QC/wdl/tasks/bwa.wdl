@@ -24,7 +24,7 @@ workflow bwaAlignment{
             referenceFasta=referenceFasta,
             memSizeGB=4,
             threadCount=4,
-            diskSizeGB=ceil(size(cramFile, "GB") * 3) + 64
+            diskSizeGB=ceil(size(readFile, "GB") * 3) + 64
     }
     call BwaAlignment{
         input:
