@@ -10,7 +10,7 @@ workflow bwaAlignment{
         String suffix
         File readFile
         File assembly
-        File referenceFasta?
+        File? referenceFasta
     }
 
     ## build bwa index files for the assembly
