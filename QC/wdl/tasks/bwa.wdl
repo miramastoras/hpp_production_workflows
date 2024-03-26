@@ -20,7 +20,7 @@ workflow bwaAlignment{
     }
     call extractReads_t.extractReads as extractReads {
         input:
-            readFile=cramFile,
+            readFile=readFile,
             referenceFasta=referenceFasta,
             memSizeGB=4,
             threadCount=4,
