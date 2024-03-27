@@ -122,8 +122,10 @@ task BwaAlignment{
         # extract the previously generated bwa index
         tar -xf ~{indexTar} --strip-components 1
 
+        cat ~{sep=" " readFastq} > reads.fastq
+
         # bwa alignment
-        bwa mem ~{bwaParams} -t~{threadCount} asm.fa ~{sep=" " readFastq} | samtools view -b -h > ~{outputName}.bam
+        bwa mem ~{bwaParams} -t~{threadCount} asm.fa reads.fastq | samtools view -b -h > ~{outputName}.bam
         samtools sort -@~{threadCount} -o ~{outputName}.sorted.bam ~{outputName}.bam
         samtools index ~{outputName}.sorted.bam
     >>>
