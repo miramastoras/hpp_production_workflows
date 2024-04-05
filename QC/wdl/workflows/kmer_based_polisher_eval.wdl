@@ -29,8 +29,8 @@ workflow kmerPolishingEval {
       File sampleYak
 
       Boolean enableYakTrioEval = false
-      File? paternalYak
-      File? maternalYak
+      File paternalYak
+      File maternalYak
 
       }
 
