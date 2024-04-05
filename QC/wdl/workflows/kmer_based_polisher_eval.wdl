@@ -3,6 +3,7 @@ version 1.0
 import "../tasks/long_read_aligner.wdl" as long_read_aligner_t
 import "../tasks/merqury.wdl" as merqury_t
 import "../tasks/yak.wdl" as yak_t
+import "../tasks/yak_non_trio.wdl" as yak_non_trio_t
 import "../tasks/project_blocks.wdl" as project_blocks_t
 import "../tasks/subFastaByBed.wdl" as subset_fasta_t
 
@@ -26,8 +27,10 @@ workflow kmerPolishingEval {
 
       File ilmMerylDBTarGz
       File sampleYak
-      File paternalYak
-      File maternalYak
+
+      Boolean enableYakTrioEval = false
+      File? paternalYak
+      File? maternalYak
 
       }
 
@@ -129,35 +132,47 @@ workflow kmerPolishingEval {
             kmerTarball=ilmMerylDBTarGz
     }
 
-    # Run Yak QV whole genome, inside and outside conf
-    call yak_t.yakAssemblyStats as yakQCWholeGenome {
+    # run yak trio eval on whole genome
+    if (enableYakTrioEval) {
+        call yak_t.yakAssemblyStats as yakQCWholeGenome {
+            input:
+                matYak=maternalYak,
+                patYak=paternalYak,
+                sampleYak=sampleYak,
+                assemblyFastaPat=hap1Fasta,
+                assemblyFastaMat=hap2Fasta,
+                minSequenceLength="0"
+        }
+    }
+
+    if (enableYakTrioEval == false) {
+        call yak_non_trio_t.yakNonTrioAssemblyStats as yakQCWholeGenomeNonTrio {
+            input:
+                assemblyFastaHap2=hap2Fasta,
+                assemblyFastaHap1=hap1Fasta,
+                sampleYak=sampleYak,
+                minSequenceLength="0"
+        }
+    }
+
+    # Run Yak QV inside and outside conf
+
+    call yak_non_trio_t.yakNonTrioAssemblyStats as yakQCInsideConf {
         input:
-            matYak=maternalYak,
-            patYak=paternalYak,
             sampleYak=sampleYak,
-            assemblyFastaPat=hap1Fasta,
-            assemblyFastaMat=hap2Fasta,
+            assemblyFastaHap1=subHap1InsideConf.subFasta,
+            assemblyFastaHap2=subHap2InsideConf.subFasta,
+            minSequenceLength="0"
+    }
+    call yak_non_trio_t.yakNonTrioAssemblyStats as yakQCOutsideConf {
+        input:
+            sampleYak=sampleYak,
+            assemblyFastaHap1=subHap1OutsideConf.subFasta,
+            assemblyFastaHap2=subHap2OutsideConf.subFasta,
             minSequenceLength="0"
     }
 
-    call yak_t.yakAssemblyStats as yakQCInsideConf {
-        input:
-            matYak=maternalYak,
-            patYak=paternalYak,
-            sampleYak=sampleYak,
-            assemblyFastaPat=subHap1InsideConf.subFasta,
-            assemblyFastaMat=subHap2InsideConf.subFasta,
-            minSequenceLength="0"
-    }
-    call yak_t.yakAssemblyStats as yakQCOutsideConf {
-        input:
-            matYak=maternalYak,
-            patYak=paternalYak,
-            sampleYak=sampleYak,
-            assemblyFastaPat=subHap1OutsideConf.subFasta,
-            assemblyFastaMat=subHap2OutsideConf.subFasta,
-            minSequenceLength="0"
-    }
+    File yakWGTarBall = select_first([yakQCWholeGenome.outputTarball, yakQCWholeGenomeNonTrio.outputTarball])
 
     output {
         File QV_whole_genome = merquryWholeGenome.QV
@@ -168,7 +183,7 @@ workflow kmerPolishingEval {
         File merquryWGTarBall=merquryWholeGenome.outputTarball
         File merquryInsideConfTarBall=merquryInsideConf.outputTarball
         File merquryOutsideConfTarBall=merquryOutsideConf.outputTarball
-        File yakTarBallWG=yakQCWholeGenome.outputTarball
+        File yakTarBallWG=yakWGTarBall
         File yakTarBallInsideConf=yakQCInsideConf.outputTarball
         File yakTarBallOutsideConf=yakQCOutsideConf.outputTarball
         File hap1InsideConfFasta=subHap1InsideConf.subFasta
