@@ -210,7 +210,7 @@ workflow hprc_polishing_QC {
       File yakTarBallInsideConfPol=kmerPolishingEvalPolished.yakTarBallInsideConf
       File yakTarBallOutsideConfPol=kmerPolishingEvalPolished.yakTarBallOutsideConf
 
-      File collatedQCResults=collatedResultsCSV
+      File collatedQCResults=collateResults.collatedResultsCSV
 
       File hap1ToRawPaf=alignHap1ToRaw.pafFile
       File hap2ToRawPaf=alignHap2ToRaw.pafFile

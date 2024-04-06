@@ -109,16 +109,22 @@ task yakNonTrioAssemblyStats {
         # name
         PREFIX=$(basename ~{assemblyFastaHap2} | sed 's/.gz$//' | sed 's/.fa\(sta\)*$//' | sed 's/[._][pm]at\(ernal\)*//')
 
+        # combine mat and pat assembly
+        cat ~{assemblyFastaHap1} ~{assemblyFastaHap2} > diploid.fasta
+
         # QV
         yak qv -t ~{threadCount} -p -K ~{genomeSize} -l ~{minSequenceLength} ~{sampleYak} ~{assemblyFastaHap1} > $PREFIX.hap1.yak.qv.txt
         yak qv -t ~{threadCount} -p -K ~{genomeSize} -l ~{minSequenceLength} ~{sampleYak} ~{assemblyFastaHap2} > $PREFIX.hap2.yak.qv.txt
+        yak qv -t ~{threadCount} -p -K ~{genomeSize} -l ~{minSequenceLength} ~{sampleYak} diploid.fasta > $PREFIX.dip.yak.qv.txt
 
         # condense
         SUMMARY=$PREFIX.summary.txt
-        echo "# hap1 qv" >>$SUMMARY
-        tail -n4 $PREFIX.hap1.yak.qv.txt >>$SUMMARY
         echo "# hap2 qv" >>$SUMMARY
         tail -n4 $PREFIX.hap2.yak.qv.txt >>$SUMMARY
+        echo "# hap1 qv" >>$SUMMARY
+        tail -n4 $PREFIX.hap1.yak.qv.txt >>$SUMMARY
+        echo "# dip qv" >>$SUMMARY
+        tail -n4 $PREFIX.dip.yak.qv.txt >>$SUMMARY
 
         # tar
         tar czvf $PREFIX.yak-qc.tar.gz *txt
