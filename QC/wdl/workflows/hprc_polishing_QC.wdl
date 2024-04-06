@@ -21,7 +21,7 @@ workflow hprc_polishing_QC {
       File polishingVcf
 
       # if enableYakTrioEval = false, pass sampleYak as paternalYak and maternalYak
-      Boolean enableYakTrioEval = false
+      Boolean enableYakTrioEval = true
 
       File maternalYak
       File paternalYak

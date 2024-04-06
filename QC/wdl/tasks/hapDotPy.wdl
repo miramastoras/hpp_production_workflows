@@ -18,7 +18,6 @@ task hapDotPy{
         File assembly
         File assemblyIndex
         String sample
-        File bedRegions
 
         Boolean passOnly = true
 
@@ -53,7 +52,6 @@ task hapDotPy{
             ~{truthVCF} \
             ~{queryVCF} \
             -r $REF \
-            -f ~{bedRegions} \
             -o happy_out/~{outputPrefix} \
             --pass-only --no-roc --no-json --engine=vcfeval --threads=~{threadCount}
 
