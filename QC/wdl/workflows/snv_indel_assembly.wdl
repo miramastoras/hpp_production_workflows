@@ -16,8 +16,6 @@ workflow snv_indel_assembly {
     input {
         File assembly
         File assemblyIndex
-        String excludeExpr = "'FORMAT/VAF<=0.5 | FORMAT/GQ<=30'"
-        String excludeTypes = "indels"
         String sample
     }
 
@@ -41,7 +39,7 @@ workflow snv_indel_assembly {
     call runPepperMarginDeepVariant.bcftoolsFilter as filt_1 {
         input:
             inputVCF      = deepVariant_t.vcfOut,
-            excludeExpr   = excludeExpr,
+            excludeExpr   = "'FORMAT/VAF<=0.5 | FORMAT/GQ<=30'",
             applyFilters  = "PASS"
     }
 
@@ -49,9 +47,9 @@ workflow snv_indel_assembly {
     call runPepperMarginDeepVariant.bcftoolsFilter as filt_2 {
         input:
             inputVCF      = pmdv_t.vcfOut,
-            excludeExpr   = excludeExpr,
+            excludeExpr   = "'FORMAT/VAF<=0.5 | FORMAT/GQ<=25'",
             applyFilters  = "PASS",
-            excludeTypes   = excludeTypes
+            excludeTypes   = "indels"
     }
 
     ## Compare filtered callsets (DeepVariant & PMDV) to see where they agree

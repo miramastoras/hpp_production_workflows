@@ -28,6 +28,7 @@ workflow kmerPolishingEval {
       File ilmMerylDBTarGz
       File sampleYak
 
+      # if enableYakTrioEval = false, pass sampleYak as paternalYak and maternalYak
       Boolean enableYakTrioEval = false
       File paternalYak
       File maternalYak
