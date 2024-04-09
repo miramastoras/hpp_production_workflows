@@ -115,7 +115,7 @@ task GenomeScope{
 
         String dockerImage = "dmolik/genomescope2:latest"
         Int memSizeGB = 128
-        Int threadCount = 32
+        Int threadCount = 8
         Int diskSizeGB = 256
     }
     command <<<
