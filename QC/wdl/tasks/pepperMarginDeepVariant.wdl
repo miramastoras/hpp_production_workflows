@@ -30,7 +30,7 @@ task pepperMarginDeepVariant {
         String? extraArgs
 
         Int memSizeGB = 128
-        Int threadCount = 64
+        Int threadCount = 32
         Int diskSizeGB = 128
         String dockerImage = "kishwars/pepper_deepvariant@sha256:70908591ad67e8567a6e4551119b2cfc33d957ad39701c8af51b36b516214645" # r0.8
 

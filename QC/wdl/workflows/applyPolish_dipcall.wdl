@@ -2,7 +2,6 @@ version 1.0
 
 import "../tasks/applyPolish.wdl" as apply_polish_wf
 import "../tasks/dipcall.wdl" as dipcall_wf
-import "../workflows/dipcall_happy_eval.wdl" as dipcall_happy_wf
 
 workflow applyPolish_dipcall {
 
@@ -46,7 +45,7 @@ workflow applyPolish_dipcall {
     }
 
     ## Call bedtoolsIntersect to subset happy -f bedfile by dipcall bedfile. Intersections written relative to BED1
-    call dipcall_happy_wf.bedtoolsIntersect as intersectBeds {
+    call bedtoolsIntersect as intersectBeds {
         input:
             BED1=confidenceBedFile,
             BED2=dipcall_t.outputBED
@@ -57,5 +56,50 @@ workflow applyPolish_dipcall {
         File dipCallTar = dipcall_t.outputTarball
         File polishedHap1= applyPolishHap1.asmPolished
         File polishedHap2= applyPolishHap2.asmPolished
+    }
+}
+
+task bedtoolsIntersect {
+    input{
+        File BED1
+        File BED2
+        File? BED3
+
+        Int memSizeGB = 8
+        Int threadCount = 2
+        Int diskSizeGB = 128
+        String dockerImage = "mobinasri/flagger"
+    }
+
+    command <<<
+        # exit when a command fails, fail with unset variables, print commands before execution
+        set -eux -o pipefail
+        set -o xtrace
+
+        BED1_ID=`basename ~{BED1} | sed 's/.bed$//'`
+        BED2_ID=`basename ~{BED2} | sed 's/.bed$//'`
+
+        bedtools intersect  -a ~{BED1} -b ~{BED2} > ${BED1_ID}_intersect_${BED2_ID}.bed
+
+        ## if EXTRA BED is set, do another subset
+        if [[ ! -z "~{BED3}" ]]
+        then
+            BED3_ID=`basename ~{BED3} | sed 's/.bed$//'`
+            bedtools intersect -a ${BED1_ID}_intersect_${BED2_ID}.bed -b ~{BED3} > ${BED1_ID}_intersect_${BED2_ID}_intersect_${BED3_ID}.bed
+            rm ${BED1_ID}_intersect_${BED2_ID}.bed
+        fi
+
+        echo "Size of final bedfile used in hap.py"
+        awk '{sum += $3-$2}END{print sum}' ${BED1_ID}_intersect_${BED2_ID}.bed
+    >>>
+    output{
+        File outputBED = glob("*intersect*.bed")[0]
+    }
+
+    runtime{
+        memory: memSizeGB + " GB"
+        cpu: threadCount
+        disks: "local-disk " + diskSizeGB + " SSD"
+        docker: dockerImage
     }
 }
