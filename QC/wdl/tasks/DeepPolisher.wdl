@@ -16,7 +16,7 @@ workflow runDeepPolisher {
         String sampleName
         String dockerImage
         Boolean useOptimalGQFilter=true
-        String? customGQFilter
+        String customGQFilter=""
     }
     call DeepPolisher {
         input:
@@ -106,7 +106,7 @@ task DPPostProcess{
     input{
         File VCFsTarGz
 
-        String? customGQFilter
+        String customGQFilter=""
         Boolean useOptimalGQFilter=true
         String dockerImage = "miramastoras/polishing:latest"
         Int memSizeGB = 128
@@ -149,7 +149,7 @@ task DPPostProcess{
         # if GQ filter not passed in, check if use useOptimalGQFilter is true
         if [ -z "~{customGQFilter}" ]; then
             echo "customGQ filter not set"
-            if [[~{useOptimalGQFilter} == true]]; then
+            if [[~{useOptimalGQFilter}]]; then
                 echo "filtering with optimal GQ filter"
                 bcftools view -Oz -i 'FORMAT/GQ>20 && (ILEN = 1)' polisher_output.vcf.gz > polisher_output.GQ20_INS1.vcf.gz
                 tabix -p vcf polisher_output.GQ20_INS1.vcf.gz
