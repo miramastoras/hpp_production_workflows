@@ -9,8 +9,6 @@ workflow runApplyPolish {
         description: "Polish assembly with input vcf"
     }
     call applyPolish
-        input:
-            GenotypeToPolish="2"
     output {
         File asmPolished = applyPolish.asmPolished
     }
@@ -22,7 +20,7 @@ task applyPolish{
         File asmRaw
         String outPrefix
         String? HaplotypeLabel
-        String GenotypeToPolish
+        String GenotypeToPolish="2"
 
         String dockerImage = "kishwars/pepper_deepvariant:r0.8"
         Int memSizeGB = 8
