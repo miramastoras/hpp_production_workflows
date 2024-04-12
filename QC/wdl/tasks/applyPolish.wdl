@@ -9,6 +9,8 @@ workflow runApplyPolish {
         description: "Polish assembly with input vcf"
     }
     call applyPolish
+        input:
+            GenotypeToPolish="2"
     output {
         File asmPolished = applyPolish.asmPolished
     }
@@ -20,6 +22,7 @@ task applyPolish{
         File asmRaw
         String outPrefix
         String? HaplotypeLabel
+        String GenotypeToPolish
 
         String dockerImage = "kishwars/pepper_deepvariant:r0.8"
         Int memSizeGB = 8
@@ -50,7 +53,7 @@ task applyPolish{
 
         bcftools index $VCF_FILENAME
 
-        bcftools consensus -f ~{asmRaw} -H 2 $VCF_FILENAME > ${PREFIX}.polished.fasta
+        bcftools consensus -f ~{asmRaw} -H ~{GenotypeToPolish} $VCF_FILENAME > ${PREFIX}.polished.fasta
     >>>
     output {
         File asmPolished = glob("*.polished.fasta")[0]

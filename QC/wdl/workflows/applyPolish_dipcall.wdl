@@ -19,6 +19,7 @@ workflow applyPolish_dipcall {
         File hap1Fasta
         File hap2Fasta
         String sampleID
+        String GenotypeToPolish="2"
     }
 
     call apply_polish_wf.applyPolish as applyPolishHap1 {
@@ -26,14 +27,16 @@ workflow applyPolish_dipcall {
             polishingVcf=hap1PolishingVcf,
             asmRaw=hap1Fasta,
             outPrefix=sampleID,
-            HaplotypeLabel="hap1"
+            HaplotypeLabel="hap1",
+            GenotypeToPolish=GenotypeToPolish
     }
     call apply_polish_wf.applyPolish as applyPolishHap2 {
         input:
             polishingVcf=hap2PolishingVcf,
             asmRaw=hap2Fasta,
             outPrefix=sampleID,
-            HaplotypeLabel="hap2"
+            HaplotypeLabel="hap2",
+            GenotypeToPolish=GenotypeToPolish
     }
     ## Run dipcall
     call dipcall_wf.dipcall as dipcall_t {
