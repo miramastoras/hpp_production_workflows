@@ -33,6 +33,7 @@ workflow hprc_polishing_QC {
       String pafAligner="minimap2"
 
       File toilRunLog
+      Boolean enableYakTrioEval = true
     }
 
     call kmer_based_polisher_eval_wf.kmerPolishingEval as kmerPolishingEvalRaw {
@@ -46,7 +47,8 @@ workflow hprc_polishing_QC {
           ilmMerylDBTarGz=ilmMerylDBTarGz,
           sampleYak=sampleYak,
           paternalYak=paternalYak,
-          maternalYak=maternalYak
+          maternalYak=maternalYak,
+          enableYakTrioEval=enableYakTrioEval
     }
 
     call kmer_based_polisher_eval_wf.kmerPolishingEval as kmerPolishingEvalPolished {
@@ -60,7 +62,8 @@ workflow hprc_polishing_QC {
           ilmMerylDBTarGz=ilmMerylDBTarGz,
           sampleYak=sampleYak,
           paternalYak=paternalYak,
-          maternalYak=maternalYak
+          maternalYak=maternalYak,
+          enableYakTrioEval=enableYakTrioEval
     }
 
     # Align hap1 and hap2 polished to hap1 and hap2 raw
