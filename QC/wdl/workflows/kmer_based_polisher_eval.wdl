@@ -44,7 +44,7 @@ workflow kmerPolishingEval {
             readFastq_or_queryAssembly=hap1Fasta,
             refAssembly=grch38Fasta,
             suffix="asmToRef",
-            diskSize=512,
+            diskSize=300,
             threadCount=32,
             kmerSize=19,
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
@@ -57,7 +57,7 @@ workflow kmerPolishingEval {
             readFastq_or_queryAssembly=hap2Fasta,
             refAssembly=grch38Fasta,
             suffix="asmToRef",
-            diskSize=512,
+            diskSize=300,
             threadCount=32,
             kmerSize=19,
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
