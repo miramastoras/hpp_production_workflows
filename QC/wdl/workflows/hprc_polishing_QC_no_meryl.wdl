@@ -76,7 +76,7 @@ workflow hprc_polishing_QC {
             refAssembly=rawHap1Fasta,
             suffix="hap1PolToRaw",
             diskSize=512,
-            threadCount=64,
+            threadCount=32,
             kmerSize=19,
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
@@ -89,7 +89,7 @@ workflow hprc_polishing_QC {
             refAssembly=rawHap2Fasta,
             suffix="hap2PolToRaw",
             diskSize=512,
-            threadCount=64,
+            threadCount=32,
             kmerSize=19,
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
