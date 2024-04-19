@@ -75,7 +75,7 @@ workflow hprc_polishing_QC {
             readFastq_or_queryAssembly=polishedHap1Fasta,
             refAssembly=rawHap1Fasta,
             suffix="hap1PolToRaw",
-            diskSize=512,
+            diskSize=256,
             threadCount=32,
             kmerSize=19,
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
@@ -88,7 +88,7 @@ workflow hprc_polishing_QC {
             readFastq_or_queryAssembly=polishedHap2Fasta,
             refAssembly=rawHap2Fasta,
             suffix="hap2PolToRaw",
-            diskSize=512,
+            diskSize=256,
             threadCount=32,
             kmerSize=19,
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
