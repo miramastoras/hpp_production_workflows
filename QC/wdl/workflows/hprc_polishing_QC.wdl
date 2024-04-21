@@ -20,7 +20,7 @@ workflow hprc_polishing_QC {
       File polishedHap2Fasta
       File polishingVcf
 
-      # if enableYakTrioEval = false, pass sampleYak as paternalYak and maternalYak
+      # if enableYakTrioEval = false, pass random files as paternal or maternalYak, it won't be used.
       Boolean enableYakTrioEval = true
 
       File maternalYak
@@ -556,7 +556,7 @@ task collateResultsNonTrio {
         ### Collate polished assembly results ###
 
         # get runtime
-        grep "real" ~{toilRunLog} | cut -f2 > runtime.txt
+        grep "Total Runtime" ~{toilRunLog} | cut -f7 -d" " > runtime.txt
 
         # get merqury WG results
         grep "asm" ~{wholeGenomeQVPolMerq} | cut -f4 > wholeGenomeQVPolMerq.Hap1.txt
