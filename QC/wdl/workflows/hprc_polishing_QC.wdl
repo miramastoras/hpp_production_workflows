@@ -35,8 +35,6 @@ workflow hprc_polishing_QC {
       String sampleID
       String pafAligner="minimap2"
 
-      File toilRunLog
-
       File? referenceFasta
       Int yakMerylKmerSize=21
     }
@@ -152,7 +150,6 @@ workflow hprc_polishing_QC {
                 yakTarBallInsideConfPol=kmerPolishingEvalPolished.yakTarBallInsideConf,
                 yakTarBallOutsideConfPol=kmerPolishingEvalPolished.yakTarBallOutsideConf,
 
-                toilRunLog=toilRunLog,
                 sampleID=sampleID
             }
       }
@@ -179,7 +176,6 @@ workflow hprc_polishing_QC {
                 yakTarBallInsideConfPol=kmerPolishingEvalPolished.yakTarBallInsideConf,
                 yakTarBallOutsideConfPol=kmerPolishingEvalPolished.yakTarBallOutsideConf,
 
-                toilRunLog=toilRunLog,
                 sampleID=sampleID
         }
     }
@@ -288,8 +284,6 @@ task collateResults {
       File yakTarBallInsideConfPol
       File yakTarBallOutsideConfPol
 
-      File toilRunLog
-
       String sampleID
 
       Int memSizeGB = 12
@@ -305,16 +299,13 @@ task collateResults {
         set -o xtrace
 
         # define header
-        echo "sampleID,Assembly,Runtime,total_edits,edits_overlapping_FPkmers,WholeGenomeQV_Merqury_Hap1,WholeGenomeQV_Merqury_Hap2,WholeGenomeQV_Merqury_Dip,WholeGenomeQV_Yak_Hap1,WholeGenomeQV_Yak_Hap2,WholeGenomeQV_Yak_Dip,WholeGenomeQV_Yak_Hap1_unNormalized,WholeGenomeQV_Yak_Hap2_unNormalized,WholeGenomeQV_Yak_Dip_unNormalized,InsideConfQV_Merqury_Hap1,InsideConfQV_Merqury_Hap2,InsideConfQV_Merqury_Dip,InsideConfQV_Yak_Hap1,InsideConfQV_Yak_Hap2,InsideConfQV_Yak_Dip,InsideConfQV_Yak_Hap1_unNormalized,InsideConfQV_Yak_Hap2_unNormalized,InsideConfQV_Yak_Dip_unNormalized,OutsideConfQV_Merqury_Hap1,OutsideConfQV_Merqury_Hap2,OutsideConfQV_Merqury_Dip,OutsideConfQV_Yak_Hap1,OutsideConfQV_Yak_Hap2,OutsideConfQV_Yak_Dip_unNormalized,OutsideConfQV_Yak_Hap1_unNormalized,OutsideConfQV_Yak_Hap2_unNormalized,OutsideConfQV_Yak_Dip_unNormalized,YakSwitchError,YakHammingError" > header.csv
+        echo "sampleID,Assembly,total_edits,edits_overlapping_FPkmers,WholeGenomeQV_Merqury_Hap1,WholeGenomeQV_Merqury_Hap2,WholeGenomeQV_Merqury_Dip,WholeGenomeQV_Yak_Hap1,WholeGenomeQV_Yak_Hap2,WholeGenomeQV_Yak_Dip,WholeGenomeQV_Yak_Hap1_unNormalized,WholeGenomeQV_Yak_Hap2_unNormalized,WholeGenomeQV_Yak_Dip_unNormalized,InsideConfQV_Merqury_Hap1,InsideConfQV_Merqury_Hap2,InsideConfQV_Merqury_Dip,InsideConfQV_Yak_Hap1,InsideConfQV_Yak_Hap2,InsideConfQV_Yak_Dip,InsideConfQV_Yak_Hap1_unNormalized,InsideConfQV_Yak_Hap2_unNormalized,InsideConfQV_Yak_Dip_unNormalized,OutsideConfQV_Merqury_Hap1,OutsideConfQV_Merqury_Hap2,OutsideConfQV_Merqury_Dip,OutsideConfQV_Yak_Hap1,OutsideConfQV_Yak_Hap2,OutsideConfQV_Yak_Dip_unNormalized,OutsideConfQV_Yak_Hap1_unNormalized,OutsideConfQV_Yak_Hap2_unNormalized,OutsideConfQV_Yak_Dip_unNormalized,YakSwitchError,YakHammingError" > header.csv
 
         # add sample ID
         echo ~{sampleID},"polished" >> polished.sample.csv
         echo ~{sampleID},"raw","NA","NA","NA" >> raw.sample.csv
 
         ### Collate polished assembly results ###
-
-        # get runtime
-        grep "real" ~{toilRunLog} | cut -f2 > runtime.txt
 
         # get merqury WG results
         grep "asm" ~{wholeGenomeQVPolMerq} | cut -f4 > wholeGenomeQVPolMerq.Hap1.txt
@@ -371,7 +362,6 @@ task collateResults {
 
         # Paste polished results into one row
         paste -d "," polished.sample.csv \
-        runtime.txt \
         ~{totalEditsTxt} \
         ~{editsIntersectingFPKmersTxt} \
         wholeGenomeQVPolMerq.Hap1.txt \
@@ -530,8 +520,6 @@ task collateResultsNonTrio {
       File yakTarBallInsideConfPol
       File yakTarBallOutsideConfPol
 
-      File toilRunLog
-
       String sampleID
 
       Int memSizeGB = 12
@@ -547,16 +535,13 @@ task collateResultsNonTrio {
         set -o xtrace
 
         # define header
-        echo "sampleID,Assembly,Runtime,total_edits,edits_overlapping_FPkmers,WholeGenomeQV_Merqury_Hap1,WholeGenomeQV_Merqury_Hap2,WholeGenomeQV_Merqury_Dip,WholeGenomeQV_Yak_Hap1,WholeGenomeQV_Yak_Hap2,WholeGenomeQV_Yak_Dip,WholeGenomeQV_Yak_Hap1_unNormalized,WholeGenomeQV_Yak_Hap2_unNormalized,WholeGenomeQV_Yak_Dip_unNormalized,InsideConfQV_Merqury_Hap1,InsideConfQV_Merqury_Hap2,InsideConfQV_Merqury_Dip,InsideConfQV_Yak_Hap1,InsideConfQV_Yak_Hap2,InsideConfQV_Yak_Dip,InsideConfQV_Yak_Hap1_unNormalized,InsideConfQV_Yak_Hap2_unNormalized,InsideConfQV_Yak_Dip_unNormalized,OutsideConfQV_Merqury_Hap1,OutsideConfQV_Merqury_Hap2,OutsideConfQV_Merqury_Dip,OutsideConfQV_Yak_Hap1,OutsideConfQV_Yak_Hap2,OutsideConfQV_Yak_Dip_unNormalized,OutsideConfQV_Yak_Hap1_unNormalized,OutsideConfQV_Yak_Hap2_unNormalized,OutsideConfQV_Yak_Dip_unNormalized" > header.csv
+        echo "sampleID,Assembly,total_edits,edits_overlapping_FPkmers,WholeGenomeQV_Merqury_Hap1,WholeGenomeQV_Merqury_Hap2,WholeGenomeQV_Merqury_Dip,WholeGenomeQV_Yak_Hap1,WholeGenomeQV_Yak_Hap2,WholeGenomeQV_Yak_Dip,WholeGenomeQV_Yak_Hap1_unNormalized,WholeGenomeQV_Yak_Hap2_unNormalized,WholeGenomeQV_Yak_Dip_unNormalized,InsideConfQV_Merqury_Hap1,InsideConfQV_Merqury_Hap2,InsideConfQV_Merqury_Dip,InsideConfQV_Yak_Hap1,InsideConfQV_Yak_Hap2,InsideConfQV_Yak_Dip,InsideConfQV_Yak_Hap1_unNormalized,InsideConfQV_Yak_Hap2_unNormalized,InsideConfQV_Yak_Dip_unNormalized,OutsideConfQV_Merqury_Hap1,OutsideConfQV_Merqury_Hap2,OutsideConfQV_Merqury_Dip,OutsideConfQV_Yak_Hap1,OutsideConfQV_Yak_Hap2,OutsideConfQV_Yak_Dip_unNormalized,OutsideConfQV_Yak_Hap1_unNormalized,OutsideConfQV_Yak_Hap2_unNormalized,OutsideConfQV_Yak_Dip_unNormalized" > header.csv
 
         # add sample ID
         echo ~{sampleID},"polished" >> polished.sample.csv
         echo ~{sampleID},"raw","NA","NA","NA" >> raw.sample.csv
 
         ### Collate polished assembly results ###
-
-        # get runtime
-        grep "Total Runtime" ~{toilRunLog} | cut -f7 -d" " > runtime.txt
 
         # get merqury WG results
         grep "asm" ~{wholeGenomeQVPolMerq} | cut -f4 > wholeGenomeQVPolMerq.Hap1.txt
@@ -609,7 +594,6 @@ task collateResultsNonTrio {
 
         # Paste polished results into one row
         paste -d "," polished.sample.csv \
-        runtime.txt \
         ~{totalEditsTxt} \
         ~{editsIntersectingFPKmersTxt} \
         wholeGenomeQVPolMerq.Hap1.txt \
