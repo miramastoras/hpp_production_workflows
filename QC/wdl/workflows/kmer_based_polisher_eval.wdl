@@ -142,7 +142,8 @@ workflow kmerPolishingEval {
                 sampleYak=sampleYak,
                 assemblyFastaPat=hap1Fasta,
                 assemblyFastaMat=hap2Fasta,
-                minSequenceLength="0"
+                minSequenceLength="0",
+                dockerImage="miramastoras/hpp_yak:latest"
         }
     }
 
@@ -152,7 +153,8 @@ workflow kmerPolishingEval {
                 assemblyFastaHap2=hap2Fasta,
                 assemblyFastaHap1=hap1Fasta,
                 sampleYak=sampleYak,
-                minSequenceLength="0"
+                minSequenceLength="0",
+                dockerImage="miramastoras/hpp_yak:latest"
         }
     }
 
@@ -163,14 +165,16 @@ workflow kmerPolishingEval {
             sampleYak=sampleYak,
             assemblyFastaHap1=subHap1InsideConf.subFasta,
             assemblyFastaHap2=subHap2InsideConf.subFasta,
-            minSequenceLength="0"
+            minSequenceLength="0",
+            dockerImage="miramastoras/hpp_yak:latest"
     }
     call yak_non_trio_t.yakNonTrioAssemblyStats as yakQCOutsideConf {
         input:
             sampleYak=sampleYak,
             assemblyFastaHap1=subHap1OutsideConf.subFasta,
             assemblyFastaHap2=subHap2OutsideConf.subFasta,
-            minSequenceLength="0"
+            minSequenceLength="0",
+            dockerImage="miramastoras/hpp_yak:latest"
     }
 
     File yakWGTarBall = select_first([yakQCWholeGenome.outputTarball, yakQCWholeGenomeNonTrio.outputTarball])

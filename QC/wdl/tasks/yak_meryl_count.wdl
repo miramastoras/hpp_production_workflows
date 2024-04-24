@@ -51,7 +51,8 @@ workflow runYakMerylCount {
             readFiles=sampleReadsExtracted.extractedRead,
             sampleName="sample",
             diskSizeGB=sampleReadSize.value * 2,
-            kmerSize=kmerSize
+            kmerSize=kmerSize,
+            dockerImage="miramastoras/hpp_yak:latest"
     }
     output {
         File merylDbTarGz=sampleMerylCount.merylDb
