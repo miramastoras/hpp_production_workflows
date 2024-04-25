@@ -13,7 +13,7 @@ workflow runNonTrioYakAssemblyStats {
         File? referenceFasta
         Int shardLinesPerFile = 256000000
         Int fileExtractionDiskSizeGB = 256
-        String dockerImage = "juklucas/hpp_yak:latest"
+        String dockerImage = "miramastoras/hpp_yak:latest"
     }
 
     scatter (readFile in sampleReadsILM) {
@@ -67,7 +67,7 @@ task yakCount {
         Int memSizeGB=128
         Int threadCount=16
         Int diskSizeGB=256
-        String dockerImage="juklucas/hpp_yak:latest"
+        String dockerImage="miramastoras/hpp_yak:latest"
     }
     command <<<
         set -eux -o xtrace
@@ -101,7 +101,7 @@ task yakNonTrioAssemblyStats {
         Int memSizeGB = 128
         Int threadCount = 32
         Int diskSizeGB = 256
-        String dockerImage = "juklucas/hpp_yak:latest"
+        String dockerImage = "miramastoras/hpp_yak:latest"
     }
     command <<<
         set -eux -o xtrace

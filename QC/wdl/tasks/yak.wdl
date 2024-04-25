@@ -15,7 +15,7 @@ workflow runYakAssemblyStats {
         File? referenceFasta
         Int shardLinesPerFile = 256000000
         Int fileExtractionDiskSizeGB = 256
-        String dockerImage = "juklucas/hpp_yak:latest"
+        String dockerImage = "miramastoras/hpp_yak:latest"
     }
 
     # extract reads
@@ -121,7 +121,7 @@ task yakCount {
         Int memSizeGB=512
         Int threadCount=32
         Int diskSizeGB=512
-        String dockerImage="juklucas/hpp_yak:latest"
+        String dockerImage="miramastoras/hpp_yak:latest"
     }
     command <<<
         # Set the exit code of a pipeline to that of the rightmost command
@@ -166,7 +166,7 @@ task yakAssemblyStats {
         Int memSizeGB = 512
         Int threadCount = 32
         Int diskSizeGB = 512
-        String dockerImage = "juklucas/hpp_yak:latest"
+        String dockerImage = "miramastoras/hpp_yak:latest"
     }
     command <<<
         # Set the exit code of a pipeline to that of the rightmost command
@@ -194,7 +194,7 @@ task yakAssemblyStats {
         # QV
         yak qv -t ~{threadCount} -p -K ~{genomeSize} -l ~{minSequenceLength} ~{sampleYak} ~{assemblyFastaPat} > $PREFIX.pat.yak.qv.txt
         yak qv -t ~{threadCount} -p -K ~{genomeSize} -l ~{minSequenceLength} ~{sampleYak} ~{assemblyFastaMat} > $PREFIX.mat.yak.qv.txt
-        yak qv -t ~{threadCount} -p -K ~{genomeSize} -l ~{minSequenceLength} ~{sampleYak} diploid.fasta > diploid.yak.qv.txt || 
+        yak qv -t ~{threadCount} -p -K ~{genomeSize} -l ~{minSequenceLength} ~{sampleYak} diploid.fasta > diploid.yak.qv.txt ||
 
         # condense
         SUMMARY=$PREFIX.summary.txt
