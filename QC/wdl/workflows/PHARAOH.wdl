@@ -56,6 +56,7 @@ workflow PHARAOH{
 
         String minWindowSizeBp=20000
         String extendBp=50000
+        String hifiAlignmentOptions="--cs --eqx -Y -L"
     }
 
     ## Align Hap2 to Hap1 assembly
@@ -100,7 +101,7 @@ workflow PHARAOH{
             sampleName=sampleName,
             kmerSize=PharaohKmerSize,
             sampleSuffix="all2hap1",
-            options="--cs --eqx -Y -L",
+            options=hifiAlignmentOptions,
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
 
@@ -113,7 +114,7 @@ workflow PHARAOH{
             kmerSize=PharaohKmerSize,
             sampleName=sampleName,
             sampleSuffix="all2hap2",
-            options="--cs --eqx -Y -L",
+            options=hifiAlignmentOptions,
             dockerImage="mobinasri/long_read_aligner:v0.3.3"
     }
 
