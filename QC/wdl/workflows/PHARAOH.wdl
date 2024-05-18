@@ -53,6 +53,9 @@ workflow PHARAOH{
         String PharaohKmerSize=19
         String PharaohHiFiPreset="map-hifi"
         String pafAligner="minimap2"
+
+        String minWindowSizeBp=20000
+        String extendBp=50000
     }
 
     ## Align Hap2 to Hap1 assembly
@@ -74,8 +77,8 @@ workflow PHARAOH{
     call findHomozygousRegions_t.FindHomozygousRegions as findHomozygousRegions{
         input:
             pafFile=alignmentPaf.pafFile,
-            minWindowSizeBp=20000,
-            extendBp=50000,
+            minWindowSizeBp=minWindowSizeBp,
+            extendBp=extendBp,
             outPrefix=sampleName
     }
 
