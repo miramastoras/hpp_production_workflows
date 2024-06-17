@@ -42,7 +42,7 @@ workflow runYakMerylCount {
             readFiles=sampleReadsExtracted.extractedRead,
             kmerSize=kmerSize,
             threadCount=threadCount,
-            diskSizeGB=sampleReadSizeMax.value * 4,
+            diskSizeGB=sampleReadSizeMax.value * 2,
             sampleID=sampleID
         }
 
