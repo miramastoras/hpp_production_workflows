@@ -29,8 +29,8 @@ workflow runDeepPolisher {
             ModelFilesTarGZ=ModelFilesTarGZ,
             sampleName=sampleName,
             dockerImage=dockerImage,
-            memSizeGB = memSize
-            threadCount = threadCount
+            memSizeGB = memSize,
+            threadCount = threadCount,
             diskSizeGB = diskSize
 
     }
