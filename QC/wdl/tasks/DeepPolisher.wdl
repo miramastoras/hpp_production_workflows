@@ -17,6 +17,9 @@ workflow runDeepPolisher {
         String dockerImage
         Boolean useOptimalGQFilter=true
         String customGQFilter=""
+        Int memSize=128
+        Int diskSize=128
+        Int threadCount=32
     }
     call DeepPolisher {
         input:
@@ -25,7 +28,11 @@ workflow runDeepPolisher {
             Fasta=Fasta,
             ModelFilesTarGZ=ModelFilesTarGZ,
             sampleName=sampleName,
-            dockerImage=dockerImage
+            dockerImage=dockerImage,
+            memSizeGB = memSize
+            threadCount = threadCount
+            diskSizeGB = diskSize
+
     }
     call DPPostProcess {
         input:
