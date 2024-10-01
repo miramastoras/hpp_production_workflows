@@ -23,7 +23,7 @@ workflow merqury_stratifications {
 
     call getInverseBed {
         input:
-            dipFai=dipFai
+            dipFai=dipFai,
             bedFile=bedFile
     }
     call subset_fasta_t.SubFastaByBed as subHap1InsideBed {
