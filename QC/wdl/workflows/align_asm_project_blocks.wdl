@@ -3,7 +3,7 @@ version 1.0
 import "../tasks/long_read_aligner.wdl" as long_read_aligner_t
 import "../tasks/project_blocks.wdl" as project_blocks_t
 
-workflow kmerPolishingEval {
+workflow align_asm_project_blocks {
     meta {
       author: "Mira Mastoras"
       email: "mmastora@ucsc.edu"
