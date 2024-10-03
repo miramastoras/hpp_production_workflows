@@ -21,7 +21,7 @@ task SubFastaByBed {
 
         Int memSizeGB = 128
         Int threadCount = 4
-        Int diskSizeGB = 128
+        Int diskSizeGB = 64
         String dockerImage = "pegi3s/bedtools"
     }
 
