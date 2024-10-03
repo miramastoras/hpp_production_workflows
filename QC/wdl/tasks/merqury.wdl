@@ -19,7 +19,7 @@ task merqury {
         File? patKmerTarball
         Int memSizeGB = 12
         Int threadCount = 16
-        Int diskSizeGB = 256
+        Int diskSizeGB = 132
         String dockerImage = "juklucas/hpp_merqury:latest"
     }
 
