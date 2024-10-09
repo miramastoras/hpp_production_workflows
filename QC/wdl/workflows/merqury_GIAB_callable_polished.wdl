@@ -34,7 +34,7 @@ workflow merqury_GIAB_callable {
       }
 
       # project GIAB confidence regions to polished assembly
-      call align_asm_project_blocks_t as projectGIABConfToAsm {
+      call align_asm_project_blocks_t.align_asm_project_blocks as projectGIABConfToAsm {
           input:
               asmHap1Fasta=polishedHap1Fasta,
               asmHap2Fasta=polishedHap2Fasta,
@@ -44,7 +44,7 @@ workflow merqury_GIAB_callable {
               bedFile=GIABConfBed
       }
       # project mosdepth bed file from raw to polished coordinates
-      call align_asm_project_blocks_t as projectMosdepthToPolishedAsm {
+      call align_asm_project_blocks_t.align_asm_project_blocks as projectMosdepthToPolishedAsm {
           input:
               asmHap1Fasta=polishedHap1Fasta,
               asmHap2Fasta=polishedHap2Fasta,
@@ -72,7 +72,7 @@ workflow merqury_GIAB_callable {
               Prefix=stratificationLabel,
               sampleID=sampleID
       }
-      call merqury_stratifications_t as runMerqury {
+      call merqury_stratifications_t.merqury_stratifications as runMerqury {
           input:
               Hap1Fasta=polishedHap1Fasta,
               Hap2Fasta=polishedHap2Fasta,
@@ -82,18 +82,18 @@ workflow merqury_GIAB_callable {
               sampleID=sampleID
       }
       output {
-          File insideQV = runMerqury.merqury_stratifications.insideQV
-          File insideMerquryTarball = runMerqury.merqury_stratifications.insideMerquryTarball
-          File outsideQV = runMerqury.merqury_stratifications.outsideQV
-          File outsideMerquryTarball = runMerqury.merqury_stratifications.outsideMerquryTarball
-          File Hap1PafToGRCh38=projectGIABConfToAsm.align_asm_project_blocks.hap1ToRefPaf
-          File Hap2PafToGRCh38=projectGIABConfToAsm.align_asm_project_blocks.hap2ToRefPaf
-          File GIABConfProjectionHap1=projectGIABConfToAsm.align_asm_project_blocks.projectionBedFileHap1
-          File GIABConfProjectionHap2=projectGIABConfToAsm.align_asm_project_blocks.projectionBedFileHap2
-          File Hap1PolToRawPaf=projectMosdepthToPolishedAsm.align_asm_project_blocks.hap1ToRefPaf
-          File Hap2PolToRawPaf=projectMosdepthToPolishedAsm.align_asm_project_blocks.hap2ToRefPaf
-          File MosdepthProjectionHap1=projectMosdepthToPolishedAsm.align_asm_project_blocks.projectionBedFileHap1
-          File MosdepthProjectionHap2=projectMosdepthToPolishedAsm.align_asm_project_blocks.projectionBedFileHap2
+          File insideQV = runMerqury.insideQV
+          File insideMerquryTarball = runMerqury.insideMerquryTarball
+          File outsideQV = runMerqury.outsideQV
+          File outsideMerquryTarball = runMerqury.outsideMerquryTarball
+          File Hap1PafToGRCh38=projectGIABConfToAsm.hap1ToRefPaf
+          File Hap2PafToGRCh38=projectGIABConfToAsm.hap2ToRefPaf
+          File GIABConfProjectionHap1=projectGIABConfToAsm.projectionBedFileHap1
+          File GIABConfProjectionHap2=projectGIABConfToAsm.projectionBedFileHap2
+          File Hap1PolToRawPaf=projectMosdepthToPolishedAsm.hap1ToRefPaf
+          File Hap2PolToRawPaf=projectMosdepthToPolishedAsm.hap2ToRefPaf
+          File MosdepthProjectionHap1=projectMosdepthToPolishedAsm.projectionBedFileHap1
+          File MosdepthProjectionHap2=projectMosdepthToPolishedAsm.projectionBedFileHap2
       }
 
 }
