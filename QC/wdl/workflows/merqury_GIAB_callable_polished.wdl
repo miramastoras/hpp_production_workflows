@@ -82,18 +82,18 @@ workflow merqury_GIAB_callable {
               sampleID=sampleID
       }
       output {
-          File insideQV = runMerqury.insideQV
-          File insideMerquryTarball = runMerqury.insideMerquryTarball
-          File outsideQV = runMerqury.outsideQV
-          File outsideMerquryTarball = runMerqury.outsideMerquryTarball
-          File Hap1PafToGRCh38=projectGIABConfToAsm.hap1ToRefPaf
-          File Hap2PafToGRCh38=projectGIABConfToAsm.hap2ToRefPaf
-          File GIABConfProjectionHap1=projectGIABConfToAsm.projectionBedFileHap1
-          File GIABConfProjectionHap2=projectGIABConfToAsm.projectionBedFileHap2
-          File Hap1PolToRawPaf=projectMosdepthToPolishedAsm.hap1ToRefPaf
-          File Hap2PolToRawPaf=projectMosdepthToPolishedAsm.hap2ToRefPaf
-          File MosdepthProjectionHap1=projectMosdepthToPolishedAsm.projectionBedFileHap1
-          File MosdepthProjectionHap2=projectMosdepthToPolishedAsm.projectionBedFileHap2
+          File insideQV = runMerqury.merqury_stratifications.insideQV
+          File insideMerquryTarball = runMerqury.merqury_stratifications.insideMerquryTarball
+          File outsideQV = runMerqury.merqury_stratifications.outsideQV
+          File outsideMerquryTarball = runMerqury.merqury_stratifications.outsideMerquryTarball
+          File Hap1PafToGRCh38=projectGIABConfToAsm.align_asm_project_blocks.hap1ToRefPaf
+          File Hap2PafToGRCh38=projectGIABConfToAsm.align_asm_project_blocks.hap2ToRefPaf
+          File GIABConfProjectionHap1=projectGIABConfToAsm.align_asm_project_blocks.projectionBedFileHap1
+          File GIABConfProjectionHap2=projectGIABConfToAsm.align_asm_project_blocks.projectionBedFileHap2
+          File Hap1PolToRawPaf=projectMosdepthToPolishedAsm.align_asm_project_blocks.hap1ToRefPaf
+          File Hap2PolToRawPaf=projectMosdepthToPolishedAsm.align_asm_project_blocks.hap2ToRefPaf
+          File MosdepthProjectionHap1=projectMosdepthToPolishedAsm.align_asm_project_blocks.projectionBedFileHap1
+          File MosdepthProjectionHap2=projectMosdepthToPolishedAsm.align_asm_project_blocks.projectionBedFileHap2
       }
 
 }
