@@ -21,8 +21,6 @@ workflow merqury_GIAB_callable {
 
         File refFasta
 
-        File bedFile
-
         String sampleID
         String stratificationLabel="GIAB_conf_gt5x_MAPQ1"
 
