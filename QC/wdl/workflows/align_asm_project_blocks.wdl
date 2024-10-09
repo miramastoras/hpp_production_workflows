@@ -70,5 +70,8 @@ workflow align_asm_project_blocks {
         File projectableBedFileHap1 = projectBedHap1.projectableBedFile
         File projectionBedFileHap2 = projectBedHap2.projectionBedFile
         File projectableBedFileHap2 = projectBedHap2.projectableBedFile
+        File hap1ToRefPaf=alignHap1ToRef.pafFile
+        File hap2ToRefPaf=alignHap2ToRef.pafFile
+
     }
 }
