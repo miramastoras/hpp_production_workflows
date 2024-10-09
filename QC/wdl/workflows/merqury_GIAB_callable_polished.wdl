@@ -52,6 +52,7 @@ workflow merqury_GIAB_callable {
               refHap2Fasta=rawHap2Fasta,
               projectionDirection="ref2asm",
               bedFile=mosdepthBed
+      }
 
       # subtract mosdepth bed from GIAB conf bed
       call bedtoolsSubtract as Hap1PolishedSubtractMosdepth {
