@@ -131,6 +131,7 @@ task bedtoolsSubtract {
       disks: "local-disk " + diskSizeGB + " SSD"
       docker: dockerImage
   }
+}
 
 
 task concatBeds {
