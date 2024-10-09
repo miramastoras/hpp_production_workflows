@@ -166,3 +166,4 @@ task concatBeds {
       disks: "local-disk " + diskSizeGB + " SSD"
       docker: dockerImage
   }
+}
