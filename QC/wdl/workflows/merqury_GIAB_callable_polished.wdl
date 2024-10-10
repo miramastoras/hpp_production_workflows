@@ -58,12 +58,16 @@ workflow merqury_GIAB_callable {
       call bedtoolsSubtract as Hap1PolishedSubtractMosdepth {
           input:
               bedFileA=projectGIABConfToAsm.projectionBedFileHap1,
-              bedFileB=projectMosdepthToPolishedAsm.projectionBedFileHap1
+              bedFileB=projectMosdepthToPolishedAsm.projectionBedFileHap1,
+              label="GIAB_conf_gt5x_MAPQ1_HAP1",
+              sampleID=sampleID
       }
       call bedtoolsSubtract as Hap2PolishedSubtractMosdepth {
           input:
               bedFileA=projectGIABConfToAsm.projectionBedFileHap2,
-              bedFileB=projectMosdepthToPolishedAsm.projectionBedFileHap2
+              bedFileB=projectMosdepthToPolishedAsm.projectionBedFileHap2,
+              label="GIAB_conf_gt5x_MAPQ1_HAP2",
+              sampleID=sampleID
       }
       call concatBeds as concatHapBeds {
           input:
@@ -102,6 +106,8 @@ task bedtoolsSubtract {
   input {
       File bedFileA
       File bedFileB
+      String label
+      String sampleID
 
       Int memSizeGB = 12
       Int threadCount = 4
@@ -115,10 +121,7 @@ task bedtoolsSubtract {
         set -u
         set -o xtrace
 
-        A_BASENAME=$(basename -- "~{bedFileA}")
-        B_BASENAME=$(basename -- "~{bedFileB}")
-
-        bedtools subtract -a ~{bedFileA} -b ~{bedFileB} > ${A_BASENAME}_minus_${B_BASENAME}.bed
+        bedtools subtract -a ~{bedFileA} -b ~{bedFileB} > ~{sampleID}.~{label}.bed
   >>>
 
   output {
