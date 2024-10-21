@@ -40,7 +40,7 @@ workflow merqury_GIAB_callable {
               refHap2Fasta=refFasta,
               projectionDirection="ref2asm",
               bedFile=GIABConfBed,
-              sampleID=sampleID
+              sampleID="${sampleID}.GRCh38"
       }
       # project mosdepth bed file from raw to polished coordinates
       call align_asm_project_blocks_t.align_asm_project_blocks as projectMosdepthToPolishedAsm {
@@ -51,7 +51,7 @@ workflow merqury_GIAB_callable {
               refHap2Fasta=rawHap2Fasta,
               projectionDirection="ref2asm",
               bedFile=mosdepthBed,
-              sampleID=sampleID
+              sampleID="${sampleID}.polished2raw"
       }
 
       # subtract mosdepth bed from GIAB conf bed
