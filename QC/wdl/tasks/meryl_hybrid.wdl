@@ -62,7 +62,7 @@ task merylHybrid {
         String identifier
         Int memSizeGB = 256
         Int threadCount = 32
-        Int diskSizeGB = 256
+        Int diskSizeGB = 600
         Int kmerSize = 21
         String dockerImage = "juklucas/hpp_merqury:latest"
     }
