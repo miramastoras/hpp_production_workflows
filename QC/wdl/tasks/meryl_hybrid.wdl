@@ -60,9 +60,9 @@ task merylHybrid {
         Array[File] hifiReads
 
         String identifier
-        Int memSizeGB = 256
+        Int memSizeGB = 1024
         Int threadCount = 32
-        Int diskSizeGB = 600
+        Int diskSizeGB = 1024
         Int kmerSize = 21
         String dockerImage = "juklucas/hpp_merqury:latest"
     }
