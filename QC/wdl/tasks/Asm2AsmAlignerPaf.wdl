@@ -3,14 +3,25 @@ version 1.0
 import "../tasks/long_read_aligner.wdl" as long_read_aligner_t
 
 workflow asm2asmAlignerPaf{
+  input {
+      String kmerSize
+      String aligner
+      String dockerImage
+      File refAssembly
+      File queryAssembly
+      String preset
 
+  }
   call long_read_aligner_t.alignmentPaf as alignmentPaf{
       input:
-          preset="asm5",
+          preset=preset,
+          aligner=aligner,
+          readFastq_or_queryAssembly=queryAssembly,
+          refAssembly=refAssembly,
           diskSize=512,
           threadCount=64,
-          kmerSize=19,
-          dockerImage="mobinasri/long_read_aligner:v0.3.3"
+          kmerSize=kmerSize,
+          dockerImage=dockerImage
       }
   output {
       File asm2asmPaf=alignmentPaf.pafFile
