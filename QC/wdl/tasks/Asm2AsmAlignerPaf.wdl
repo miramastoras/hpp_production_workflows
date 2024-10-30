@@ -19,7 +19,7 @@ workflow asm2asmAlignerPaf{
           readFastq_or_queryAssembly=queryAssembly,
           refAssembly=refAssembly,
           diskSize=512,
-          threadCount=64,
+          threadCount=32,
           kmerSize=kmerSize,
           dockerImage=dockerImage
       }
