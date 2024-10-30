@@ -4,7 +4,7 @@ import "../tasks/long_read_aligner.wdl" as long_read_aligner_t
 
 workflow asm2asmAlignerPaf{
   input {
-      String kmerSize
+      Int kmerSize
       String aligner
       String dockerImage
       File refAssembly
