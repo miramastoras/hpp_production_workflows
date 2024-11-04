@@ -75,7 +75,7 @@ workflow get_low_coverage_FP_kmers {
               refHap2Fasta=Hap2RawFasta,
               bedFile=lowCoverageBed,
               projectionDirection="ref2asm",
-              sample=sampleID
+              sampleID=sampleID
 
       }
       output {
