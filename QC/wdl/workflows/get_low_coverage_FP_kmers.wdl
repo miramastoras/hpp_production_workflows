@@ -30,7 +30,7 @@ workflow get_low_coverage_FP_kmers {
       # align hap1 pol to hap1 raw
       call long_read_aligner_t.alignmentPaf as alignPolToRawHap1{
           input:
-              aligner=minimap2,
+              aligner="minimap2",
               preset="asm5",
               options="-L --eqx --cs -c",
               readFastq_or_queryAssembly=Hap1PolFasta,
@@ -44,7 +44,7 @@ workflow get_low_coverage_FP_kmers {
       # align hap2 pol to hap2 raw
       call long_read_aligner_t.alignmentPaf as alignPolToRawHap2{
           input:
-              aligner=minimap2,
+              aligner="minimap2",
               preset="asm5",
               options="-L --eqx --cs -c",
               readFastq_or_queryAssembly=Hap2PolFasta,
