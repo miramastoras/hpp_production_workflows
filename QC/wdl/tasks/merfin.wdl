@@ -152,9 +152,9 @@ task Merfin{
         File? dumpFastaStats
 
         String dockerImage = "miramastoras/merfin:latest"
-        Int memSizeGB = 128
+        Int memSizeGB = 300
         Int threadCount = 32
-        Int diskSizeGB = 256
+        Int diskSizeGB = 512
     }
 
     command <<<
