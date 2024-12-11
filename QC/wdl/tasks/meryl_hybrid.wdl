@@ -21,7 +21,7 @@ workflow runMeryl {
             input:
                 readFile=readFile,
                 referenceFasta=referenceFasta,
-                memSizeGB=4,
+                memSizeGB=100,
                 threadCount=4,
                 diskSizeGB=256,
                 dockerImage="mobinasri/bio_base:v0.2"
@@ -32,7 +32,7 @@ workflow runMeryl {
             input:
                 readFile=readFile,
                 referenceFasta=referenceFasta,
-                memSizeGB=4,
+                memSizeGB=100,
                 threadCount=4,
                 diskSizeGB=256,
                 dockerImage="mobinasri/bio_base:v0.2"
