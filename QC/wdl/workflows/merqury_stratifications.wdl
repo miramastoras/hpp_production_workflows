@@ -65,12 +65,20 @@ workflow merqury_stratifications {
             assemblyFasta=subHap1OutsideBed.subFasta,
             altHapFasta=subHap2OutsideBed.subFasta,
             kmerTarball=ilmMerylDBTarGz
+
+    call merqury_t.merqury as merquryWholeGenome {
+        input:
+            assemblyFasta=Hap1Fasta,
+            altHapFasta=Hap2Fasta,
+            kmerTarball=ilmMerylDBTarGz
     }
     output {
         File insideQV = merquryInsideBed.QV
         File insideMerquryTarball = merquryInsideBed.outputTarball
         File outsideQV = merquryOutsideBed.QV
         File outsideMerquryTarball = merquryOutsideBed.outputTarball
+        File WGQV = merquryWholeGenome.QV
+        File WGMerquryTarball = merquryWholeGenome.outputTarball
     }
 }
 
