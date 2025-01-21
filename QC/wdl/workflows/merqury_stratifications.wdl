@@ -65,7 +65,7 @@ workflow merqury_stratifications {
             assemblyFasta=subHap1OutsideBed.subFasta,
             altHapFasta=subHap2OutsideBed.subFasta,
             kmerTarball=ilmMerylDBTarGz
-
+    }
     call merqury_t.merqury as merquryWholeGenome {
         input:
             assemblyFasta=Hap1Fasta,
