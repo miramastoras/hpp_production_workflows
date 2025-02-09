@@ -6,6 +6,7 @@ workflow runDeepVariant {
 
     output{
         File deepVariantVCF    = DeepVariant.vcfOut
+        File deepVariantgVCF   = DeepVariant.gvcfOut
         File deepVariantVCFTBI = DeepVariant.vcfIdxOut
         File deepVariantHTML   = DeepVariant.visualReport
     }
@@ -40,6 +41,7 @@ task DeepVariant{
 
 
     String outputVCF    = "~{sample}_deepvariant.vcf.gz"
+    String outputgVCF    = "~{sample}_deepvariant.g.vcf.gz"
 
     command <<<
         # exit when a command fails, fail with unset variables, print commands before execution
@@ -78,11 +80,13 @@ task DeepVariant{
             --reads ${READS} \
             --output_vcf ~{outputVCF} \
             --num_shards ~{threadCount} \
+            --output_gvcf ~{outputgVCF} \
             ${REGIONS_TOKEN}
 
     >>>
     output{
         File vcfOut        = outputVCF
+        File gvcfOut       = outputgVCF
         File vcfIdxOut     = "~{outputVCF}.tbi"
         File visualReport  = glob("*visual_report.html")[0]
     }
