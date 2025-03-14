@@ -5,7 +5,7 @@ import "./PHARAOH.wdl" as PHARAOH_t
 import "../tasks/parse_fastas.wdl" as parse_fastas_t
 import "../tasks/filter_short_reads.wdl" as filter_short_reads_t
 
-workflow hprc_DeepPolisher {
+workflow PHARAOH_with_alignment {
     meta {
         author: "Mira Mastoras"
         email: "mmastora@ucsc.edu"
