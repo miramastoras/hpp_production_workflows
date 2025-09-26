@@ -11,7 +11,6 @@ workflow runMeryl {
         Int diskSize =500
         String dockerImage = "juklucas/hpp_merqury:latest"
         String sampleID
-        String readType # ie HiFi,illumina,element. used for labelling output
     }
 
     call merylCount as sampleMerylCount {
@@ -23,8 +22,7 @@ workflow runMeryl {
             memSizeGB=memSizeGB,
             diskSizeGB=diskSize,
             dockerImage=dockerImage,
-            sampleID=sampleID,
-            readType=readType
+            sampleID=sampleID
       }
 
 	  output {
@@ -37,7 +35,6 @@ task merylCount {
     input {
         Array[File] readFiles
         String sampleID
-        String readType
         Int kmerSize=21
         Boolean compress = false
         Int memSizeGB = 42
@@ -54,7 +51,7 @@ task merylCount {
         set -u
         set -o xtrace
 
-        ID=~{sampleID}.k{kmerSize}.{readType}
+        ID=~{sampleID}
 
         # generate meryl db
         meryl \
