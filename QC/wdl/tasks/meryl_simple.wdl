@@ -35,7 +35,7 @@ workflow runMeryl {
 
 task merylCount {
     input {
-        Array readFiles
+        Array[File] readFiles
         String sampleID
         String readType
         Int kmerSize=21
