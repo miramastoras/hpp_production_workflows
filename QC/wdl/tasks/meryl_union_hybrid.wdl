@@ -51,20 +51,17 @@ task merylHybrid {
 
         mkdir extracted
 
-        cp ~{TarDB1} extracted/
-        cp ~{TarDB2} extracted/
+        tar xvf ~{TarDB1} --no-same-owner -C .
+        tar xvf ~{TarDB2} --no-same-owner -C .
 
         BASE1=`basename ~{TarDB1}`
         BASE2=`basename ~{TarDB2}`
 
-        tar xf extracted/$BASE1
-        tar xf extracted/$BASE2
-
         DB_1_BASE="${BASE1%.tar}"
         DB_2_BASE="${BASE2%.tar}"
 
-        meryl greater-than 1 threads=~{threadCount} extracted/$DB_1_BASE output DB1.gt1.meryl
-        meryl greater-than 1 threads=~{threadCount} extracted/$DB_2_BASE output DB2.gt1.meryl
+        meryl greater-than 1 threads=~{threadCount} $DB_1_BASE output DB1.gt1.meryl
+        meryl greater-than 1 threads=~{threadCount} $DB_2_BASE output DB2.gt1.meryl
 
         meryl union-sum threads=~{threadCount} DB1.gt1.meryl DB2.gt1.meryl output ~{sampleID}.k~{kmerSize}.hybrid.meryl
 
