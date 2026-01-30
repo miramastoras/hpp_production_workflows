@@ -32,7 +32,7 @@ workflow runMerquryAndYak {
     call yak_meryl_count_t.runYakMerylCount as countYakMerylKmers {
         input:
             sampleReadsIlm=sampleReadsIlm,
-            referenceFasta=referenceFasta
+            referenceFasta=referenceFasta,
             kmerSize=yakMerylKmerSize,
             threadCount=32,
             sampleID=sampleID
