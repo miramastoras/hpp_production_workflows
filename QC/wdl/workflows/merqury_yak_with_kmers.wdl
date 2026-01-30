@@ -5,7 +5,7 @@ import "../tasks/yak.wdl" as yak_t
 import "../tasks/yak_non_trio.wdl" as yak_non_trio_t
 import "../tasks/yak_meryl_count.wdl" as yak_meryl_count_t
 
-workflow hprc_polishing_QC {
+workflow runMerquryAndYak {
 
     meta {
       author: "Mira Mastoras"
@@ -57,6 +57,7 @@ workflow hprc_polishing_QC {
     output {
       File QV_whole_genome = merquryWholeGenome.QV
       File merquryWGTarBall = merquryWholeGenome.outputTarball
-      File yakTarBallWG = yakWGTarBall
+      File yakSummary=yakQCWholeGenome.outputSummary
+      File yakTarBallWG = yakQCWholeGenome.outputTarball
     }
 }
