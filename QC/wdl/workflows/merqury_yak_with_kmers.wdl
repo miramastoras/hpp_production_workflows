@@ -24,12 +24,15 @@ workflow runMerquryAndYak {
 
       String sampleID
 
+      File? referenceFasta
+
       Int yakMerylKmerSize=31
     }
 
     call yak_meryl_count_t.runYakMerylCount as countYakMerylKmers {
         input:
             sampleReadsIlm=sampleReadsIlm,
+            referenceFasta=referenceFasta
             kmerSize=yakMerylKmerSize,
             threadCount=32,
             sampleID=sampleID
